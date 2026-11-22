@@ -1,0 +1,12 @@
+# Cache do Godot
+.godot/
+/android/
+
+# Worktrees locais do fluxo multiagente
+.worktrees/
+
+# Relatórios do gdUnit4
+reports/
+
+# Configuração local do Claude Code
+.claude/settings.local.json
