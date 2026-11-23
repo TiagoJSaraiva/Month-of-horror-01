@@ -1,0 +1,137 @@
+# Escopo do MVP
+
+Fonte: página "Game Loop (English)" do Notion e respostas do desenvolvedor em 2026-11-23.
+As regras ficam aqui até o sistema existir. Ao implementar um sistema, as regras dele migram para `docs/sistemas/<sistema>.md` e saem desta nota.
+
+## Prazo e plataforma
+- Windows apenas, teclado e mouse. Textos do jogo em inglês.
+- MVP: meta de cerca de 1 semana a partir de 2026-11-23. Jogo completo: 25 dias (jam). Depois do MVP, o jogo amadurece com o resto do escopo do Notion e novas decisões.
+- A jam proíbe assets gerados por IA (decisão 0011).
+
+## Conceito
+Roguelite noturno em primeira pessoa (decisão 0008). Um pescador num barco ancorado precisa cumprir pedidos de peixe para clientes misteriosos entre 23:00 e 06:00 (7 min reais), mantendo a iluminação do barco e sobrevivendo a ameaças. A lore fica implícita.
+
+## Loop da run
+1. Início da run: seleção de cartas.
+2. Noite: o jogador começa na cabine, com a mensagem dos clientes na mesa.
+3. Amanhecer (fim do relógio): personagens e inimigos param, a tela escurece, tocam gaivotas e um aviso indica o fim da noite.
+4. Avaliação do pedido e atualização das vidas.
+5. Seleção de cartas e próxima noite.
+
+A run acaba com 3 noites falhas (não precisam ser seguidas) ou com a morte do jogador durante a noite. No fim, o jogador recebe pontos para upgrades permanentes. A run é infinita e a dificuldade sobe a cada noite.
+
+## Regras por sistema
+
+### Noite e pedido
+- Noite de 7 min reais, ajustável em Resource. As horas aparecem num relógio de parede na cabine.
+- Pedido: 3 peixes na noite 1 e +1 por noite, numa mistura aleatória das 2 espécies.
+- Diário: uma tecla faz o personagem segurá-lo com as duas mãos. Mostra a noite atual, os peixes pedidos e os já entregues. Não mostra a hora.
+- Um peixe só conta depois de guardado no freezer da cabine. Peixe fora do freezer ao amanhecer não conta.
+
+### Mãos
+- Lanterna sempre na mão esquerda, só liga e desliga.
+- A mão direita alterna entre vara e arma.
+- Diário e itens carregados (peixe, galão, lâmpada) ocupam as duas mãos: nesse momento não dá para atirar nem pescar.
+
+### Pesca
+- Minijogo no estilo Stardew Valley (manter o peixe dentro da barra), em overlay 2D. O jogador pode cancelar, e o peixe escapa.
+- "Poder de pesca" (carta e upgrade) é a velocidade com que a barra de captura enche.
+- Duas iscas infinitas, trocadas por tecla antes de lançar. Cada isca só atrai a sua espécie.
+- Pesca de qualquer ponto da amurada, mirando a água.
+- Carrega 1 peixe por vez; o duplicado da carta lendária vai junto. Pode largar no convés e pegar de novo.
+- 2 espécies no MVP, novas espécies entram por Resource.
+
+### Iluminação
+- 6 lâmpadas ao alcance da mão. Nível de luz = lâmpadas boas ÷ total, com o gerador funcionando. Gerador vazio ou quebrado deixa só a luz de emergência, fraca.
+- O combustível dura de 2 a 3 min. O gerador quebra e as lâmpadas queimam por sorteio, com mais frequência a cada noite e na tempestade.
+- Galão e lâmpadas de reposição são infinitos e ficam na cabine. Trocar lâmpada, consertar e reabastecer o gerador é segurar a interação por N segundos.
+- A lanterna não aumenta o nível de luz: serve para enxergar e atordoar. A bateria só recarrega com pilhas pegas na cabine, sem recarga gradual no MVP. A bateria dura menos a cada noite. O modo exato de troca das pilhas é definido no plano do marco de iluminação.
+
+### Inimigos
+- **Peixe-homem** (escuridão): abaixo de um limiar de luz, sobe pela amurada, com mais frequência quanto mais escuro estiver. Fica atordoado com a lanterna no rosto por cerca de 1 s, foge para o mar quando a luz volta acima do limiar e morre com tiros.
+- **Voador** (tempestade): aparece só durante a tempestade. Mergulha no jogador **e ataca as lâmpadas**. Morre com tiros e vai embora quando a tempestade acaba.
+- No MVP, nenhum inimigo rouba peixe.
+
+### Tempestade
+- A partir da noite 2, há chance de uma tempestade por noite, de 60 a 90 s, em horário aleatório. A chance e a duração crescem a cada noite.
+- O barco balança mais forte, há chuva e vento, e o céu muda. A tempestade acaba sozinha.
+
+### Combate e vida
+- Revólver de 6 tiros, com tiro instantâneo (hitscan) e recarga infinita.
+- 100 HP, regenerando 5 HP/s depois de 5 s sem dano. Morrer encerra a run.
+
+### Vidas e mensagens
+- 3 vidas por run. Não cumprir o pedido custa 1 vida, e o jogo segue para a próxima noite.
+- Passe livre secreto: na primeira noite da run em que falta exatamente 1 peixe, a noite conta como cumprida e aparece uma mensagem própria.
+- No início de cada noite há uma mensagem na mesa da cabine. O alfinete mostra o resultado da noite anterior: azul se cumpriu (inclusive com passe livre), amarelo com "!" se perdeu a 1ª vida, vermelho com "!!" se perdeu a 2ª.
+- Uma fala fixa por situação.
+
+### Cartas
+- Seleção no início da run e ao fim de cada noite (exceto quando a run acaba). São 3 cartas, e a raridade de cada uma é sorteada de forma independente: 60% comum, 30% rara, 10% lendária.
+- 3 rerolls por run, cada um sorteia a seleção inteira de novo. 3 slots de boost.
+- Com os slots cheios, a carta nova pode substituir uma equipada ou ser recusada.
+- Toda carta do MVP sai do pool ao ser escolhida. Carta substituída não volta ao pool.
+- Nenhuma carta se repete na mesma seleção. Se a raridade sorteada não tiver cartas, vale a próxima disponível. Com o pool vazio, a seleção é pulada.
+- Bônus percentuais de cartas e upgrades somam: +20% e +10% dão +30%.
+
+| Raridade | Efeito |
+|---|---|
+| Comum | +20% de vida máxima |
+| Comum | +15% de poder de pesca |
+| Comum | +15% de dano da arma |
+| Rara | +50% de capacidade da bateria da lanterna |
+| Rara | +50% de munição no tambor |
+| Rara | +20% de velocidade de movimento |
+| Lendária | 50% de chance de o peixe capturado vir em dobro |
+| Lendária | -50% no tempo de trocar lâmpada, consertar e reabastecer o gerador |
+| Lendária | -20% no tempo de recarga e +20% na cadência de tiro |
+
+### Dificuldade
+- Sobe a cada noite: tamanho do pedido, frequência e força dos inimigos, falhas de manutenção, duração da bateria (cai), chance e duração da tempestade. A curva fica em Resource.
+
+### Meta-progressão
+- Pontos = 10 × noites cumpridas + 1 por peixe entregue, pagos no fim da run.
+- Upgrades permanentes: vida, dano e poder da vara. Cada um dá +10% por nível, até 5 níveis, com custo crescente.
+- Só a meta-progressão é salva. Sair no meio da run conta como derrota, e os pontos são pagos normalmente.
+
+### Mundo e visual
+- Barco ancorado, sem navegação. Ambientes: barco e mar.
+- Estilo retrô "realista antigo", referências Resident Evil 1 e Metal Gear Solid (decisão 0009, provisória).
+- Mar animado e barco balançando (balanço visual, decisão 0008).
+- Céu com lua e estrelas que se movem ao longo da noite. Ele muda durante a tempestade e clareia aos poucos com a aproximação do amanhecer. Preferir addons e assets prontos.
+- Menus com os componentes nativos do Godot: função antes de design.
+- Assets CC0 primeiro. O que for gerado por IA fica registrado para substituição (decisão 0011).
+
+## Fora do MVP
+- Save por run, como em outros roguelikes. No MVP só a meta-progressão é salva.
+- Pool de falas variadas por situação.
+- Níveis e upgrades de cartas.
+- Upgrades permanentes de slots, cartas por seleção e rerolls.
+- Limite de 10 noites, com lore, recompensa e New Game Plus ou modo infinito.
+- Novas ameaças (redemoinho, lua de sangue) e inimigos que roubam peixe do freezer.
+- Áreas de pesca e espécies por área.
+- Recarga gradual da lanterna.
+
+## Arquitetura prevista
+- Árvore: `Main` contém os menus e a `Run`. A `Run` é dona de um `RunState` (`RefCounted`) e troca as cenas de `Night`.
+- Único autoload previsto: `MetaProgress`, que salva pontos e upgrades. Ganha nota de decisão quando for criado.
+- Conteúdo em Resources: peixes, cartas, modificadores de stat, inimigos, upgrades e curva de dificuldade.
+- Regras em classes puras testadas em `test/unit/`: sorteio de cartas, geração e avaliação do pedido, cálculo de stats, minijogo, nível de luz e pontos.
+
+## Roteiro
+Cada marco tem o seu próprio `/planejar`. Até o M9 tudo usa primitivas (greybox), para nenhuma mecânica esperar por asset.
+
+| # | Marco | Resultado jogável |
+|---|---|---|
+| M0 | Fundação | Andar em primeira pessoa num barco greybox, render em baixa resolução, balanço visual |
+| M1 | Noite e pedido | Relógio de 23h a 6h, céu provisório, diário, amanhecer congelando tudo |
+| M2 | Pesca | Isca, lançamento, minijogo, peixe levado ao freezer |
+| M3 | Loop da run | Vidas, passe livre, mensagens na mesa, próxima noite, fim de run |
+| M4 | Iluminação | Gerador, lâmpadas, luz de emergência, lanterna e pilhas, reparos |
+| M5 | Combate | Arma, vida e regeneração, morte, peixe-homem |
+| M6 | Tempestade | Evento, balanço forte, chuva, céu, voador |
+| M7 | Cartas e dificuldade | Seleção de cartas, raridades, rerolls, slots, escala por noite |
+| M8 | Meta e menus | Pontos, upgrades, save, menus |
+| M9 | Mar, céu e assets | Oceano e céu definitivos, assets CC0, áudio |
+
+Se o prazo apertar, a tempestade (M6) é a primeira candidata a corte ou simplificação.

@@ -3,7 +3,10 @@
 Visão do projeto como ele está **agora**. Atualize no mesmo passo de qualquer mudança nos itens abaixo.
 
 ## Visão geral
-_A definir: gênero, loop principal, escopo do MVP._
+Roguelite noturno de pesca e sobrevivência em primeira pessoa, para Windows, com Forward+ (decisão 0010). A cada noite (23:00 às 06:00, 7 min reais) o jogador cumpre um pedido de peixes num barco ancorado, mantém a iluminação e sobrevive a inimigos. Entre as noites, escolhe cartas de boost. A run acaba com 3 pedidos falhos ou com a morte.
+
+- Escopo, regras combinadas e roteiro de marcos: `docs/escopo-mvp.md`.
+- Câmera e balanço do barco: decisão 0008. Visual retrô em baixa resolução: decisão 0009. Assets e registro de IA: decisão 0011 e `docs/assets.md`.
 
 ## Organização de pastas
 Organização por feature: cada cena fica junto do seu script e dos recursos exclusivos dela.
