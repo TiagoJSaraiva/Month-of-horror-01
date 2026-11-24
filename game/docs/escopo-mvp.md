@@ -39,7 +39,7 @@ A run é infinita e a dificuldade sobe a cada noite (M7).
 
 ### Inimigos
 - **Peixe-homem** (escuridão): implementado, com o atordoamento pela lanterna; regras em `docs/sistemas/inimigos.md`. Falta a força crescente por noite (M7).
-- **Voador** (tempestade): aparece só durante a tempestade. Mergulha no jogador **e ataca as lâmpadas**. Morre com tiros e vai embora quando a tempestade acaba.
+- **Voador** (tempestade): implementado; regras em `docs/sistemas/inimigos.md`. Falta a força crescente por noite (M7).
 - No MVP, nenhum inimigo rouba peixe.
 
 ### Tempestade
@@ -115,7 +115,7 @@ Cada marco tem o seu próprio `/planejar`. Até o M9 tudo usa primitivas (greybo
 | M3 | Loop da run (feito) | Vidas, passe livre, mensagens na mesa, próxima noite, fim de run |
 | M4 | Iluminação (feito) | Gerador, lâmpadas, luz de emergência, lanterna e pilhas, reparos |
 | M5 | Combate (feito) | Arma, vida e regeneração, morte, peixe-homem |
-| M6 | Tempestade | Evento, balanço forte, chuva, céu, voador |
+| M6 | Tempestade (feito) | Evento, balanço forte, chuva, céu, voador |
 | M7 | Cartas e dificuldade | Seleção de cartas, raridades, rerolls, slots, escala por noite |
 | M8 | Meta e menus | Pontos, upgrades, save, menus |
 | M9 | Mar, céu e assets | Oceano e céu definitivos, assets CC0, áudio |

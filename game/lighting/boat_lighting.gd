@@ -28,6 +28,11 @@ func _ready() -> void:
 	_on_generator_running_changed(_generator.is_running())
 
 
+## Lâmpadas do barco, na ordem da cena. Os voadores da tempestade escolhem entre elas.
+func bulbs() -> Array[Bulb]:
+	return _bulbs
+
+
 ## Intensidade da tempestade, de 0 a 1: as falhas ficam mais frequentes.
 func set_storm_strength(strength: float) -> void:
 	_failures.set_storm_strength(strength)

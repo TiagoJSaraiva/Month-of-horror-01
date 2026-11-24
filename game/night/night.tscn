@@ -24,6 +24,8 @@
 [ext_resource type="Resource" path="res://night/sky_palettes/storm.tres" id="22_storm_palette"]
 [ext_resource type="Resource" path="res://ui/hud/hud_events.tres" id="23_hud_events"]
 [ext_resource type="PackedScene" path="res://night/storm_weather.tscn" id="24_storm_weather"]
+[ext_resource type="Script" path="res://enemies/flyer_spawner.gd" id="25_flyer_spawner"]
+[ext_resource type="PackedScene" path="res://enemies/flyer/flyer.tscn" id="26_flyer"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sea"]
 albedo_color = Color(0.015, 0.035, 0.05, 1)
@@ -98,6 +100,10 @@ transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 2, 1, 3)
 
 [node name="StarboardAft" type="Marker3D" parent="Actors/FishmanSpawner/ClimbPoints"]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 2, 1, 5.2)
+
+[node name="FlyerSpawner" type="Node3D" parent="Actors"]
+script = ExtResource("25_flyer_spawner")
+flyer_scene = ExtResource("26_flyer")
 
 [node name="Items" type="Node3D" parent="."]
 

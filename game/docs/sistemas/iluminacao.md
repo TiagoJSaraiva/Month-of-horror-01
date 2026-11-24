@@ -13,7 +13,7 @@ Dar ao barco um nível de luz que depende de manutenção: o gerador gasta combu
   Liga a energia das lâmpadas ao gerador, mostra a emergência quando ele para e calcula `light_level`, avisando com `light_level_changed(level)`.
 - `lighting/generator.tscn` / `generator.gd`: `Generator` (`Interactable`, com um `StaticBody3D` que bloqueia o jogador). Guarda um `GeneratorState` em `state` e gasta combustível no `_process`.
   - Na face voltada para a cabine ficam a luz de status (verde funcionando, vermelha quebrado, apagada sem combustível) e o medidor de combustível (barra amarela).
-- `lighting/bulb.tscn` / `bulb.gd`: `Bulb` (`Interactable`). Acende quando está boa e recebe energia (`set_powered`); `burn_out()` a queima. O vidro brilha acesa, fica cinza sem energia e preto queimada. Alcance e energia da luz ficam em `@export`.
+- `lighting/bulb.tscn` / `bulb.gd`: `Bulb` (`Interactable`). Acende quando está boa e recebe energia (`set_powered`); `burn_out()` a queima (pelo sorteio de falhas ou pelo mergulho de um voador). O vidro brilha acesa, fica cinza sem energia e preto queimada. Alcance e energia da luz ficam em `@export`.
 - `lighting/maintenance_failures.gd`: `MaintenanceFailures`, o sorteio de quebra do gerador e de queima das lâmpadas. Recebe o gerador e as lâmpadas do `BoatLighting` por `watch()`.
 - `lighting/lighting_rules.gd`: `LightingRules`, regras puras do nível de luz e da chance de falha.
 - `lighting/generator_state.gd`: `GeneratorState` (`RefCounted`), combustível e quebra do gerador. Avisa com `running_changed(running)` quando passa a funcionar ou para.

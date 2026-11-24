@@ -52,7 +52,7 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
   - `Boat`;
   - `WallClock`, o relógio de ponteiros da cabine, ligado ao `NightClock`;
   - `TableNote`, o bilhete dos clientes na mesa (ver `docs/sistemas/run.md`);
-  - `Actors`, com tudo o que congela no amanhecer: o `Player`, que começa na cabine olhando para a porta, e o `FishmanSpawner` (`ClimbPoints` e os peixes-homens criados; ver `docs/sistemas/inimigos.md`);
+  - `Actors`, com tudo o que congela no amanhecer: o `Player`, que começa na cabine olhando para a porta, o `FishmanSpawner` (`ClimbPoints` e os peixes-homens criados) e o `FlyerSpawner` (voadores da tempestade); ver `docs/sistemas/inimigos.md`;
   - `Items`, itens largados no convés (`DroppedItem`);
   - `OutsideWorld` (`BoatSway`), com `Sea` (plano escuro provisório), `Water` (`WaterSurface`, a física da superfície) e `Moon` (`DirectionalLight3D` com `MoonArc`). Tudo o que fica fora do barco entra aqui (decisão 0008; ver `docs/sistemas/balanco.md`).
 
@@ -73,6 +73,7 @@ _Nenhum._
 - `Bulb.changed` → `BoatLighting._refresh_light_level` — lâmpada queimou ou foi trocada.
 - `BoatLighting.light_level_changed(level)` → `FishmanSpawner._on_lighting_light_level_changed` — com a luz de volta, os peixes-homens fogem. O spawner também lê `light_level` a cada frame para o intervalo de surgimento.
 - `Fishman.removed` → `FishmanSpawner._on_fishman_removed` — libera a vaga do peixe-homem que fugiu ou morreu.
+- `Storm.started` e `Storm.ended` → `FlyerSpawner` — voadores só durante a tempestade. `Flyer.removed` → `FlyerSpawner._on_flyer_removed`.
 - `Hands.changed` → `FishingRod._on_hands_changed` e `Revolver._on_hands_changed` — cada ferramenta só aparece pronta na mão; a vara cancela a pesca e o revólver a recarga ao sair da mão.
 - `FishingAttempt.state_changed(state)` → `FishingRod._on_attempt_state_changed` — boia, mensagens, minijogo e peixe para as mãos.
 
@@ -108,7 +109,7 @@ Só apresentação, do mundo para o `Hud`. Quem emite e o `Hud` recebem o `.tres
 - 2 — `player` — jogador / colide com `world` e `enemy`; os peixes-homens colidem com ele.
 - 3 — `interactable` — objetos com que o jogador interage / detectada pela mira de interação (M2).
 - 4 — `water` — superfície do mar / detectada pela mira da vara e pela boia (M2).
-- 5 — `enemy` — corpos dos inimigos (`Fishman`) / colidem com `world`, `player` e `enemy`.
+- 5 — `enemy` — corpos dos inimigos / o `Fishman` colide com `world`, `player` e `enemy`; o `Flyer` só com `world`.
 - 6 — `hurtbox` — áreas que recebem tiros (`Hurtbox` dos inimigos) / detectada pela mira do revólver.
 - 7 — `light_sensor` — áreas que percebem a lanterna (`LightSensor` no rosto do peixe-homem) / detectada pelo `LightStun`.
 

@@ -32,6 +32,7 @@ var _ended: bool = false
 @onready var _actors: Node3D = $Actors
 @onready var _player: Player = $Actors/Player
 @onready var _fishman_spawner: FishmanSpawner = $Actors/FishmanSpawner
+@onready var _flyer_spawner: FlyerSpawner = $Actors/FlyerSpawner
 @onready var _freezer: Freezer = $Boat/Freezer
 @onready var _lighting: BoatLighting = $Boat/Lighting
 @onready var _items: Node3D = $Items
@@ -48,6 +49,7 @@ func _ready() -> void:
 	_player.hands.item_dropped.connect(_on_hands_item_dropped)
 	_player.health.died.connect(_on_player_health_died)
 	_fishman_spawner.start(_lighting, _player, _player.health)
+	_flyer_spawner.start(_storm, _lighting, _player, _player.health)
 	_storm.strength_changed.connect(_on_storm_strength_changed)
 	_storm.roll(night_number, _rng)
 

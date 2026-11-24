@@ -27,12 +27,14 @@ Uma ameaça de tempo limitado numa noite: o barco balança forte, o céu fecha, 
   - `MoonArc.cloud_cover`: a lua apaga;
   - `BoatLighting.set_storm_strength`: as falhas do gerador e das lâmpadas ficam até 3× mais frequentes (`storm_failure_multiplier`);
   - `StormWeather.set_strength`: a quantidade de chuva.
+- Voadores: aparecem só durante a tempestade e vão embora quando ela acaba (ver `docs/sistemas/inimigos.md`).
 - Relâmpago: com a intensidade em 0,6 ou mais, cai um a cada 5–14 s (sorteado), num clarão duplo de cerca de 0,5 s.
 - No amanhecer e na morte, a tempestade para onde estiver, junto com os personagens.
 - Para testar: `first_night` = 1 e `chance` = 1 em `night/storm_settings.tres` forçam uma tempestade em toda noite.
 
 ## Sinais
 - `Storm.strength_changed(strength)` → `Night._on_storm_strength_changed`.
+- `Storm.started` e `Storm.ended` → `FlyerSpawner`.
 
 ## Testes
 - `test/unit/storm_rules_test.gd`: sem tempestade antes da noite permitida, chance decide, início e duração nos intervalos e antes do fim, noite curta encolhe a tempestade, intensidade zero fora, rampa de subida, pico e descida, nunca acima de 1.
