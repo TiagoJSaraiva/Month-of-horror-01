@@ -29,7 +29,7 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
   - `WorldEnvironment` com `night/night_environment.tres` (céu procedural noturno e neblina);
   - `Boat` e `Player`, que começa na cabine olhando para a porta;
   - `TempLights`, luzes provisórias até o M4;
-  - `OutsideWorld`, com `Sea` (plano escuro provisório) e `Moon` (`DirectionalLight3D`). Tudo o que fica fora do barco entra aqui (decisão 0008).
+  - `OutsideWorld` (`BoatSway`), com `Sea` (plano escuro provisório) e `Moon` (`DirectionalLight3D`). Tudo o que fica fora do barco entra aqui (decisão 0008; ver `docs/sistemas/balanco.md`).
 
 ## Autoloads
 _Nenhum._
