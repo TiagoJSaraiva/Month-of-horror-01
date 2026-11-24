@@ -4,6 +4,7 @@ extends Node
 ## O menu de pausa (M8) vai assumir a captura do mouse.
 
 @onready var _night: Night = %Night
+@onready var _hud: Hud = $Hud
 @onready var _dawn_overlay: DawnOverlay = $DawnOverlay
 
 
@@ -27,4 +28,5 @@ func _input(event: InputEvent) -> void:
 
 
 func _on_night_night_finished(_order: NightOrder) -> void:
+	_hud.hide()
 	_dawn_overlay.play()

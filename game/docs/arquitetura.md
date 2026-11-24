@@ -6,7 +6,7 @@ Visão do projeto como ele está **agora**. Atualize no mesmo passo de qualquer 
 Roguelite noturno de pesca e sobrevivência em primeira pessoa, para Windows, com Forward+ (decisão 0010). A cada noite (23:00 às 06:00, 7 min reais) o jogador cumpre um pedido de peixes num barco ancorado, mantém a iluminação e sobrevive a inimigos. Entre as noites, escolhe cartas de boost. A run acaba com 3 pedidos falhos ou com a morte.
 
 - Escopo, regras combinadas e roteiro de marcos: `docs/escopo-mvp.md`.
-- Câmera e balanço do barco: decisão 0008. Visual retrô em baixa resolução: decisão 0009. Assets e registro de IA: decisão 0011 e `docs/assets.md`.
+- Câmera e balanço do barco: decisão 0008. Visual retrô em baixa resolução: decisão 0009. Assets e registro de IA: decisão 0011 e `docs/assets.md`. Comunicação do mundo com o HUD: decisão 0012.
 
 ## Organização de pastas
 Organização por feature: cada cena fica junto do seu script e dos recursos exclusivos dela.
@@ -24,7 +24,8 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
 ```
 
 ## Cenas principais
-- `main/main.tscn` (cena principal) → `Main` (`Node`, captura o mouse) → `LowResView` (`SubViewportContainer`, `stretch_shrink` 2, filtro nearest) → `SubViewport` (áudio 3D ligado) → `Night` (`%Night`). O 3D renderiza em 576×324, porque o stretch `canvas_items` fixa a base lógica em 1152×648, e é ampliado sem filtro (decisão 0009). A interface fica em irmãs de `LowResView`, em resolução nativa; hoje só `DawnOverlay`.
+- `main/main.tscn` (cena principal) → `Main` (`Node`, captura o mouse) → `LowResView` (`SubViewportContainer`, `stretch_shrink` 2, filtro nearest) → `SubViewport` (áudio 3D ligado) → `Night` (`%Night`). O 3D renderiza em 576×324, porque o stretch `canvas_items` fixa a base lógica em 1152×648, e é ampliado sem filtro (decisão 0009). A interface fica em irmãs de `LowResView`, em resolução nativa: `Hud` e `DawnOverlay`. O `Hud` se esconde no amanhecer.
+- `ui/hud/hud.tscn` → `Hud` (`CanvasLayer`) → `Crosshair`, `Prompt`, `Hint`, `Bait` e `HintTimer`. Recebe tudo pelo canal `HudEvents` (decisão 0012).
 - `ui/dawn_overlay/dawn_overlay.tscn` → `DawnOverlay` (`CanvasLayer`) → `Shade` (`ColorRect`) e `Message` (`Label`). `play()` escurece a tela e mostra "6:00 AM / The night is over.".
 - `player/player.tscn` → `Player` (`CharacterBody3D`) → `Head` (`MouseLook`):
   - `Journal`, página com `Label3D`;
@@ -48,6 +49,12 @@ _Nenhum._
 - `NightClock.dawn_reached` → `Night._on_night_clock_dawn_reached` — congela `Actors` e encerra a noite.
 - `Night.night_finished(order)` → `Main._on_night_night_finished` — toca o `DawnOverlay`.
 - `NightOrder.changed` → `Journal._refresh` — o diário reescreve o texto a cada entrega. A ligação é feita em `Journal.display()`, que a `Night` chama via `Player.journal`.
+
+### Canal `HudEvents` (`ui/hud/hud_events.tres`, decisão 0012)
+Só apresentação, do mundo para o `Hud`. Quem emite e o `Hud` recebem o `.tres` por `@export`.
+- `prompt_changed(text)` — ação disponível no que está na mira; texto vazio esconde. O `Hud` acrescenta "[E]".
+- `hint_requested(text, seconds)` — mensagem embaixo da tela; com `seconds` 0, fica até a próxima.
+- `bait_changed(bait_name)` — isca atual.
 
 ## Input map
 | Ação | Teclas | Uso |
