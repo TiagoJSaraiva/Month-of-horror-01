@@ -26,6 +26,7 @@ var _ended: bool = false
 @onready var _clock: NightClock = $NightClock
 @onready var _actors: Node3D = $Actors
 @onready var _player: Player = $Actors/Player
+@onready var _fishman_spawner: FishmanSpawner = $Actors/FishmanSpawner
 @onready var _freezer: Freezer = $Boat/Freezer
 @onready var _lighting: BoatLighting = $Boat/Lighting
 @onready var _items: Node3D = $Items
@@ -41,6 +42,7 @@ func _ready() -> void:
 	_freezer.fish_stored.connect(_on_freezer_fish_stored)
 	_player.hands.item_dropped.connect(_on_hands_item_dropped)
 	_player.health.died.connect(_on_player_health_died)
+	_fishman_spawner.start(_lighting, _player, _player.health)
 
 
 func _on_night_clock_dawn_reached() -> void:

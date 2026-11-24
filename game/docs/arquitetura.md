@@ -51,7 +51,7 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
   - `Boat`;
   - `WallClock`, o relógio de ponteiros da cabine, ligado ao `NightClock`;
   - `TableNote`, o bilhete dos clientes na mesa (ver `docs/sistemas/run.md`);
-  - `Actors`, com tudo o que congela no amanhecer. Por enquanto só o `Player`, que começa na cabine olhando para a porta;
+  - `Actors`, com tudo o que congela no amanhecer: o `Player`, que começa na cabine olhando para a porta, e o `FishmanSpawner` (`ClimbPoints` e os peixes-homens criados; ver `docs/sistemas/inimigos.md`);
   - `Items`, itens largados no convés (`DroppedItem`);
   - `OutsideWorld` (`BoatSway`), com `Sea` (plano escuro provisório), `Water` (`WaterSurface`, a física da superfície) e `Moon` (`DirectionalLight3D` com `MoonArc`). Tudo o que fica fora do barco entra aqui (decisão 0008; ver `docs/sistemas/balanco.md`).
 
@@ -69,7 +69,8 @@ _Nenhum._
 - `Hands.item_dropped(item, amount, at)` → `Night._on_hands_item_dropped` — cria o item no convés, em `Items`.
 - `Generator.running_changed(running)` → `BoatLighting._on_generator_running_changed` — energia das lâmpadas, luz de emergência e nível de luz.
 - `Bulb.changed` → `BoatLighting._refresh_light_level` — lâmpada queimou ou foi trocada.
-- `BoatLighting.light_level_changed(level)` — ainda sem ouvinte; os inimigos do escuro (M5) vão usar.
+- `BoatLighting.light_level_changed(level)` → `FishmanSpawner._on_lighting_light_level_changed` — com a luz de volta, os peixes-homens fogem. O spawner também lê `light_level` a cada frame para o intervalo de surgimento.
+- `Fishman.removed` → `FishmanSpawner._on_fishman_removed` — libera a vaga do peixe-homem que fugiu ou morreu.
 - `Hands.changed` → `FishingRod._on_hands_changed` e `Revolver._on_hands_changed` — cada ferramenta só aparece pronta na mão; a vara cancela a pesca e o revólver a recarga ao sair da mão.
 - `FishingAttempt.state_changed(state)` → `FishingRod._on_attempt_state_changed` — boia, mensagens, minijogo e peixe para as mãos.
 
@@ -102,9 +103,10 @@ Só apresentação, do mundo para o `Hud`. Quem emite e o `Hud` recebem o `.tres
 
 ## Camadas de colisão
 - 1 — `world` — barco e cenário / detectada pelo jogador.
-- 2 — `player` — jogador / ninguém detecta ainda.
+- 2 — `player` — jogador / colide com `world` e `enemy`; os peixes-homens colidem com ele.
 - 3 — `interactable` — objetos com que o jogador interage / detectada pela mira de interação (M2).
 - 4 — `water` — superfície do mar / detectada pela mira da vara e pela boia (M2).
+- 5 — `enemy` — corpos dos inimigos (`Fishman`) / colidem com `world`, `player` e `enemy`.
 - 6 — `hurtbox` — áreas que recebem tiros (`Hurtbox` dos inimigos) / detectada pela mira do revólver.
 
 As máscaras dessas camadas estão em `config/physics_layers.gd` (`PhysicsLayers`), para as consultas de raio.

@@ -38,7 +38,7 @@ A run é infinita e a dificuldade sobe a cada noite (M7).
 - Falta: falhas mais frequentes a cada noite e bateria que dura menos (M7), falhas mais frequentes na tempestade (M6) e atordoar com a lanterna (M5).
 
 ### Inimigos
-- **Peixe-homem** (escuridão): abaixo de um limiar de luz, sobe pela amurada, com mais frequência quanto mais escuro estiver. Fica atordoado com a lanterna no rosto por cerca de 1 s, foge para o mar quando a luz volta acima do limiar e morre com tiros.
+- **Peixe-homem** (escuridão): implementado; regras em `docs/sistemas/inimigos.md`. Falta o atordoamento pela lanterna (fim do M5) e a força crescente por noite (M7).
 - **Voador** (tempestade): aparece só durante a tempestade. Mergulha no jogador **e ataca as lâmpadas**. Morre com tiros e vai embora quando a tempestade acaba.
 - No MVP, nenhum inimigo rouba peixe.
 

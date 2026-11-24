@@ -49,7 +49,7 @@ Dar ao barco um nível de luz que depende de manutenção: o gerador gasta combu
 ## Sinais
 - `GeneratorState.running_changed` → `Generator` → `Generator.running_changed` → `BoatLighting`: energia das lâmpadas, emergência e nível de luz.
 - `Bulb.changed` (queimou ou foi trocada) → `BoatLighting._refresh_light_level`.
-- `BoatLighting.light_level_changed(level)`: ainda sem ouvinte; o M5 usa.
+- `BoatLighting.light_level_changed(level)` → `FishmanSpawner`: os peixes-homens sobem abaixo do limiar e fogem quando a luz volta (ver `docs/sistemas/inimigos.md`).
 
 ## Testes
 - `test/unit/lighting_rules_test.gd`: nível cheio, parcial, sem energia e sem lâmpadas; chance de falha nula sem tempo ou sem média, crescente com o tempo, 1 - 1/e num intervalo médio e igual em passos divididos.
