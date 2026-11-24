@@ -30,7 +30,7 @@ Dar ao barco um nível de luz que depende de manutenção: o gerador gasta combu
 - Falhas por sorteio, só com o gerador funcionando:
   - o gerador quebra em média a cada `generator_mean_seconds` (240 s);
   - cada lâmpada acesa queima em média a cada `bulb_mean_seconds` (720 s). Com 6 acesas, uma queima a cada ~2 min.
-- A chance num passo de tempo é `1 - e^(-delta / média)`, para o sorteio não depender da taxa de quadros. Média zero ou negativa desliga a falha. Na tempestade, as médias são divididas por até `storm_failure_multiplier` (3) conforme a intensidade (`LightingRules.storm_mean`); a dificuldade por noite (M7) vai alterar os valores base.
+- A chance num passo de tempo é `1 - e^(-delta / média)`, para o sorteio não depender da taxa de quadros. Média zero ou negativa desliga a falha. Na tempestade, as médias são divididas por até `storm_failure_multiplier` (3) conforme a intensidade (`LightingRules.storm_mean`); a curva de dificuldade multiplica a frequência a cada noite (`BoatLighting.set_failure_frequency`; ver `docs/sistemas/dificuldade.md`).
 - No amanhecer, a `Night` desliga o processamento da `Lighting`: o combustível para de gastar e as falhas param.
 
 ## Lanterna
@@ -43,7 +43,7 @@ Dar ao barco um nível de luz que depende de manutenção: o gerador gasta combu
   - a bateria cheia dá `battery_seconds` (90 s) de luz e só gasta acesa. Cada noite começa com ela cheia;
   - quando a carga acaba, a lanterna apaga e aparece "The flashlight died."; tentar ligar sem carga mostra "The batteries are dead.";
   - recarga só na caixa de pilhas: segurando E por 1 s, com as mãos livres e a bateria não cheia, a bateria volta cheia. Não há recarga gradual nem pilhas guardadas;
-  - a lanterna não conta para o nível de luz do barco. Acesa, atordoa o peixe-homem com o rosto no facho (ver `docs/sistemas/inimigos.md`). A duração menor a cada noite fica para o M7.
+  - a lanterna não conta para o nível de luz do barco. Acesa, atordoa o peixe-homem com o rosto no facho (ver `docs/sistemas/inimigos.md`). A bateria fica menor a cada noite pela curva de dificuldade (ver `docs/sistemas/dificuldade.md`).
 - A `BatteryBox` chega à lanterna por `Hands.flashlight` (`@export`), porque a interação recebe as mãos do jogador.
 - O HUD mostra a carga na barra `Battery` (canal `battery_changed`), avisada só quando o percentual inteiro muda.
 

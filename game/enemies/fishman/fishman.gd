@@ -101,6 +101,12 @@ func stun() -> void:
 	brain.stun()
 
 
+## Multiplica a vida e o dano (dificuldade da noite). Chamado logo depois de entrar na árvore.
+func strengthen(health_multiplier: float, damage_multiplier: float) -> void:
+	_health.set_max_health(_health.max_health * health_multiplier)
+	attack_damage *= damage_multiplier
+
+
 ## A luz do barco voltou.
 func flee() -> void:
 	brain.flee()

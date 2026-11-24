@@ -26,6 +26,7 @@
 [ext_resource type="PackedScene" path="res://night/storm_weather.tscn" id="24_storm_weather"]
 [ext_resource type="Script" path="res://enemies/flyer_spawner.gd" id="25_flyer_spawner"]
 [ext_resource type="PackedScene" path="res://enemies/flyer/flyer.tscn" id="26_flyer"]
+[ext_resource type="Resource" path="res://difficulty/difficulty_curve.tres" id="27_difficulty"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sea"]
 albedo_color = Color(0.015, 0.035, 0.05, 1)
@@ -43,6 +44,7 @@ size = Vector3(2000, 0.2, 2000)
 script = ExtResource("5_night")
 fish_species = Array[ExtResource("7_fish_data")]([ExtResource("8_mackerel"), ExtResource("9_swordfish")])
 dropped_item_scene = ExtResource("16_dropped_item")
+difficulty = ExtResource("27_difficulty")
 
 [node name="NightClock" type="Node" parent="."]
 script = ExtResource("6_night_clock")

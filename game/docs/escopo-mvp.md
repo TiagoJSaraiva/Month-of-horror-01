@@ -34,16 +34,16 @@ A run é infinita e a dificuldade sobe a cada noite (M7).
 
 ### Iluminação
 - Gerador, lâmpadas, luz de emergência, suprimentos, reparos, sorteio de falhas, lanterna e caixa de pilhas: implementados; regras em `docs/sistemas/iluminacao.md`.
-- Falta: falhas mais frequentes a cada noite e bateria que dura menos (M7) e falhas mais frequentes na tempestade (M6).
+- Falhas mais frequentes e bateria mais curta a cada noite: `docs/sistemas/dificuldade.md`.
 
 ### Inimigos
-- **Peixe-homem** (escuridão): implementado, com o atordoamento pela lanterna; regras em `docs/sistemas/inimigos.md`. Falta a força crescente por noite (M7).
-- **Voador** (tempestade): implementado; regras em `docs/sistemas/inimigos.md`. Falta a força crescente por noite (M7).
+- **Peixe-homem** (escuridão): implementado, com o atordoamento pela lanterna; regras em `docs/sistemas/inimigos.md`. A força cresce a cada noite (`docs/sistemas/dificuldade.md`).
+- **Voador** (tempestade): implementado; regras em `docs/sistemas/inimigos.md`. A força cresce a cada noite (`docs/sistemas/dificuldade.md`).
 - No MVP, nenhum inimigo rouba peixe.
 
 ### Tempestade
 - Sorteio, intensidade, balanço forte, céu, lua, chuva com vento, relâmpagos e falhas mais frequentes: implementados; regras em `docs/sistemas/tempestade.md`.
-- Falta: chance e duração crescendo a cada noite (M7).
+- Chance e duração crescem a cada noite: `docs/sistemas/dificuldade.md`.
 
 ### Combate e vida
 - Revólver, vida com regeneração e morte encerrando a run: implementados; regras em `docs/sistemas/combate.md`.
@@ -55,7 +55,7 @@ A run é infinita e a dificuldade sobe a cada noite (M7).
 - Seleção, raridades, rerolls, slots e os efeitos das 9 cartas: implementados; regras em `docs/sistemas/cartas.md`.
 
 ### Dificuldade
-- Sobe a cada noite: tamanho do pedido, frequência e força dos inimigos, falhas de manutenção, duração da bateria (cai), chance e duração da tempestade. A curva fica em Resource.
+- Curva por noite: implementada; regras em `docs/sistemas/dificuldade.md`.
 
 ### Meta-progressão
 - Pontos = 10 × noites cumpridas + 1 por peixe entregue, pagos no fim da run.
@@ -98,7 +98,7 @@ Cada marco tem o seu próprio `/planejar`. Até o M9 tudo usa primitivas (greybo
 | M4 | Iluminação (feito) | Gerador, lâmpadas, luz de emergência, lanterna e pilhas, reparos |
 | M5 | Combate (feito) | Arma, vida e regeneração, morte, peixe-homem |
 | M6 | Tempestade (feito) | Evento, balanço forte, chuva, céu, voador |
-| M7 | Cartas e dificuldade | Seleção de cartas, raridades, rerolls, slots, escala por noite |
+| M7 | Cartas e dificuldade (feito) | Seleção de cartas, raridades, rerolls, slots, escala por noite |
 | M8 | Meta e menus | Pontos, upgrades, save, menus |
 | M9 | Mar, céu e assets | Oceano e céu definitivos, assets CC0, áudio |
 

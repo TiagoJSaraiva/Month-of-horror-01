@@ -23,6 +23,10 @@ var _climb_points: Array[Marker3D] = []
 var _fishmen: Array[Fishman] = []
 var _elapsed: float = 0.0
 var _rng := RandomNumberGenerator.new()
+# Dificuldade da noite (set_difficulty): 1 não muda nada.
+var _interval_multiplier: float = 1.0
+var _health_multiplier: float = 1.0
+var _damage_multiplier: float = 1.0
 
 @onready var _climb_points_root: Node3D = $ClimbPoints
 
@@ -39,7 +43,10 @@ func _process(delta: float) -> void:
 	if _lighting == null:
 		return
 	var interval: float = SpawnRules.spawn_interval(
-		_lighting.light_level, light_threshold, min_spawn_seconds, max_spawn_seconds
+		_lighting.light_level,
+		light_threshold,
+		min_spawn_seconds * _interval_multiplier,
+		max_spawn_seconds * _interval_multiplier
 	)
 	if interval == SpawnRules.NO_SPAWN:
 		_elapsed = 0.0
@@ -60,11 +67,22 @@ func start(lighting: BoatLighting, target: Node3D, target_health: Health) -> voi
 	lighting.light_level_changed.connect(_on_lighting_light_level_changed)
 
 
+## Dificuldade da noite: multiplica os intervalos entre surgimentos e a vida e o dano de cada
+## peixe-homem.
+func set_difficulty(
+	interval_multiplier: float, health_multiplier: float, damage_multiplier: float
+) -> void:
+	_interval_multiplier = interval_multiplier
+	_health_multiplier = health_multiplier
+	_damage_multiplier = damage_multiplier
+
+
 ## Faz um peixe-homem subir no ponto dado. Público para os testes escolherem o ponto.
 func spawn(point: Marker3D) -> Fishman:
 	var fishman := fishman_scene.instantiate() as Fishman
 	add_child(fishman)
 	fishman.removed.connect(_on_fishman_removed.bind(fishman))
+	fishman.strengthen(_health_multiplier, _damage_multiplier)
 	fishman.climb_aboard(point, _climb_points, _target, _target_health)
 	_fishmen.append(fishman)
 	return fishman

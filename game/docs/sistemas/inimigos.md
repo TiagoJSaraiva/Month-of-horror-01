@@ -49,6 +49,9 @@ Ameaçar o jogador: o peixe-homem quando o barco fica escuro e o voador durante 
 - Fim da tempestade: todos vão embora, subindo e se afastando do barco, e somem a 40 m.
 - Morte: 50 de vida (2 tiros do revólver). Cai sem colisão e some em 1,5 s.
 
+## Dificuldade
+- A cada noite, os intervalos de surgimento diminuem e a vida e o dano dos dois inimigos aumentam (`set_difficulty` nos spawners e `strengthen` em cada inimigo criado; ver `docs/sistemas/dificuldade.md`).
+
 ## Navegação (decisão 0014)
 - `boat/boat_navigation.gd`: `BoatNavigation` (`NavigationRegion3D`), filho `Navigation` do `Boat`. Um frame depois do `_ready` monta a malha a partir dos corpos estáticos do grupo `boat_navigation` (o `Boat` e todos os filhos: casco, cabine, freezer, caixas e gerador) e emite `baked`.
 - Malha: célula de 0,1 m, agente de 1,8 m de altura e 0,3 m de raio, degrau máximo de 0,3 m. O convés, o interior da cabine e a porta entre eles ficam ligados. Os topos das amuradas, o teto da cabine e o tampo da mesa viram ilhas soltas, sem caminho até elas.

@@ -104,6 +104,12 @@ func start(player: Node3D, player_health: Health, bulbs: Array[Bulb]) -> void:
 	_orbit_angle = atan2(global_position.z, global_position.x)
 
 
+## Multiplica a vida e o dano (dificuldade da noite). Chamado logo depois de entrar na árvore.
+func strengthen(health_multiplier: float, damage_multiplier: float) -> void:
+	_health.set_max_health(_health.max_health * health_multiplier)
+	attack_damage *= damage_multiplier
+
+
 ## A tempestade acabou.
 func leave() -> void:
 	brain.leave()

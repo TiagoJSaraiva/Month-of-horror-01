@@ -4,7 +4,7 @@
 Uma ameaça de tempo limitado numa noite: o barco balança forte, o céu fecha, a manutenção falha mais e aparecem os voadores.
 
 ## Componentes
-- `night/storm_settings.gd` + `night/storm_settings.tres`: `StormSettings` (Resource), os ajustes do sorteio e do ritmo. A dificuldade por noite (M7) vai trocar estes valores.
+- `night/storm_settings.gd` + `night/storm_settings.tres`: `StormSettings` (Resource), os ajustes do sorteio e do ritmo. A curva de dificuldade troca a chance e a duração a cada noite, numa cópia.
 - `night/storm_plan.gd`: `StormPlan` (`RefCounted`), a tempestade sorteada para a noite: `has_storm`, `start_seconds` e `duration_seconds`.
 - `night/storm_rules.gd`: `StormRules`, regras puras do sorteio (`plan`) e da intensidade ao longo do tempo (`strength`).
 - `night/storm.gd`: `Storm`, nó da `Night`, ligado ao `NightClock`, ao `StormSettings` e ao `HudEvents` por `@export`. A `Night` chama `roll(night_number, rng)` no `_ready`. Emite `started`, `ended` e `strength_changed(strength)`.
@@ -16,7 +16,7 @@ Uma ameaça de tempo limitado numa noite: o barco balança forte, o céu fecha, 
 
 ## Regras
 - Sorteio, uma vez por noite:
-  - só a partir da noite 2 (`first_night`), com 50% de chance (`chance`);
+  - só a partir da noite 2 (`first_night`). A chance e a duração de cada noite vêm da curva de dificuldade (50% na noite 2, crescendo; ver `docs/sistemas/dificuldade.md`), que a `Night` aplica numa cópia do `StormSettings`;
   - começa num ponto sorteado entre 15% e 70% da noite e dura de 60 a 90 s;
   - sempre acaba antes de 95% da noite; numa noite curta demais, encolhe para caber.
 - Intensidade de 0 a 1: sobe em 8 s (`ramp_seconds`) depois do início, fica em 1 e desce nos últimos 8 s, com suavização. O `Storm` só anuncia mudanças de pelo menos 0,01, porque cada anúncio refaz a iluminação do céu.

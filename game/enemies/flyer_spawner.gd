@@ -19,6 +19,10 @@ var _flyers: Array[Flyer] = []
 var _active: bool = false
 var _until_spawn: float = 0.0
 var _rng := RandomNumberGenerator.new()
+# Dificuldade da noite (set_difficulty): 1 não muda nada.
+var _interval_multiplier: float = 1.0
+var _health_multiplier: float = 1.0
+var _damage_multiplier: float = 1.0
 
 
 func _ready() -> void:
@@ -30,8 +34,17 @@ func _process(delta: float) -> void:
 		return
 	_until_spawn -= delta
 	if _until_spawn <= 0.0 and _flyers.size() < max_alive:
-		_until_spawn = spawn_seconds
+		_until_spawn = spawn_seconds * _interval_multiplier
 		spawn()
+
+
+## Dificuldade da noite: multiplica o intervalo entre voadores e a vida e o dano de cada um.
+func set_difficulty(
+	interval_multiplier: float, health_multiplier: float, damage_multiplier: float
+) -> void:
+	_interval_multiplier = interval_multiplier
+	_health_multiplier = health_multiplier
+	_damage_multiplier = damage_multiplier
 
 
 ## Começa a ouvir a tempestade. Chamado pela Night.
@@ -52,6 +65,7 @@ func spawn() -> Flyer:
 		cos(angle) * spawn_distance, spawn_height, sin(angle) * spawn_distance
 	)
 	flyer.removed.connect(_on_flyer_removed.bind(flyer))
+	flyer.strengthen(_health_multiplier, _damage_multiplier)
 	flyer.start(_player, _player_health, _lighting.bulbs())
 	_flyers.append(flyer)
 	return flyer

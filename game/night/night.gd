@@ -12,6 +12,9 @@ signal player_died
 @export var fish_species: Array[FishData] = []
 ## Cena criada no convés quando o jogador larga um item.
 @export var dropped_item_scene: PackedScene
+## Como a noite fica mais difícil pelo night_number. Sem curva, a noite usa os valores do
+## inspetor.
+@export var difficulty: DifficultyCurve
 
 var order: NightOrder
 ## Bilhete dos clientes na mesa. A Run define antes de a noite entrar na árvore; sem texto, a
@@ -53,8 +56,11 @@ func _ready() -> void:
 	_fishman_spawner.start(_lighting, _player, _player.health)
 	_flyer_spawner.start(_storm, _lighting, _player, _player.health)
 	_storm.strength_changed.connect(_on_storm_strength_changed)
-	_storm.roll(night_number, _rng)
+	# Bônus antes da dificuldade (a bateria recebe os dois) e os dois antes do sorteio da
+	# tempestade, que usa a chance desta noite.
 	_apply_player_stats()
+	_apply_difficulty()
+	_storm.roll(night_number, _rng)
 
 
 func _on_night_clock_dawn_reached() -> void:
@@ -88,6 +94,35 @@ func _apply_player_stats() -> void:
 	_lighting.set_maintenance_time_multiplier(
 		player_stats.apply(StatModifier.Stat.MAINTENANCE_TIME, 1.0)
 	)
+
+
+func _apply_difficulty() -> void:
+	if difficulty == null:
+		return
+	var health: float = DifficultyRules.value(difficulty.enemy_health, night_number)
+	var damage: float = DifficultyRules.value(difficulty.enemy_damage, night_number)
+	_fishman_spawner.set_difficulty(
+		DifficultyRules.value(difficulty.fishman_spawn_interval, night_number), health, damage
+	)
+	_flyer_spawner.set_difficulty(
+		DifficultyRules.value(difficulty.flyer_spawn_interval, night_number), health, damage
+	)
+	_lighting.set_failure_frequency(
+		DifficultyRules.value(difficulty.maintenance_failures, night_number)
+	)
+	_player.flashlight.set_battery_seconds(
+		(
+			_player.flashlight.battery_seconds
+			* DifficultyRules.value(difficulty.flashlight_battery, night_number)
+		)
+	)
+	# Cópia dos ajustes da tempestade: o .tres é compartilhado entre as noites.
+	var storm_settings := _storm.settings.duplicate() as StormSettings
+	storm_settings.chance = DifficultyRules.value(difficulty.storm_chance, night_number)
+	var duration: float = DifficultyRules.value(difficulty.storm_duration, night_number)
+	storm_settings.min_duration_seconds *= duration
+	storm_settings.max_duration_seconds *= duration
+	_storm.settings = storm_settings
 
 
 func _on_storm_strength_changed(strength: float) -> void:

@@ -1,0 +1,63 @@
+[gd_resource type="Resource" script_class="DifficultyCurve" format=3]
+
+[ext_resource type="Script" path="res://difficulty/difficulty_curve.gd" id="1_difficulty_curve"]
+[ext_resource type="Script" path="res://difficulty/scaling_value.gd" id="2_scaling_value"]
+
+[sub_resource type="Resource" id="Scaling_fishman_spawn_interval"]
+script = ExtResource("2_scaling_value")
+first_night_value = 1.0
+per_night = -0.1
+limit = 0.5
+
+[sub_resource type="Resource" id="Scaling_flyer_spawn_interval"]
+script = ExtResource("2_scaling_value")
+first_night_value = 1.0
+per_night = -0.08
+limit = 0.6
+
+[sub_resource type="Resource" id="Scaling_enemy_health"]
+script = ExtResource("2_scaling_value")
+first_night_value = 1.0
+per_night = 0.12
+limit = 2.0
+
+[sub_resource type="Resource" id="Scaling_enemy_damage"]
+script = ExtResource("2_scaling_value")
+first_night_value = 1.0
+per_night = 0.12
+limit = 2.0
+
+[sub_resource type="Resource" id="Scaling_maintenance_failures"]
+script = ExtResource("2_scaling_value")
+first_night_value = 1.0
+per_night = 0.15
+limit = 2.5
+
+[sub_resource type="Resource" id="Scaling_flashlight_battery"]
+script = ExtResource("2_scaling_value")
+first_night_value = 1.0
+per_night = -0.08
+limit = 0.5
+
+[sub_resource type="Resource" id="Scaling_storm_chance"]
+script = ExtResource("2_scaling_value")
+first_night_value = 0.4
+per_night = 0.1
+limit = 0.9
+
+[sub_resource type="Resource" id="Scaling_storm_duration"]
+script = ExtResource("2_scaling_value")
+first_night_value = 1.0
+per_night = 0.1
+limit = 1.5
+
+[resource]
+script = ExtResource("1_difficulty_curve")
+fishman_spawn_interval = SubResource("Scaling_fishman_spawn_interval")
+flyer_spawn_interval = SubResource("Scaling_flyer_spawn_interval")
+enemy_health = SubResource("Scaling_enemy_health")
+enemy_damage = SubResource("Scaling_enemy_damage")
+maintenance_failures = SubResource("Scaling_maintenance_failures")
+flashlight_battery = SubResource("Scaling_flashlight_battery")
+storm_chance = SubResource("Scaling_storm_chance")
+storm_duration = SubResource("Scaling_storm_duration")

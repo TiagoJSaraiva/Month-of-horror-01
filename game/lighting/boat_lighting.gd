@@ -40,6 +40,11 @@ func set_maintenance_time_multiplier(multiplier: float) -> void:
 		bulb.hold_multiplier = multiplier
 
 
+## Dificuldade da noite: falhas [param multiplier] vezes mais frequentes.
+func set_failure_frequency(multiplier: float) -> void:
+	_failures.set_frequency_multiplier(multiplier)
+
+
 ## Intensidade da tempestade, de 0 a 1: as falhas ficam mais frequentes.
 func set_storm_strength(strength: float) -> void:
 	_failures.set_storm_strength(strength)
