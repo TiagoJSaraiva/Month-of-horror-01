@@ -1,11 +1,13 @@
 [gd_resource type="Resource" script_class="FishData" format=3]
 
 [ext_resource type="Script" path="res://fish/fish_data.gd" id="1_fish_data"]
+[ext_resource type="BoxMesh" path="res://fish/data/fish_mesh.tres" id="2_fish_mesh"]
 
 [resource]
 script = ExtResource("1_fish_data")
 id = &"mackerel"
 display_name = "Mackerel"
+held_mesh = ExtResource("2_fish_mesh")
 bite_delay_min = 2.0
 bite_delay_max = 5.0
 swim_speed = 0.35

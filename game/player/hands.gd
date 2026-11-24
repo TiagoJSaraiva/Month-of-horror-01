@@ -1,20 +1,20 @@
 class_name Hands
 extends Node3D
-## Coordena as mãos do jogador: abre e fecha o diário, carrega e larga peixes.
+## Coordena as mãos do jogador: abre e fecha o diário, carrega e larga itens.
 ## A vara (e no M5 a arma) consulta [member state] antes de agir.
 
 signal changed
-signal fish_dropped(fish: FishData, amount: int, at: Vector3)
+signal item_dropped(item: ItemData, amount: int, at: Vector3)
 
 @export var journal: Journal
-## Distância à frente do jogador em que o peixe largado cai, em metros.
+## Distância à frente do jogador em que o item largado cai, em metros.
 @export var drop_distance: float = 0.7
 ## Até quantos metros abaixo das mãos procurar o convés.
 @export var drop_probe_depth: float = 3.0
 
 var state := HandsState.new()
 
-@onready var _carried_fish_model: Node3D = $CarriedFishModel
+@onready var _carried_item_model: MeshInstance3D = $CarriedItemModel
 
 
 func _ready() -> void:
@@ -29,20 +29,20 @@ func _unhandled_input(event: InputEvent) -> void:
 		state.toggle_journal()
 		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed(&"drop_item") and state.is_carrying():
-		_drop_carried_fish()
+		_drop_carried_item()
 		get_viewport().set_input_as_handled()
 
 
-## Passa a carregar um peixe. Devolve false quando as mãos não estão livres.
-func carry_fish(fish: FishData, amount: int = 1) -> bool:
-	return state.start_carrying(fish, amount)
+## Passa a carregar um item. Devolve false quando as mãos não estão livres.
+func carry_item(item: ItemData, amount: int = 1) -> bool:
+	return state.start_carrying(item, amount)
 
 
-func _drop_carried_fish() -> void:
-	var fish: FishData = state.carried_fish
+func _drop_carried_item() -> void:
+	var item: ItemData = state.carried_item
 	var amount: int = state.carried_amount
 	state.stop_carrying()
-	fish_dropped.emit(fish, amount, _drop_point())
+	item_dropped.emit(item, amount, _drop_point())
 
 
 # Procura o convés à frente; se ali não houver convés (além da amurada), larga aos pés.
@@ -74,5 +74,6 @@ func _on_state_changed() -> void:
 			journal.open()
 		else:
 			journal.close()
-	_carried_fish_model.visible = state.is_carrying()
+	_carried_item_model.mesh = state.carried_item.held_mesh if state.is_carrying() else null
+	_carried_item_model.visible = state.is_carrying()
 	changed.emit()

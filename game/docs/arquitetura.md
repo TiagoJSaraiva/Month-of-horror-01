@@ -37,7 +37,7 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
 - `ui/transition_overlay/transition_overlay.tscn` → `TransitionOverlay` (`CanvasLayer`) → `Shade` (`ColorRect`) e `Message` (`Label`). Transições que podem ser aguardadas com `await`: `play_dawn()` escurece a tela e mostra "6:00 AM / The night is over."; `cover()` cobre de preto; `reveal(title)` mostra um título e revela a cena.
 - `player/player.tscn` → `Player` (`CharacterBody3D`) → `Head` (`MouseLook`):
   - `Journal`, página com `Label3D`;
-  - `Camera3D` → `Hands` (`%Hands`) → `CarriedFishModel`;
+  - `Camera3D` → `Hands` (`%Hands`) → `CarriedItemModel`;
   - `Camera3D` → `FishingRod` → `Model`, `Aim` (RayCast) e `Bobber` (`top_level`);
   - `Camera3D` → `Interactor` (RayCast de interação).
 
@@ -50,7 +50,7 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
   - `WallClock`, o relógio de ponteiros da cabine, ligado ao `NightClock`;
   - `TableNote`, o bilhete dos clientes na mesa (ver `docs/sistemas/run.md`);
   - `Actors`, com tudo o que congela no amanhecer. Por enquanto só o `Player`, que começa na cabine olhando para a porta;
-  - `Items`, peixes largados no convés (`DroppedFish`);
+  - `Items`, itens largados no convés (`DroppedItem`);
   - `TempLights`, luzes provisórias até o M4;
   - `OutsideWorld` (`BoatSway`), com `Sea` (plano escuro provisório), `Water` (`WaterSurface`, a física da superfície) e `Moon` (`DirectionalLight3D` com `MoonArc`). Tudo o que fica fora do barco entra aqui (decisão 0008; ver `docs/sistemas/balanco.md`).
 
@@ -64,7 +64,7 @@ _Nenhum._
 - `RunOverScreen.new_run_requested` → `Run.new_run_requested` → `Main._on_run_new_run_requested` — troca a `Run` por uma nova.
 - `NightOrder.changed` → `Journal._refresh` — o diário reescreve o texto a cada entrega. A ligação é feita em `Journal.display()`, que a `Night` chama via `Player.journal`.
 - `Freezer.fish_stored(fish, amount)` → `Night._on_freezer_fish_stored` — entrega o peixe ao pedido.
-- `Hands.fish_dropped(fish, amount, at)` → `Night._on_hands_fish_dropped` — cria o peixe no convés, em `Items`.
+- `Hands.item_dropped(item, amount, at)` → `Night._on_hands_item_dropped` — cria o item no convés, em `Items`.
 - `Hands.changed` → `FishingRod._on_hands_changed` — a vara só aparece no modo `TOOL`.
 - `FishingAttempt.state_changed(state)` → `FishingRod._on_attempt_state_changed` — boia, mensagens, minijogo e peixe para as mãos.
 
@@ -81,7 +81,7 @@ Só apresentação, do mundo para o `Hud`. Quem emite e o `Hud` recebem o `.tres
 |---|---|---|
 | `move_forward`, `move_back`, `move_left`, `move_right` | WASD (tecla física) e setas | Movimento do jogador |
 | `toggle_journal` | Tab | Abre e fecha o diário (tratada pelo `Hands`) |
-| `drop_item` | G | Larga o peixe carregado no convés |
+| `drop_item` | G | Larga o item carregado no convés |
 | `primary_action` | Botão esquerdo | Lançar, fisgar e (segurando) puxar a linha |
 | `secondary_action` | Botão direito | Recolher a linha ou desistir do peixe |
 | `cycle_bait` | Q | Trocar a isca (com a linha fora d'água) |

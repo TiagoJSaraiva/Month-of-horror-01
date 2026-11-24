@@ -17,7 +17,7 @@ func test_storing_the_carried_fish_delivers_it() -> void:
 	player.global_position = IN_FRONT_OF_FREEZER
 	await await_millis(100)
 	camera.look_at(freezer.global_position)
-	player.hands.carry_fish(MACKEREL)
+	player.hands.carry_item(MACKEREL)
 	# Dá tempo de a mira de interação achar o freezer.
 	await await_millis(200)
 

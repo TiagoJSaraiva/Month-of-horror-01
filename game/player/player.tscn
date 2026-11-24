@@ -31,15 +31,6 @@ albedo_color = Color(0.85, 0.82, 0.7, 1)
 material = SubResource("StandardMaterial3D_page")
 size = Vector2(0.21, 0.29)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_carried_fish"]
-albedo_color = Color(0.55, 0.6, 0.65, 1)
-metallic = 0.3
-roughness = 0.4
-
-[sub_resource type="BoxMesh" id="BoxMesh_carried_fish"]
-material = SubResource("StandardMaterial3D_carried_fish")
-size = Vector3(0.45, 0.1, 0.12)
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rod"]
 albedo_color = Color(0.22, 0.15, 0.1, 1)
 
@@ -69,11 +60,10 @@ unique_name_in_owner = true
 script = ExtResource("4_hands")
 journal = NodePath("../../Journal")
 
-[node name="CarriedFishModel" type="MeshInstance3D" parent="Head/Camera3D/Hands"]
+[node name="CarriedItemModel" type="MeshInstance3D" parent="Head/Camera3D/Hands"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, -0.55)
 visible = false
 cast_shadow = 0
-mesh = SubResource("BoxMesh_carried_fish")
 
 [node name="FishingRod" type="Node3D" parent="Head/Camera3D" node_paths=PackedStringArray("hands")]
 script = ExtResource("5_fishing_rod")

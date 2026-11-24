@@ -1,5 +1,5 @@
 extends GdUnitTestSuite
-## Regras das mãos: uma coisa por vez entre ferramenta, diário e peixe carregado.
+## Regras das mãos: uma coisa por vez entre ferramenta, diário e item carregado.
 
 var _hands: HandsState
 var _mackerel: FishData
@@ -54,14 +54,25 @@ func test_carrying_blocks_the_tool() -> void:
 
 	assert_bool(_hands.is_carrying()).is_true()
 	assert_bool(_hands.can_use_tool()).is_false()
-	assert_object(_hands.carried_fish).is_same(_mackerel)
+	assert_object(_hands.carried_item).is_same(_mackerel)
 	assert_int(_hands.carried_amount).is_equal(2)
 
 
-func test_invalid_fish_or_amount_is_not_carried() -> void:
+func test_invalid_item_or_amount_is_not_carried() -> void:
 	assert_bool(_hands.start_carrying(null, 1)).is_false()
 	assert_bool(_hands.start_carrying(_mackerel, 0)).is_false()
 	assert_bool(_hands.is_carrying()).is_false()
+
+
+func test_is_carrying_item_compares_the_carried_item() -> void:
+	var fuel_can := ItemData.new()
+	assert_bool(_hands.is_carrying_item(_mackerel)).is_false()
+
+	_hands.start_carrying(_mackerel, 1)
+
+	assert_bool(_hands.is_carrying_item(_mackerel)).is_true()
+	assert_bool(_hands.is_carrying_item(fuel_can)).is_false()
+	assert_bool(_hands.is_carrying_item(null)).is_false()
 
 
 func test_stop_carrying_frees_the_hands() -> void:
@@ -70,7 +81,7 @@ func test_stop_carrying_frees_the_hands() -> void:
 	_hands.stop_carrying()
 
 	assert_int(_hands.mode).is_equal(HandsState.Mode.TOOL)
-	assert_object(_hands.carried_fish).is_null()
+	assert_object(_hands.carried_item).is_null()
 	assert_int(_hands.carried_amount).is_equal(0)
 
 

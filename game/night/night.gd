@@ -5,11 +5,11 @@ extends Node3D
 
 signal night_finished(order: NightOrder)
 
-## Número da noite na run. A Run (M3) vai definir este valor antes de a noite começar.
+## Número da noite na run. A Run define este valor antes de a noite começar.
 @export var night_number: int = 1
 @export var fish_species: Array[FishData] = []
-## Cena criada no convés quando o jogador larga um peixe.
-@export var dropped_fish_scene: PackedScene
+## Cena criada no convés quando o jogador larga um item.
+@export var dropped_item_scene: PackedScene
 
 var order: NightOrder
 ## Bilhete dos clientes na mesa. A Run define antes de a noite entrar na árvore; sem texto, a
@@ -34,7 +34,7 @@ func _ready() -> void:
 	_table_note.show_note(table_note_text, table_note_pin)
 	_clock.dawn_reached.connect(_on_night_clock_dawn_reached)
 	_freezer.fish_stored.connect(_on_freezer_fish_stored)
-	_player.hands.fish_dropped.connect(_on_hands_fish_dropped)
+	_player.hands.item_dropped.connect(_on_hands_item_dropped)
 
 
 func _on_night_clock_dawn_reached() -> void:
@@ -47,9 +47,9 @@ func _on_freezer_fish_stored(fish: FishData, amount: int) -> void:
 	order.deliver(fish, amount)
 
 
-func _on_hands_fish_dropped(fish: FishData, amount: int, at: Vector3) -> void:
-	var dropped := dropped_fish_scene.instantiate() as DroppedFish
-	dropped.fish = fish
+func _on_hands_item_dropped(item: ItemData, amount: int, at: Vector3) -> void:
+	var dropped := dropped_item_scene.instantiate() as DroppedItem
+	dropped.item = item
 	dropped.amount = amount
 	_items.add_child(dropped)
 	dropped.global_position = at

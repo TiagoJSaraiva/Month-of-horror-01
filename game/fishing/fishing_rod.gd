@@ -98,7 +98,7 @@ func _finish(message: String) -> void:
 	hud_events.hint_requested.emit(message, result_hint_seconds)
 	# O peixe vai para as mãos só depois de a vara liberar as mãos.
 	if caught_fish != null:
-		hands.carry_fish(caught_fish)
+		hands.carry_item(caught_fish)
 
 
 func _on_hands_changed() -> void:

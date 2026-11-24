@@ -1,7 +1,7 @@
 class_name HandsState
 extends RefCounted
 ## O que as mãos do jogador estão fazendo, uma coisa por vez: a ferramenta (vara; arma no
-## M5), o diário aberto ou um peixe carregado com as duas mãos.
+## M5), o diário aberto ou um item carregado com as duas mãos (peixe, galão, lâmpada).
 
 signal changed
 
@@ -10,7 +10,7 @@ enum Mode { TOOL, JOURNAL, CARRYING }
 var mode: Mode = Mode.TOOL
 ## A ferramenta está em uso (linha na água): nada mais pode ocupar as mãos até ela parar.
 var tool_busy: bool = false
-var carried_fish: FishData
+var carried_item: ItemData
 var carried_amount: int = 0
 
 
@@ -27,6 +27,10 @@ func is_carrying() -> bool:
 	return mode == Mode.CARRYING
 
 
+func is_carrying_item(item: ItemData) -> bool:
+	return is_carrying() and item != null and carried_item == item
+
+
 ## Abre ou fecha o diário. Devolve false quando as mãos estão ocupadas.
 func toggle_journal() -> bool:
 	if mode == Mode.JOURNAL:
@@ -38,21 +42,21 @@ func toggle_journal() -> bool:
 	return false
 
 
-## Passa a carregar um peixe. Devolve false quando as mãos não estão livres.
-func start_carrying(fish: FishData, amount: int) -> bool:
-	if not can_take_item() or fish == null or amount <= 0:
+## Passa a carregar um item. Devolve false quando as mãos não estão livres.
+func start_carrying(item: ItemData, amount: int) -> bool:
+	if not can_take_item() or item == null or amount <= 0:
 		return false
-	carried_fish = fish
+	carried_item = item
 	carried_amount = amount
 	_set_mode(Mode.CARRYING)
 	return true
 
 
-## Esvazia as mãos. Quem chama lê [member carried_fish] e [member carried_amount] antes.
+## Esvazia as mãos. Quem chama lê [member carried_item] e [member carried_amount] antes.
 func stop_carrying() -> void:
 	if mode != Mode.CARRYING:
 		return
-	carried_fish = null
+	carried_item = null
 	carried_amount = 0
 	_set_mode(Mode.TOOL)
 

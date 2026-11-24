@@ -15,7 +15,7 @@
 [ext_resource type="Resource" path="res://night/sky_palettes/dawn.tres" id="13_dawn_palette"]
 [ext_resource type="Script" path="res://night/moon_arc.gd" id="14_moon_arc"]
 [ext_resource type="Script" path="res://night/water_surface.gd" id="15_water_surface"]
-[ext_resource type="PackedScene" path="res://fish/dropped_fish.tscn" id="16_dropped_fish"]
+[ext_resource type="PackedScene" path="res://items/dropped_item.tscn" id="16_dropped_item"]
 [ext_resource type="PackedScene" path="res://night/table_note.tscn" id="17_table_note"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sea"]
@@ -33,7 +33,7 @@ size = Vector3(2000, 0.2, 2000)
 [node name="Night" type="Node3D"]
 script = ExtResource("5_night")
 fish_species = Array[ExtResource("7_fish_data")]([ExtResource("8_mackerel"), ExtResource("9_swordfish")])
-dropped_fish_scene = ExtResource("16_dropped_fish")
+dropped_item_scene = ExtResource("16_dropped_item")
 
 [node name="NightClock" type="Node" parent="."]
 script = ExtResource("6_night_clock")
