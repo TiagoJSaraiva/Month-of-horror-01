@@ -43,8 +43,8 @@ A run é infinita e a dificuldade sobe a cada noite (M7).
 - No MVP, nenhum inimigo rouba peixe.
 
 ### Tempestade
-- Sorteio, intensidade, balanço forte, céu, lua e falhas mais frequentes: implementados; regras em `docs/sistemas/tempestade.md`.
-- Falta: chuva e vento, e chance e duração crescendo a cada noite (M7).
+- Sorteio, intensidade, balanço forte, céu, lua, chuva com vento, relâmpagos e falhas mais frequentes: implementados; regras em `docs/sistemas/tempestade.md`.
+- Falta: chance e duração crescendo a cada noite (M7).
 
 ### Combate e vida
 - Revólver, vida com regeneração e morte encerrando a run: implementados; regras em `docs/sistemas/combate.md`.

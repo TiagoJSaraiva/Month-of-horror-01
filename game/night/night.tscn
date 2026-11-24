@@ -23,6 +23,7 @@
 [ext_resource type="Resource" path="res://night/storm_settings.tres" id="21_storm_settings"]
 [ext_resource type="Resource" path="res://night/sky_palettes/storm.tres" id="22_storm_palette"]
 [ext_resource type="Resource" path="res://ui/hud/hud_events.tres" id="23_hud_events"]
+[ext_resource type="PackedScene" path="res://night/storm_weather.tscn" id="24_storm_weather"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sea"]
 albedo_color = Color(0.015, 0.035, 0.05, 1)
@@ -49,6 +50,8 @@ script = ExtResource("20_storm")
 night_clock = NodePath("../NightClock")
 settings = ExtResource("21_storm_settings")
 hud_events = ExtResource("23_hud_events")
+
+[node name="StormWeather" parent="." instance=ExtResource("24_storm_weather")]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." node_paths=PackedStringArray("night_clock")]
 environment = ExtResource("1_environment")

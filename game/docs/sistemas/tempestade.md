@@ -9,6 +9,10 @@ Uma ameaça de tempo limitado numa noite: o barco balança forte, o céu fecha, 
 - `night/storm_rules.gd`: `StormRules`, regras puras do sorteio (`plan`) e da intensidade ao longo do tempo (`strength`).
 - `night/storm.gd`: `Storm`, nó da `Night`, ligado ao `NightClock`, ao `StormSettings` e ao `HudEvents` por `@export`. A `Night` chama `roll(night_number, rng)` no `_ready`. Emite `started`, `ended` e `strength_changed(strength)`.
 - `night/sky_palettes/storm.tres`: paleta da tempestade (cinza-esverdeada, luz ambiente fraca, neblina mais densa).
+- `night/storm_weather.tscn` / `storm_weather.gd`: `StormWeather`, nó da `Night` com o clima:
+  - `Rain`: `GPUParticles3D` 9 m acima do barco, cobrindo 24×32 m, até 2500 gotas inclinadas pelo vento (+X), com a quantidade (`amount_ratio`) igual à intensidade;
+  - `Lightning`: `DirectionalLight3D` azulada, apagada fora do clarão.
+- `night/rain_drop.gdshader`: shader da gota, um traço de pé virado para a câmera. Descarta os pixels dentro do interior da cabine (`shelter_min` e `shelter_max`), para nunca chover lá dentro.
 
 ## Regras
 - Sorteio, uma vez por noite:
@@ -21,7 +25,9 @@ Uma ameaça de tempo limitado numa noite: o barco balança forte, o céu fecha, 
   - `SkyCycle.storm_weight`: o céu, a luz ambiente e a neblina vão para a paleta da tempestade;
   - `BoatSway.set_storm_strength`: o balanço vai de 1× a 3× (`storm_intensity`), só na amplitude;
   - `MoonArc.cloud_cover`: a lua apaga;
-  - `BoatLighting.set_storm_strength`: as falhas do gerador e das lâmpadas ficam até 3× mais frequentes (`storm_failure_multiplier`).
+  - `BoatLighting.set_storm_strength`: as falhas do gerador e das lâmpadas ficam até 3× mais frequentes (`storm_failure_multiplier`);
+  - `StormWeather.set_strength`: a quantidade de chuva.
+- Relâmpago: com a intensidade em 0,6 ou mais, cai um a cada 5–14 s (sorteado), num clarão duplo de cerca de 0,5 s.
 - No amanhecer e na morte, a tempestade para onde estiver, junto com os personagens.
 - Para testar: `first_night` = 1 e `chance` = 1 em `night/storm_settings.tres` forçam uma tempestade em toda noite.
 
@@ -32,4 +38,4 @@ Uma ameaça de tempo limitado numa noite: o barco balança forte, o céu fecha, 
 - `test/unit/storm_rules_test.gd`: sem tempestade antes da noite permitida, chance decide, início e duração nos intervalos e antes do fim, noite curta encolhe a tempestade, intensidade zero fora, rampa de subida, pico e descida, nunca acima de 1.
 - `test/unit/sky_palette_test.gd`: mistura de paletas nas pontas e no meio, inclusive a neblina.
 - `test/scenes/storm_test.gd`: com a tempestade forçada e curta, no pico o balanço passa do normal, o céu e a cobertura de nuvens passam de 0,9; no fim tudo volta ao normal.
-- Conferido com captura de tela: o convés na tempestade e fora dela.
+- Conferidos com captura de tela: o convés na tempestade e fora dela, a chuva no convés, a cabine seca por dentro (com chuva só vista pelas janelas e pela porta) e o convés iluminado pelo relâmpago.

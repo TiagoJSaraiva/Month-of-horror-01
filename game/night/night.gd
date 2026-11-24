@@ -25,6 +25,7 @@ var _ended: bool = false
 
 @onready var _clock: NightClock = $NightClock
 @onready var _storm: Storm = $Storm
+@onready var _weather: StormWeather = $StormWeather
 @onready var _sky_cycle: SkyCycle = $WorldEnvironment
 @onready var _sway: BoatSway = $OutsideWorld
 @onready var _moon: MoonArc = $OutsideWorld/Moon
@@ -74,12 +75,14 @@ func _end() -> void:
 	_actors.process_mode = Node.PROCESS_MODE_DISABLED
 	_lighting.process_mode = Node.PROCESS_MODE_DISABLED
 	_storm.process_mode = Node.PROCESS_MODE_DISABLED
+	_weather.process_mode = Node.PROCESS_MODE_DISABLED
 
 
 func _on_storm_strength_changed(strength: float) -> void:
 	_sky_cycle.storm_weight = strength
 	_sway.set_storm_strength(strength)
 	_moon.cloud_cover = strength
+	_weather.set_strength(strength)
 	_lighting.set_storm_strength(strength)
 
 

@@ -47,7 +47,7 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
 - `boat/boat.tscn` → `Boat` (`Node3D`) → `Hull` e `Cabin` (`CSGCombiner3D` com colisão, camada `world`). Barco greybox de 14×5 m com o convés em y = 1. A cabine fica na proa, com a porta voltada para a popa. Dentro dela ficam a mesa (caixa CSG; decisão 0011), o `Freezer` (cena `boat/freezer.tscn`, `Interactable`) e, dos dois lados da porta, as caixas `FuelCans` e `SpareBulbs` (`SupplyCrate`). Na mesa fica a `BatteryBox`, a caixa de pilhas da lanterna. O `Hull` tem 4 postes nas amuradas para as lâmpadas. O `Boat` está no grupo `boat_navigation`, e o filho `Navigation` (`BoatNavigation`) monta a malha de navegação ao carregar (decisão 0014; ver `docs/sistemas/inimigos.md`). O filho `Lighting` (`lighting/boat_lighting.tscn`) tem o gerador na popa, as 6 lâmpadas, as luzes de emergência e o sorteio de falhas (ver `docs/sistemas/iluminacao.md`).
 - `night/night.tscn` → `Night` (`Node3D`, gera o pedido e encerra a noite; ver `docs/sistemas/noite.md`):
   - `NightClock`, o tempo da noite;
-  - `Storm`, a tempestade sorteada para a noite (ver `docs/sistemas/tempestade.md`);
+  - `Storm`, a tempestade sorteada para a noite, e `StormWeather`, a chuva e os relâmpagos (ver `docs/sistemas/tempestade.md`);
   - `WorldEnvironment` (`SkyCycle`) com `night/night_environment.tres` (céu procedural e neblina), que clareia no amanhecer e fecha na tempestade;
   - `Boat`;
   - `WallClock`, o relógio de ponteiros da cabine, ligado ao `NightClock`;
@@ -65,7 +65,7 @@ _Nenhum._
 - `Player.health.died` → `Night._on_player_health_died` → `Night.player_died` → `Run._on_night_player_died` — a morte congela a noite e encerra a run com "YOU DIED".
 - `Run.run_over` → `Main._on_run_run_over` — solta o mouse para a tela de fim de run.
 - `RunOverScreen.new_run_requested` → `Run.new_run_requested` → `Main._on_run_new_run_requested` — troca a `Run` por uma nova.
-- `Storm.strength_changed(strength)` → `Night._on_storm_strength_changed` — a `Night` repassa a intensidade ao céu (`SkyCycle.storm_weight`), ao balanço, à lua e às falhas de manutenção.
+- `Storm.strength_changed(strength)` → `Night._on_storm_strength_changed` — a `Night` repassa a intensidade ao céu (`SkyCycle.storm_weight`), ao balanço, à lua, ao clima (`StormWeather`) e às falhas de manutenção.
 - `NightOrder.changed` → `Journal._refresh` — o diário reescreve o texto a cada entrega. A ligação é feita em `Journal.display()`, que a `Night` chama via `Player.journal`.
 - `Freezer.fish_stored(fish, amount)` → `Night._on_freezer_fish_stored` — entrega o peixe ao pedido.
 - `Hands.item_dropped(item, amount, at)` → `Night._on_hands_item_dropped` — cria o item no convés, em `Items`.
