@@ -18,3 +18,12 @@ static func failure_chance(delta: float, mean_seconds: float) -> float:
 	if delta <= 0.0 or mean_seconds <= 0.0:
 		return 0.0
 	return 1.0 - exp(-delta / mean_seconds)
+
+
+## Intervalo médio entre falhas com a tempestade: no pico ([param storm_strength] 1), as
+## falhas ficam [param multiplier] vezes mais frequentes. Intervalo desligado continua desligado.
+static func storm_mean(mean_seconds: float, storm_strength: float, multiplier: float) -> float:
+	if mean_seconds <= 0.0:
+		return mean_seconds
+	var frequency: float = lerpf(1.0, maxf(multiplier, 1.0), clampf(storm_strength, 0.0, 1.0))
+	return mean_seconds / frequency

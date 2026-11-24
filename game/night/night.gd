@@ -1,8 +1,8 @@
 class_name Night
 extends Node3D
 ## Uma noite de pesca: gera o pedido, entrega-o ao diário do jogador, põe o bilhete na mesa,
-## registra os peixes guardados no freezer e encerra a ação dos personagens ao amanhecer ou
-## com a morte do jogador.
+## sorteia a tempestade e repassa a intensidade dela, registra os peixes guardados no freezer e
+## encerra a ação dos personagens ao amanhecer ou com a morte do jogador.
 
 signal night_finished(order: NightOrder)
 signal player_died
@@ -24,6 +24,10 @@ var _rng := RandomNumberGenerator.new()
 var _ended: bool = false
 
 @onready var _clock: NightClock = $NightClock
+@onready var _storm: Storm = $Storm
+@onready var _sky_cycle: SkyCycle = $WorldEnvironment
+@onready var _sway: BoatSway = $OutsideWorld
+@onready var _moon: MoonArc = $OutsideWorld/Moon
 @onready var _actors: Node3D = $Actors
 @onready var _player: Player = $Actors/Player
 @onready var _fishman_spawner: FishmanSpawner = $Actors/FishmanSpawner
@@ -43,6 +47,8 @@ func _ready() -> void:
 	_player.hands.item_dropped.connect(_on_hands_item_dropped)
 	_player.health.died.connect(_on_player_health_died)
 	_fishman_spawner.start(_lighting, _player, _player.health)
+	_storm.strength_changed.connect(_on_storm_strength_changed)
+	_storm.roll(night_number, _rng)
 
 
 func _on_night_clock_dawn_reached() -> void:
@@ -61,12 +67,20 @@ func _on_player_health_died() -> void:
 	player_died.emit()
 
 
-# Só os personagens e a manutenção param: mar, céu e balanço continuam. Sem isso, o gerador
-# ainda poderia quebrar na tela do amanhecer.
+# Só os personagens, a manutenção e a tempestade param: mar, céu e balanço continuam como
+# estão. Sem isso, o gerador ainda poderia quebrar na tela do amanhecer.
 func _end() -> void:
 	_ended = true
 	_actors.process_mode = Node.PROCESS_MODE_DISABLED
 	_lighting.process_mode = Node.PROCESS_MODE_DISABLED
+	_storm.process_mode = Node.PROCESS_MODE_DISABLED
+
+
+func _on_storm_strength_changed(strength: float) -> void:
+	_sky_cycle.storm_weight = strength
+	_sway.set_storm_strength(strength)
+	_moon.cloud_cover = strength
+	_lighting.set_storm_strength(strength)
 
 
 func _on_freezer_fish_stored(fish: FishData, amount: int) -> void:

@@ -9,7 +9,7 @@ Dar a sensação de estar num barco balançando sem mover o barco na física (de
 
 ## Regras
 - Arfagem de 1,5° com período de 9 s e rolagem de 3° com período de 7 s (`@export` no `BoatSway`). Os períodos diferentes evitam um movimento mecânico.
-- `intensity` multiplica as duas amplitudes: 1 é o balanço normal, e a tempestade (M6) vai aumentá-lo.
+- `intensity` multiplica as duas amplitudes: 1 é o balanço normal. A tempestade leva o multiplicador até `storm_intensity` (3) pela intensidade dela (`set_storm_strength`), mudando só a amplitude para o movimento não dar saltos (ver `docs/sistemas/tempestade.md`).
 - O balanço é só visual: não empurra o jogador nem os objetos do barco.
 - Tudo o que está fora do barco precisa ser filho de `OutsideWorld`, senão não balança junto com o mar.
 

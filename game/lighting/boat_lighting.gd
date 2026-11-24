@@ -28,6 +28,11 @@ func _ready() -> void:
 	_on_generator_running_changed(_generator.is_running())
 
 
+## Intensidade da tempestade, de 0 a 1: as falhas ficam mais frequentes.
+func set_storm_strength(strength: float) -> void:
+	_failures.set_storm_strength(strength)
+
+
 func _on_generator_running_changed(running: bool) -> void:
 	for bulb: Bulb in _bulbs:
 		bulb.set_powered(running)

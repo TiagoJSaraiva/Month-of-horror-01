@@ -30,7 +30,7 @@ Dar ao barco um nível de luz que depende de manutenção: o gerador gasta combu
 - Falhas por sorteio, só com o gerador funcionando:
   - o gerador quebra em média a cada `generator_mean_seconds` (240 s);
   - cada lâmpada acesa queima em média a cada `bulb_mean_seconds` (720 s). Com 6 acesas, uma queima a cada ~2 min.
-- A chance num passo de tempo é `1 - e^(-delta / média)`, para o sorteio não depender da taxa de quadros. Média zero ou negativa desliga a falha. A tempestade (M6) e a dificuldade por noite (M7) vão alterar as médias.
+- A chance num passo de tempo é `1 - e^(-delta / média)`, para o sorteio não depender da taxa de quadros. Média zero ou negativa desliga a falha. Na tempestade, as médias são divididas por até `storm_failure_multiplier` (3) conforme a intensidade (`LightingRules.storm_mean`); a dificuldade por noite (M7) vai alterar os valores base.
 - No amanhecer, a `Night` desliga o processamento da `Lighting`: o combustível para de gastar e as falhas param.
 
 ## Lanterna
@@ -53,7 +53,7 @@ Dar ao barco um nível de luz que depende de manutenção: o gerador gasta combu
 - `BoatLighting.light_level_changed(level)` → `FishmanSpawner`: os peixes-homens sobem abaixo do limiar e fogem quando a luz volta (ver `docs/sistemas/inimigos.md`).
 
 ## Testes
-- `test/unit/lighting_rules_test.gd`: nível cheio, parcial, sem energia e sem lâmpadas; chance de falha nula sem tempo ou sem média, crescente com o tempo, 1 - 1/e num intervalo médio e igual em passos divididos.
+- `test/unit/lighting_rules_test.gd`: nível cheio, parcial, sem energia e sem lâmpadas; chance de falha nula sem tempo ou sem média, crescente com o tempo, 1 - 1/e num intervalo médio e igual em passos divididos; média sem tempestade igual, dividida no pico e falha desligada continua desligada.
 - `test/unit/generator_state_test.gd`: começa cheio, gasta funcionando, vazio para e avisa uma vez, reabastecer religa, quebrado não gasta, conserto religa, conserto sem combustível continua parado e capacidade zero nunca funciona.
 - `test/unit/flashlight_battery_test.gd`: começa cheia, gasta, acaba uma vez só sem ficar negativa, pilhas novas enchem e capacidade zero fica sempre vazia.
 - `test/scenes/lighting_maintenance_test.gd`: com o gerador vazio, o nível é 0 e a emergência acende. Segurando E no gerador com o galão nas mãos, o nível volta a 1, a emergência apaga e as mãos ficam livres.

@@ -43,8 +43,8 @@ A run é infinita e a dificuldade sobe a cada noite (M7).
 - No MVP, nenhum inimigo rouba peixe.
 
 ### Tempestade
-- A partir da noite 2, há chance de uma tempestade por noite, de 60 a 90 s, em horário aleatório. A chance e a duração crescem a cada noite.
-- O barco balança mais forte, há chuva e vento, e o céu muda. A tempestade acaba sozinha.
+- Sorteio, intensidade, balanço forte, céu, lua e falhas mais frequentes: implementados; regras em `docs/sistemas/tempestade.md`.
+- Falta: chuva e vento, e chance e duração crescendo a cada noite (M7).
 
 ### Combate e vida
 - Revólver, vida com regeneração e morte encerrando a run: implementados; regras em `docs/sistemas/combate.md`.

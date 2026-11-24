@@ -19,6 +19,10 @@
 [ext_resource type="PackedScene" path="res://night/table_note.tscn" id="17_table_note"]
 [ext_resource type="Script" path="res://enemies/fishman_spawner.gd" id="18_fishman_spawner"]
 [ext_resource type="PackedScene" path="res://enemies/fishman/fishman.tscn" id="19_fishman"]
+[ext_resource type="Script" path="res://night/storm.gd" id="20_storm"]
+[ext_resource type="Resource" path="res://night/storm_settings.tres" id="21_storm_settings"]
+[ext_resource type="Resource" path="res://night/sky_palettes/storm.tres" id="22_storm_palette"]
+[ext_resource type="Resource" path="res://ui/hud/hud_events.tres" id="23_hud_events"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sea"]
 albedo_color = Color(0.015, 0.035, 0.05, 1)
@@ -40,12 +44,19 @@ dropped_item_scene = ExtResource("16_dropped_item")
 [node name="NightClock" type="Node" parent="."]
 script = ExtResource("6_night_clock")
 
+[node name="Storm" type="Node" parent="." node_paths=PackedStringArray("night_clock")]
+script = ExtResource("20_storm")
+night_clock = NodePath("../NightClock")
+settings = ExtResource("21_storm_settings")
+hud_events = ExtResource("23_hud_events")
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." node_paths=PackedStringArray("night_clock")]
 environment = ExtResource("1_environment")
 script = ExtResource("11_sky_cycle")
 night_clock = NodePath("../NightClock")
 night_palette = ExtResource("12_night_palette")
 dawn_palette = ExtResource("13_dawn_palette")
+storm_palette = ExtResource("22_storm_palette")
 
 [node name="Boat" parent="." instance=ExtResource("2_boat")]
 

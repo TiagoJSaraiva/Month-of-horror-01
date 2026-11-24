@@ -1,17 +1,25 @@
 class_name SkyCycle
 extends WorldEnvironment
-## Céu provisório: passa da paleta da noite para a do amanhecer conforme o NightClock.
+## Céu provisório: passa da paleta da noite para a do amanhecer conforme o NightClock e puxa
+## para a paleta da tempestade pelo [member storm_weight].
 ## Escreve sempre valores absolutos das paletas: o Environment é um recurso compartilhado,
-## e a próxima noite precisa começar escura.
+## e a próxima noite precisa começar escura e sem tempestade.
 
 @export var night_clock: NightClock
 @export var night_palette: SkyPalette
 @export var dawn_palette: SkyPalette
+@export var storm_palette: SkyPalette
 ## Fração da noite em que o céu começa a clarear: 6/7 corresponde às 05:00.
 @export var dawn_start: float = 6.0 / 7.0
 
-# Começa negativo para forçar a primeira aplicação.
+## Peso da paleta da tempestade, de 0 a 1. A Night define pela intensidade da tempestade.
+var storm_weight: float = 0.0:
+	set(value):
+		storm_weight = clampf(value, 0.0, 1.0)
+
+# Começam negativos para forçar a primeira aplicação.
 var _applied_weight: float = -1.0
+var _applied_storm_weight: float = -1.0
 
 
 func _ready() -> void:
@@ -30,25 +38,23 @@ func _process(_delta: float) -> void:
 func _apply(night_progress: float) -> void:
 	var weight: float = SkyRules.dawn_blend(night_progress, dawn_start)
 	# Mudar o material do céu refaz a iluminação do céu; só vale a pena quando a mistura muda.
-	if is_equal_approx(weight, _applied_weight):
+	if (
+		is_equal_approx(weight, _applied_weight)
+		and is_equal_approx(storm_weight, _applied_storm_weight)
+	):
 		return
 	_applied_weight = weight
+	_applied_storm_weight = storm_weight
+	var palette: SkyPalette = SkyPalette.mix(night_palette, dawn_palette, weight)
+	if storm_palette != null:
+		palette = SkyPalette.mix(palette, storm_palette, storm_weight)
 	var sky_material := environment.sky.sky_material as ProceduralSkyMaterial
 	if sky_material != null:
-		sky_material.sky_top_color = night_palette.sky_top.lerp(dawn_palette.sky_top, weight)
-		sky_material.sky_horizon_color = night_palette.sky_horizon.lerp(
-			dawn_palette.sky_horizon, weight
-		)
-		sky_material.ground_horizon_color = night_palette.ground_horizon.lerp(
-			dawn_palette.ground_horizon, weight
-		)
-		sky_material.ground_bottom_color = night_palette.ground_bottom.lerp(
-			dawn_palette.ground_bottom, weight
-		)
-	environment.ambient_light_color = night_palette.ambient_color.lerp(
-		dawn_palette.ambient_color, weight
-	)
-	environment.ambient_light_energy = lerpf(
-		night_palette.ambient_energy, dawn_palette.ambient_energy, weight
-	)
-	environment.fog_light_color = night_palette.fog_color.lerp(dawn_palette.fog_color, weight)
+		sky_material.sky_top_color = palette.sky_top
+		sky_material.sky_horizon_color = palette.sky_horizon
+		sky_material.ground_horizon_color = palette.ground_horizon
+		sky_material.ground_bottom_color = palette.ground_bottom
+	environment.ambient_light_color = palette.ambient_color
+	environment.ambient_light_energy = palette.ambient_energy
+	environment.fog_light_color = palette.fog_color
+	environment.fog_density = palette.fog_density

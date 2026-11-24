@@ -7,11 +7,12 @@ Controlar o tempo de uma noite (23:00 às 06:00), gerar o pedido no início e en
 - `night/night.tscn` / `night/night.gd`: `Night`. No `_ready`, gera o pedido (`OrderRules`, `NightOrder`). Ao amanhecer, desliga o processamento de `Actors` e emite `night_finished(order)`.
 - `night/night_clock.gd`: `NightClock`. Avança o tempo, expõe `progress` (0 a 1) e `clock_minutes()`, e emite `dawn_reached` uma única vez.
 - `night/night_time_rules.gd`: `NightTimeRules`, regras puras de progresso, hora do jogo e ângulos dos ponteiros.
+- `night/storm.gd`: `Storm`, a tempestade da noite; a `Night` sorteia e repassa a intensidade (ver `docs/sistemas/tempestade.md`).
 - `Actors` (nó da cena da noite): tudo o que deve congelar no amanhecer (jogador e, nos próximos marcos, inimigos).
 - `night/wall_clock.tscn` / `night/wall_clock.gd`: `WallClock`, relógio de ponteiros na parede da frente da cabine. Lê o `NightClock` por `@export` (decisão 0006). É a única forma de saber a hora: o diário não mostra.
-- `night/sky_cycle.gd`: `SkyCycle`, script do `WorldEnvironment`. Mistura duas `SkyPalette` (noite e amanhecer) e escreve as cores do céu procedural, da luz ambiente e da neblina.
-- `night/sky_palette.gd` + `night/sky_palettes/{night,dawn}.tres`: `SkyPalette` (Resource), com as cores de um momento da noite. A tempestade (M6) deve entrar como mais uma paleta.
-- `night/moon_arc.gd`: `MoonArc`, script da `Moon` (`DirectionalLight3D`). Orienta a luz pelo arco da lua.
+- `night/sky_cycle.gd`: `SkyCycle`, script do `WorldEnvironment`. Mistura as `SkyPalette` da noite e do amanhecer e depois puxa para a da tempestade por `storm_weight`. Escreve as cores do céu procedural, a luz ambiente e a cor e a densidade da neblina.
+- `night/sky_palette.gd` + `night/sky_palettes/{night,dawn}.tres`: `SkyPalette` (Resource), com as cores e a neblina de um momento da noite, e `SkyPalette.mix(a, b, weight)`. A tempestade usa `night/sky_palettes/storm.tres`.
+- `night/moon_arc.gd`: `MoonArc`, script da `Moon` (`DirectionalLight3D`). Orienta a luz pelo arco da lua e a apaga com `cloud_cover` (nuvens da tempestade).
 - `night/sky_rules.gd`: `SkyRules`, regras puras da mistura do amanhecer e do arco da lua.
 
 ## Regras
