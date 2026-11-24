@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="NoteLines" format=3]
+
+[ext_resource type="Script" path="res://run/note_lines.gd" id="1_note_lines"]
+
+[resource]
+script = ExtResource("1_note_lines")
+intro = "Fill the order before dawn. Every fish goes in the freezer. Don't make us wait."
+completed = "Good job. Keep it up."
+free_pass = "You're lucky I'm in a good mood, so I'll overlook the fact that you didn't fulfill the entire order. But just this once. Don't think I'm on your side."
+first_warning = "You broke our deal. Do it 2 more times and we'll gut you like a fish."
+last_warning = "You broke our deal again. One more time and you know what will happen."
+run_over = "You broke our deal for the last time."

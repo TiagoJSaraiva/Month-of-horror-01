@@ -54,10 +54,7 @@ A run acaba com 3 noites falhas (não precisam ser seguidas) ou com a morte do j
 - 100 HP, regenerando 5 HP/s depois de 5 s sem dano. Morrer encerra a run.
 
 ### Vidas e mensagens
-- 3 vidas por run. Não cumprir o pedido custa 1 vida, e o jogo segue para a próxima noite.
-- Passe livre secreto: na primeira noite da run em que falta exatamente 1 peixe, a noite conta como cumprida e aparece uma mensagem própria.
-- No início de cada noite há uma mensagem na mesa da cabine. O alfinete mostra o resultado da noite anterior: azul se cumpriu (inclusive com passe livre), amarelo com "!" se perdeu a 1ª vida, vermelho com "!!" se perdeu a 2ª.
-- Uma fala fixa por situação.
+- Regras de vidas, passe livre e bilhete: implementadas em `docs/sistemas/run.md`.
 
 ### Cartas
 - Seleção no início da run e ao fim de cada noite (exceto quando a run acaba). São 3 cartas, e a raridade de cada uma é sorteada de forma independente: 60% comum, 30% rara, 10% lendária.
