@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3]
+
+[ext_resource type="Script" path="res://meta/upgrade_data.gd" id="1_upgrade_data"]
+
+[resource]
+script = ExtResource("1_upgrade_data")
+id = &"health"
+display_name = "Health"
+stat = 0
