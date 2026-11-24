@@ -6,3 +6,7 @@
 script = ExtResource("1_fish_data")
 id = &"swordfish"
 display_name = "Swordfish"
+bite_delay_min = 4.0
+bite_delay_max = 8.0
+swim_speed = 0.7
+direction_changes_per_second = 1.6
