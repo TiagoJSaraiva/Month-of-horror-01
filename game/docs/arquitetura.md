@@ -16,6 +16,7 @@ Organização por feature: cada cena fica junto do seu script e dos recursos exc
   <nome>.tscn
   <nome>.gd
 components/         componentes reutilizados por mais de uma feature (ex.: health_component)
+config/             constantes globais compartilhadas (ex.: PhysicsLayers)
 assets/             arte, áudio e fontes compartilhados
 autoload/           singletons (cada um com decisão registrada)
 test/unit/          testes de regras puras
@@ -25,7 +26,11 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
 ## Cenas principais
 - `main/main.tscn` (cena principal) → `Main` (`Node`, captura o mouse) → `LowResView` (`SubViewportContainer`, `stretch_shrink` 2, filtro nearest) → `SubViewport` (áudio 3D ligado) → `Night` (`%Night`). O 3D renderiza em 576×324, porque o stretch `canvas_items` fixa a base lógica em 1152×648, e é ampliado sem filtro (decisão 0009). A interface fica em irmãs de `LowResView`, em resolução nativa; hoje só `DawnOverlay`.
 - `ui/dawn_overlay/dawn_overlay.tscn` → `DawnOverlay` (`CanvasLayer`) → `Shade` (`ColorRect`) e `Message` (`Label`). `play()` escurece a tela e mostra "6:00 AM / The night is over.".
-- `player/player.tscn` → `Player` (`CharacterBody3D`) → `Head` (`MouseLook`) → `Camera3D` e `Journal` (página com `Label3D`). Jogador em primeira pessoa (ver `docs/sistemas/movimento.md`); o diário está em `docs/sistemas/pedido.md`.
+- `player/player.tscn` → `Player` (`CharacterBody3D`) → `Head` (`MouseLook`):
+  - `Journal`, página com `Label3D`;
+  - `Camera3D` → `Hands` (`%Hands`) → `CarriedFishModel`.
+
+  Jogador em primeira pessoa (ver `docs/sistemas/movimento.md`). Mãos em `docs/sistemas/maos.md`; diário em `docs/sistemas/pedido.md`.
 - `boat/boat.tscn` → `Boat` (`Node3D`) → `Hull` e `Cabin` (`CSGCombiner3D` com colisão, camada `world`). Barco greybox de 14×5 m com o convés em y = 1. A cabine fica na proa, com a porta voltada para a popa, e dentro dela há caixas no lugar do freezer e da mesa (decisão 0011).
 - `night/night.tscn` → `Night` (`Node3D`, gera o pedido e encerra a noite; ver `docs/sistemas/noite.md`):
   - `NightClock`, o tempo da noite;
@@ -48,9 +53,14 @@ _Nenhum._
 | Ação | Teclas | Uso |
 |---|---|---|
 | `move_forward`, `move_back`, `move_left`, `move_right` | WASD (tecla física) e setas | Movimento do jogador |
-| `toggle_journal` | Tab | Abre e fecha o diário |
+| `toggle_journal` | Tab | Abre e fecha o diário (tratada pelo `Hands`) |
+| `drop_item` | G | Larga o peixe carregado no convés |
 | `pause` | Esc | Solta o mouse (o menu de pausa assume no M8) |
 
 ## Camadas de colisão
 - 1 — `world` — barco e cenário / detectada pelo jogador.
 - 2 — `player` — jogador / ninguém detecta ainda.
+- 3 — `interactable` — objetos com que o jogador interage / detectada pela mira de interação (M2).
+- 4 — `water` — superfície do mar / detectada pela mira da vara e pela boia (M2).
+
+As máscaras dessas camadas estão em `config/physics_layers.gd` (`PhysicsLayers`), para as consultas de raio.

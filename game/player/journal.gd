@@ -2,6 +2,7 @@ class_name Journal
 extends Node3D
 ## Diário que o jogador segura com as duas mãos. Fica preso ao giro horizontal do Head, e
 ## não à inclinação da câmera, para só aparecer quando o jogador olha para baixo.
+## Quem decide abrir e fechar é o Hands.
 
 ## Quanto o diário desce, em metros, ao ser guardado.
 @export var stow_drop: float = 0.4
@@ -23,12 +24,6 @@ func _ready() -> void:
 	visible = false
 
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed(&"toggle_journal"):
-		toggle()
-		get_viewport().set_input_as_handled()
-
-
 ## Passa a mostrar esta noite e este pedido, reescrevendo o texto a cada entrega.
 func display(night_number: int, order: NightOrder) -> void:
 	if _order != null and _order.changed.is_connected(_refresh):
@@ -39,17 +34,28 @@ func display(night_number: int, order: NightOrder) -> void:
 	_refresh()
 
 
-func toggle() -> void:
-	is_open = not is_open
+func open() -> void:
+	if is_open:
+		return
+	is_open = true
+	visible = true
+	_restart_tween().tween_property(self, "position", _held_position, move_seconds)
+
+
+func close() -> void:
+	if not is_open:
+		return
+	is_open = false
+	var tween: Tween = _restart_tween()
+	tween.tween_property(self, "position", _stowed_position(), move_seconds)
+	tween.tween_callback(hide)
+
+
+func _restart_tween() -> Tween:
 	if _tween != null:
 		_tween.kill()
 	_tween = create_tween()
-	if is_open:
-		visible = true
-		_tween.tween_property(self, "position", _held_position, move_seconds)
-	else:
-		_tween.tween_property(self, "position", _stowed_position(), move_seconds)
-		_tween.tween_callback(hide)
+	return _tween
 
 
 func _refresh() -> void:

@@ -8,7 +8,7 @@ Definir quais peixes o jogador precisa entregar em cada noite e acompanhar as en
 - `fish/data/*.tres`: as espécies. No MVP são duas: `mackerel` (Mackerel) e `swordfish` (Swordfish), nomes provisórios.
 - `night/order_rules.gd`: `OrderRules`, regras puras de tamanho e sorteio do pedido.
 - `night/night_order.gd`: `NightOrder` (`RefCounted`), o pedido de uma noite e as entregas.
-- `player/journal.gd`: `Journal`, filho do `Head` do jogador. Tab (`toggle_journal`) abre e fecha o diário com uma animação curta. `display(night_number, order)` é chamado pela `Night` no início da noite.
+- `player/journal.gd`: `Journal`, filho do `Head` do jogador. Abre e fecha com uma animação curta quando o `Hands` manda (Tab; ver `docs/sistemas/maos.md`). `display(night_number, order)` é chamado pela `Night` no início da noite.
 - `player/journal_text.gd`: `JournalText`, função pura que monta o texto do diário.
 
 ## Regras
@@ -22,7 +22,7 @@ Definir quais peixes o jogador precisa entregar em cada noite e acompanhar as en
   - fica preso ao giro horizontal do `Head`, e não à inclinação da câmera. Aberto, fica a cerca de 53° abaixo do olhar e a 25 cm do olho, dentro da cápsula, então não atravessa paredes. Olhando para a frente, só o topo dele aparece; para ler, o jogador olha para baixo;
   - página e texto não recebem sombreamento, para serem legíveis no escuro;
   - o `Label3D` ignora linhas em branco, por isso o texto não tem espaçamento entre blocos;
-  - o jogador pode andar com o diário aberto. Disputar as mãos com a vara e a arma fica para o coordenador de mãos (M2).
+  - o jogador pode andar com o diário aberto, mas não pescar nem carregar nada.
 
 ## Sinais
 - `NightOrder.changed` → `Journal._refresh`: o diário reescreve o texto a cada entrega.

@@ -11,6 +11,8 @@ var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 ## Diário nas mãos do jogador. Público para a Night entregar o pedido a ele.
 @onready var journal: Journal = $Head/Journal
+## Mãos do jogador. Públicas para a Night ouvir o peixe largado.
+@onready var hands: Hands = %Hands
 @onready var _head: Node3D = $Head
 
 
