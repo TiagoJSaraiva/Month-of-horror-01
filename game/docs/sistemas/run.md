@@ -31,7 +31,7 @@ Encadear as noites de uma run, avaliar cada pedido no amanhecer, contar as vidas
   1. Começo de cada noite: a `Run` cria a `Night` com `night_number` e o bilhete, limpa o HUD (`Hud.reset()`) e mostra "NIGHT N" sobre a tela preta, que some em seguida.
   2. Amanhecer: esconde o HUD, toca `play_dawn()` e espera `dawn_hold_seconds` (3 s).
   3. Avalia o pedido com `state.finish_night(order.missing_total())`.
-  4. Se a run acabou, mostra a `RunOverScreen` com "THE DEAL IS OFF" e a fala `run_over`, e emite `run_over`.
+  4. Se a run acabou, paga os pontos da run (`docs/sistemas/meta.md`) e mostra a `RunOverScreen` com "THE DEAL IS OFF" e a fala `run_over`, e emite `run_over`.
   5. Senão, cobre a tela de preto, libera a noite antiga, mostra a seleção de cartas e começa a próxima noite.
 - Na morte: esconde o HUD, marca `state.die()`, cobre a tela de preto e mostra a `RunOverScreen` com "YOU DIED" e a fala `death`.
 - Nova run: o botão emite `new_run_requested`, e a `Main` troca a `Run` inteira por uma nova.

@@ -1,15 +1,25 @@
 class_name PlayerStats
 extends RefCounted
-## Bônus da run sobre os atributos do jogador e do barco, somados por atributo. Hoje vêm das
-## cartas equipadas; os upgrades permanentes (M8) vão somar aqui também.
+## Bônus da run sobre os atributos do jogador e do barco, somados por atributo: as cartas
+## equipadas e os upgrades permanentes.
 
 var _percents: Dictionary[StatModifier.Stat, float] = {}
 
 
 static func from_cards(cards: Array[CardData]) -> PlayerStats:
+	return from_sources(cards, {})
+
+
+## Soma as cartas e os upgrades permanentes por atributo: +20% de carta e +10% de upgrade dão
+## +30%.
+static func from_sources(
+	cards: Array[CardData], upgrade_percents: Dictionary[StatModifier.Stat, float]
+) -> PlayerStats:
 	var stats := PlayerStats.new()
 	for stat: StatModifier.Stat in StatModifier.Stat.values():
-		stats._percents[stat] = CardRules.total_percent(cards, stat)
+		stats._percents[stat] = (
+			CardRules.total_percent(cards, stat) + upgrade_percents.get(stat, 0.0)
+		)
 	return stats
 
 

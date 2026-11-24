@@ -1,7 +1,7 @@
 class_name RunState
 extends RefCounted
 ## Estado de uma run: noite atual, pedidos falhados, passe livre, resultado da última noite,
-## morte do jogador e cartas (pool restante, equipadas e rerolls).
+## morte do jogador, cartas (pool restante, equipadas e rerolls) e o que vale pontos no fim.
 ## Pertence à cena Run, que é recriada a cada run nova (decisão 0013).
 
 ## Falhas que encerram a run. Não precisam ser em noites seguidas.
@@ -18,6 +18,9 @@ var died: bool = false
 var card_pool: Array[CardData] = []
 var equipped: Array[CardData] = []
 var rerolls_left: int = REROLLS_PER_RUN
+## Noites cumpridas (com passe livre) e peixes entregues: viram pontos no fim da run.
+var nights_completed: int = 0
+var fish_delivered: int = 0
 
 
 ## A run acaba na terceira falha ou com a morte do jogador.
@@ -36,6 +39,8 @@ func finish_night(missing_fish: int) -> RunRules.Outcome:
 		free_pass_used = true
 	elif outcome == RunRules.Outcome.FAILED:
 		failures += 1
+	if outcome != RunRules.Outcome.FAILED:
+		nights_completed += 1
 	last_outcome = outcome
 	if not is_over():
 		night_number += 1
@@ -89,6 +94,16 @@ func use_reroll() -> bool:
 	return true
 
 
-## Bônus das cartas equipadas, para a próxima noite.
-func player_stats() -> PlayerStats:
-	return PlayerStats.from_cards(equipped)
+## Peixes guardados no freezer numa noite, inclusive a noite em que a run acabou.
+func add_delivered_fish(count: int) -> void:
+	fish_delivered += maxi(count, 0)
+
+
+## Pontos de meta-progressão ganhos até agora.
+func points() -> int:
+	return MetaRules.run_points(nights_completed, fish_delivered)
+
+
+## Bônus das cartas equipadas somados aos dos upgrades permanentes, para a próxima noite.
+func player_stats(upgrade_percents: Dictionary[StatModifier.Stat, float] = {}) -> PlayerStats:
+	return PlayerStats.from_sources(equipped, upgrade_percents)

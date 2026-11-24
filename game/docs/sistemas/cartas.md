@@ -39,7 +39,7 @@ Dar ao jogador boosts escolhidos ao longo da run, que mudam atributos do jogador
 - Quando aparece: antes da noite 1 e entre as noites (depois do amanhecer, com a tela preta), menos quando a run acaba. Com o pool vazio, a seleção é pulada. Enquanto ela está aberta, o mouse fica solto (`Run.menu_opened` e `menu_closed` → `Main`).
 
 ## Aplicação
-- A `Run` passa `state.player_stats()` para a `Night` (`player_stats`) antes de ela entrar na árvore. No `_ready`, a `Night` chama `Player.apply_stats()` e `BoatLighting.set_maintenance_time_multiplier()`. Os bônus valem a partir da noite seguinte à escolha, sobre os valores do inspetor (o jogador é recriado a cada noite).
+- A `Run` passa `state.player_stats(MetaProgress.upgrade_percents())` para a `Night` (cartas somadas aos upgrades permanentes; ver `docs/sistemas/meta.md`) (`player_stats`) antes de ela entrar na árvore. No `_ready`, a `Night` chama `Player.apply_stats()` e `BoatLighting.set_maintenance_time_multiplier()`. Os bônus valem a partir da noite seguinte à escolha, sobre os valores do inspetor (o jogador é recriado a cada noite).
 - `Player.apply_stats` repassa:
   - velocidade: `walk_speed`;
   - vida máxima: `Health.set_max_health` (começa a noite cheia);

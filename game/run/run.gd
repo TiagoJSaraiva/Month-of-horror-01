@@ -24,6 +24,8 @@ var state := RunState.new()
 var _night: Night
 var _selection: Array[CardData] = []
 var _rng := RandomNumberGenerator.new()
+## Os pontos da run são pagos uma vez só, no fim (acordo quebrado, morte ou saída).
+var _points_paid: bool = false
 
 @onready var _hud: Hud = $Hud
 @onready var _night_viewport: SubViewport = $LowResView/SubViewport
@@ -77,7 +79,7 @@ func _start_night() -> void:
 	_night.night_number = state.night_number
 	_night.table_note_text = note_lines.text_for(kind)
 	_night.table_note_pin = RunRules.pin_for(kind)
-	_night.player_stats = state.player_stats()
+	_night.player_stats = state.player_stats(MetaProgress.upgrade_percents())
 	_night.night_finished.connect(_on_night_night_finished)
 	_night.player_died.connect(_on_night_player_died)
 	_night_viewport.add_child(_night)
@@ -106,6 +108,7 @@ func _on_night_night_finished(order: NightOrder) -> void:
 	_hud.hide()
 	await _transition.play_dawn()
 	await get_tree().create_timer(dawn_hold_seconds).timeout
+	state.add_delivered_fish(order.delivered_total())
 	state.finish_night(order.missing_total())
 	if state.is_over():
 		_show_run_over(DEAL_BROKEN_TITLE, note_lines.run_over)
@@ -119,6 +122,7 @@ func _on_night_night_finished(order: NightOrder) -> void:
 
 func _on_night_player_died() -> void:
 	_hud.hide()
+	state.add_delivered_fish(_night.order.delivered_total())
 	state.die()
 	await _transition.cover()
 	_show_run_over(DEATH_TITLE, note_lines.death)
@@ -126,5 +130,15 @@ func _on_night_player_died() -> void:
 
 func _show_run_over(title: String, message: String) -> void:
 	var nights: int = RunRules.nights_survived(state.night_number, state.died)
-	_run_over_screen.show_summary(title, message, nights)
+	_run_over_screen.show_summary(title, message, nights, _pay_points())
 	run_over.emit()
+
+
+# Paga os pontos da run no MetaProgress, uma vez só. Devolve quanto foi pago.
+func _pay_points() -> int:
+	if _points_paid:
+		return 0
+	_points_paid = true
+	var points: int = state.points()
+	MetaProgress.add_points(points)
+	return points

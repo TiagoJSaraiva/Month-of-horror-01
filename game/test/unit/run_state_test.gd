@@ -66,3 +66,15 @@ func test_death_ends_the_run_on_the_current_night() -> void:
 	assert_bool(_state.is_over()).is_true()
 	assert_int(_state.night_number).is_equal(2)
 	assert_int(_state.failures).is_equal(0)
+
+
+func test_points_count_completed_nights_and_delivered_fish() -> void:
+	_state.finish_night(0)
+	_state.finish_night(1)
+	_state.finish_night(3)
+	_state.add_delivered_fish(4)
+	_state.add_delivered_fish(2)
+
+	# Cumprida, passe livre (conta) e falha (não conta): 2 noites e 6 peixes.
+	assert_int(_state.nights_completed).is_equal(2)
+	assert_int(_state.points()).is_equal(26)
