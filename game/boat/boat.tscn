@@ -96,6 +96,6 @@ size = Vector3(0.8, 0.75, 1.2)
 material = SubResource("StandardMaterial3D_table")
 
 [node name="WallClock" type="CSGBox3D" parent="Cabin"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9, 2.75, -6.025)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.15, 2.75, -6.025)
 size = Vector3(0.4, 0.4, 0.05)
 material = SubResource("StandardMaterial3D_clock")
