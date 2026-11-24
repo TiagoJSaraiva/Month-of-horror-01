@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="CardData" format=3]
+
+[ext_resource type="Script" path="res://cards/card_data.gd" id="1_card_data"]
+[ext_resource type="Script" path="res://cards/stat_modifier.gd" id="2_stat_modifier"]
+
+[sub_resource type="Resource" id="StatModifier_1"]
+script = ExtResource("2_stat_modifier")
+stat = 0
+percent = 20.0
+
+[resource]
+script = ExtResource("1_card_data")
+id = &"tough_skin"
+display_name = "Tough Skin"
+description = "+20% maximum health."
+rarity = 0
+modifiers = Array[ExtResource("2_stat_modifier")]([SubResource("StatModifier_1")])

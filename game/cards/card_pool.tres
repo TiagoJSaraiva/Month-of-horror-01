@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="CardPool" format=3]
+
+[ext_resource type="Script" path="res://cards/card_pool.gd" id="1_card_pool"]
+[ext_resource type="Script" path="res://cards/card_data.gd" id="20_card_data"]
+[ext_resource type="Resource" path="res://cards/data/tough_skin.tres" id="2_tough_skin"]
+[ext_resource type="Resource" path="res://cards/data/steady_hands.tres" id="3_steady_hands"]
+[ext_resource type="Resource" path="res://cards/data/hollow_points.tres" id="4_hollow_points"]
+[ext_resource type="Resource" path="res://cards/data/spare_cells.tres" id="5_spare_cells"]
+[ext_resource type="Resource" path="res://cards/data/extended_cylinder.tres" id="6_extended_cylinder"]
+[ext_resource type="Resource" path="res://cards/data/sea_legs.tres" id="7_sea_legs"]
+[ext_resource type="Resource" path="res://cards/data/double_catch.tres" id="8_double_catch"]
+[ext_resource type="Resource" path="res://cards/data/quick_fix.tres" id="9_quick_fix"]
+[ext_resource type="Resource" path="res://cards/data/gunslinger.tres" id="10_gunslinger"]
+
+[resource]
+script = ExtResource("1_card_pool")
+cards = Array[ExtResource("20_card_data")]([ExtResource("2_tough_skin"), ExtResource("3_steady_hands"), ExtResource("4_hollow_points"), ExtResource("5_spare_cells"), ExtResource("6_extended_cylinder"), ExtResource("7_sea_legs"), ExtResource("8_double_catch"), ExtResource("9_quick_fix"), ExtResource("10_gunslinger")])

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="CardData" format=3]
+
+[ext_resource type="Script" path="res://cards/card_data.gd" id="1_card_data"]
+[ext_resource type="Script" path="res://cards/stat_modifier.gd" id="2_stat_modifier"]
+
+[sub_resource type="Resource" id="StatModifier_1"]
+script = ExtResource("2_stat_modifier")
+stat = 6
+percent = 50.0
+
+[resource]
+script = ExtResource("1_card_data")
+id = &"double_catch"
+display_name = "Double Catch"
+description = "50% chance that a caught fish comes in pairs."
+rarity = 2
+modifiers = Array[ExtResource("2_stat_modifier")]([SubResource("StatModifier_1")])
