@@ -1,9 +1,11 @@
 class_name Night
 extends Node3D
 ## Uma noite de pesca: gera o pedido, entrega-o ao diário do jogador, põe o bilhete na mesa,
-## registra os peixes guardados no freezer e encerra a ação dos personagens ao amanhecer.
+## registra os peixes guardados no freezer e encerra a ação dos personagens ao amanhecer ou
+## com a morte do jogador.
 
 signal night_finished(order: NightOrder)
+signal player_died
 
 ## Número da noite na run. A Run define este valor antes de a noite começar.
 @export var night_number: int = 1
@@ -18,6 +20,8 @@ var table_note_text: String = ""
 var table_note_pin: RunRules.Pin = RunRules.Pin.BLUE
 
 var _rng := RandomNumberGenerator.new()
+## A noite já terminou, pelo amanhecer ou pela morte. Só o primeiro fim vale.
+var _ended: bool = false
 
 @onready var _clock: NightClock = $NightClock
 @onready var _actors: Node3D = $Actors
@@ -36,14 +40,31 @@ func _ready() -> void:
 	_clock.dawn_reached.connect(_on_night_clock_dawn_reached)
 	_freezer.fish_stored.connect(_on_freezer_fish_stored)
 	_player.hands.item_dropped.connect(_on_hands_item_dropped)
+	_player.health.died.connect(_on_player_health_died)
 
 
 func _on_night_clock_dawn_reached() -> void:
-	# Só os personagens e a manutenção param: mar, céu e balanço continuam, como pede o
-	# amanhecer. Sem isso, o gerador ainda poderia quebrar na tela do amanhecer.
+	if _ended:
+		return
+	_end()
+	night_finished.emit(order)
+
+
+func _on_player_health_died() -> void:
+	if _ended:
+		return
+	_end()
+	# O relógio para junto: o amanhecer não pode chegar durante a tela de morte.
+	_clock.process_mode = Node.PROCESS_MODE_DISABLED
+	player_died.emit()
+
+
+# Só os personagens e a manutenção param: mar, céu e balanço continuam. Sem isso, o gerador
+# ainda poderia quebrar na tela do amanhecer.
+func _end() -> void:
+	_ended = true
 	_actors.process_mode = Node.PROCESS_MODE_DISABLED
 	_lighting.process_mode = Node.PROCESS_MODE_DISABLED
-	night_finished.emit(order)
 
 
 func _on_freezer_fish_stored(fish: FishData, amount: int) -> void:

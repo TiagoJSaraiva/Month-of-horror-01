@@ -1,7 +1,7 @@
 # Noite
 
 ## Propósito
-Controlar o tempo de uma noite (23:00 às 06:00), gerar o pedido no início e encerrar a ação dos personagens ao amanhecer.
+Controlar o tempo de uma noite (23:00 às 06:00), gerar o pedido no início e encerrar a ação dos personagens ao amanhecer ou com a morte do jogador.
 
 ## Componentes
 - `night/night.tscn` / `night/night.gd`: `Night`. No `_ready`, gera o pedido (`OrderRules`, `NightOrder`). Ao amanhecer, desliga o processamento de `Actors` e emite `night_finished(order)`.
@@ -18,13 +18,15 @@ Controlar o tempo de uma noite (23:00 às 06:00), gerar o pedido no início e en
 - A noite dura 7 min reais (`duration_seconds` = 420 no `NightClock`), que valem as 7 horas do jogo. Para testar, reduza esse valor no inspetor.
 - `night_number` (`@export` na `Night`, 1 por padrão) define o tamanho do pedido. A `Run` preenche esse valor e o bilhete da mesa (`table_note_text`, `table_note_pin`) antes de a noite entrar na árvore.
 - `fish_species` (`@export` na `Night`) lista as espécies sorteáveis no pedido.
-- Amanhecer: `Actors` passa a `PROCESS_MODE_DISABLED`, então o jogador para de andar e de olhar. Mar, céu e balanço continuam.
+- Amanhecer: `Actors` e a `Lighting` do barco passam a `PROCESS_MODE_DISABLED`, então o jogador para de andar e de olhar. Mar, céu e balanço continuam.
+- Morte do jogador: o mesmo congelamento, e o `NightClock` também para. Só o primeiro fim vale: depois da morte não há amanhecer, e vice-versa.
 - Céu provisório até o M9: fica na paleta da noite até as 05:00 (`dawn_start` = 6/7) e chega à do amanhecer às 06:00, com suavização. O `SkyCycle` só reescreve o céu quando a mistura muda, porque cada mudança refaz a iluminação do céu. Ele escreve valores absolutos, já que o `Environment` é compartilhado entre noites.
 - Lua: nasce a leste (+X) a 10° de elevação, passa pela popa (+Z) a 55° no meio da noite e se põe a oeste (-X), de novo a 10°. Ainda não há estrelas.
 
 ## Sinais
 - `NightClock.dawn_reached` → `Night._on_night_clock_dawn_reached`.
 - `Night.night_finished(order: NightOrder)` → `Run._on_night_night_finished`: amanhecer, avaliação do pedido e próxima noite (ver `docs/sistemas/run.md`).
+- `Player.health.died` → `Night._on_player_health_died` → `Night.player_died` → `Run._on_night_player_died`: fim de run por morte.
 
 ## Testes
 - `test/unit/night_time_rules_test.gd`: progresso e limites, duração zero, 23:00, 02:30 e 06:00, ponteiros às 06:00 e às 23:30.

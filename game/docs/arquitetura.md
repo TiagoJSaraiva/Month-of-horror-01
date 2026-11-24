@@ -60,6 +60,7 @@ _Nenhum._
 ## Sinais entre sistemas
 - `NightClock.dawn_reached` → `Night._on_night_clock_dawn_reached` — congela `Actors` e a `Lighting` do barco e encerra a noite.
 - `Night.night_finished(order)` → `Run._on_night_night_finished` — amanhecer, avaliação do pedido e próxima noite ou fim de run.
+- `Player.health.died` → `Night._on_player_health_died` → `Night.player_died` → `Run._on_night_player_died` — a morte congela a noite e encerra a run com "YOU DIED".
 - `Run.run_over` → `Main._on_run_run_over` — solta o mouse para a tela de fim de run.
 - `RunOverScreen.new_run_requested` → `Run.new_run_requested` → `Main._on_run_new_run_requested` — troca a `Run` por uma nova.
 - `NightOrder.changed` → `Journal._refresh` — o diário reescreve o texto a cada entrega. A ligação é feita em `Journal.display()`, que a `Night` chama via `Player.journal`.

@@ -1,10 +1,14 @@
 class_name Run
 extends Node
 ## Uma run: cria cada noite, avalia o pedido no amanhecer, passa para a próxima noite e
-## encerra a run na terceira falha. As regras ficam em RunState e RunRules (decisão 0013).
+## encerra a run na terceira falha ou com a morte do jogador. As regras ficam em RunState e
+## RunRules (decisão 0013).
 
 signal run_over
 signal new_run_requested
+
+const DEAL_BROKEN_TITLE := "THE DEAL IS OFF"
+const DEATH_TITLE := "YOU DIED"
 
 @export var night_scene: PackedScene
 @export var note_lines: NoteLines
@@ -38,6 +42,7 @@ func _start_night() -> void:
 	_night.table_note_text = note_lines.text_for(kind)
 	_night.table_note_pin = RunRules.pin_for(kind)
 	_night.night_finished.connect(_on_night_night_finished)
+	_night.player_died.connect(_on_night_player_died)
 	_night_viewport.add_child(_night)
 	_hud.reset()
 	_transition.reveal("NIGHT %d" % state.night_number)
@@ -49,10 +54,22 @@ func _on_night_night_finished(order: NightOrder) -> void:
 	await get_tree().create_timer(dawn_hold_seconds).timeout
 	state.finish_night(order.missing_total())
 	if state.is_over():
-		_run_over_screen.show_summary(note_lines.run_over, state.night_number)
-		run_over.emit()
+		_show_run_over(DEAL_BROKEN_TITLE, note_lines.run_over)
 		return
 	await _transition.cover()
 	# A noite antiga sai no fim do frame; a nova entra já coberta pela tela preta.
 	_night.queue_free()
 	_start_night()
+
+
+func _on_night_player_died() -> void:
+	_hud.hide()
+	state.die()
+	await _transition.cover()
+	_show_run_over(DEATH_TITLE, note_lines.death)
+
+
+func _show_run_over(title: String, message: String) -> void:
+	var nights: int = RunRules.nights_survived(state.night_number, state.died)
+	_run_over_screen.show_summary(title, message, nights)
+	run_over.emit()

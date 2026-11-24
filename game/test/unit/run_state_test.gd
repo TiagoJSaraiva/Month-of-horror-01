@@ -56,3 +56,13 @@ func test_last_outcome_is_remembered() -> void:
 	_state.finish_night(2)
 
 	assert_int(_state.last_outcome).is_equal(RunRules.Outcome.FAILED)
+
+
+func test_death_ends_the_run_on_the_current_night() -> void:
+	_state.finish_night(0)
+
+	_state.die()
+
+	assert_bool(_state.is_over()).is_true()
+	assert_int(_state.night_number).is_equal(2)
+	assert_int(_state.failures).is_equal(0)

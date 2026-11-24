@@ -10,3 +10,4 @@ free_pass = "You're lucky I'm in a good mood, so I'll overlook the fact that you
 first_warning = "You broke our deal. Do it 2 more times and we'll gut you like a fish."
 last_warning = "You broke our deal again. One more time and you know what will happen."
 run_over = "You broke our deal for the last time."
+death = "Dead men don't fill orders."

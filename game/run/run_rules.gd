@@ -37,3 +37,8 @@ static func pin_for(kind: NoteKind) -> Pin:
 		NoteKind.LAST_WARNING:
 			return Pin.RED
 	return Pin.BLUE
+
+
+## Noites que o jogador sobreviveu. Na morte, a noite em que ele morreu não conta.
+static func nights_survived(night_number: int, died: bool) -> int:
+	return maxi(night_number - 1, 0) if died else night_number

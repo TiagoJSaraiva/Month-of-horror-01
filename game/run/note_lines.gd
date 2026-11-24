@@ -9,6 +9,8 @@ extends Resource
 @export_multiline var first_warning: String
 @export_multiline var last_warning: String
 @export_multiline var run_over: String
+## Fala do fim de run quando o jogador morre.
+@export_multiline var death: String
 
 
 func text_for(kind: RunRules.NoteKind) -> String:

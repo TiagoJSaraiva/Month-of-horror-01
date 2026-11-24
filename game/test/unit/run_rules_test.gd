@@ -57,3 +57,12 @@ func test_note_lines_pick_the_text_for_each_kind() -> void:
 
 	assert_str(lines.text_for(RunRules.NoteKind.INTRO)).is_equal("intro")
 	assert_str(lines.text_for(RunRules.NoteKind.LAST_WARNING)).is_equal("last")
+
+
+func test_broken_deal_counts_the_last_night_as_survived() -> void:
+	assert_int(RunRules.nights_survived(3, false)).is_equal(3)
+
+
+func test_death_does_not_count_the_night_it_happened() -> void:
+	assert_int(RunRules.nights_survived(3, true)).is_equal(2)
+	assert_int(RunRules.nights_survived(1, true)).is_equal(0)
