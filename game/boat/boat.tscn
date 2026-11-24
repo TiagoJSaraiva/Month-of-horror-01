@@ -147,7 +147,7 @@ item = ExtResource("5_spare_bulb")
 [node name="Lighting" parent="." instance=ExtResource("2_boat_lighting")]
 
 [node name="BatteryBox" parent="." instance=ExtResource("6_battery_box")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.9, 1.75, -5.2)
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0.9, 1.75, -5.2)
 
 [node name="Navigation" type="NavigationRegion3D" parent="."]
 navigation_mesh = SubResource("NavigationMesh_boat")

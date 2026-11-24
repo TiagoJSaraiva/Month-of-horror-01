@@ -82,22 +82,22 @@ fishman_scene = ExtResource("19_fishman")
 [node name="ClimbPoints" type="Node3D" parent="Actors/FishmanSpawner"]
 
 [node name="PortFore" type="Marker3D" parent="Actors/FishmanSpawner/ClimbPoints"]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -2, 1, 1.5)
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -2, 1, 1.5)
 
 [node name="PortMid" type="Marker3D" parent="Actors/FishmanSpawner/ClimbPoints"]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -2, 1, 3)
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -2, 1, 3)
 
 [node name="PortAft" type="Marker3D" parent="Actors/FishmanSpawner/ClimbPoints"]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -2, 1, 5.2)
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -2, 1, 5.2)
 
 [node name="StarboardFore" type="Marker3D" parent="Actors/FishmanSpawner/ClimbPoints"]
-transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 2, 1, 1.5)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 2, 1, 1.5)
 
 [node name="StarboardMid" type="Marker3D" parent="Actors/FishmanSpawner/ClimbPoints"]
-transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 2, 1, 3)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 2, 1, 3)
 
 [node name="StarboardAft" type="Marker3D" parent="Actors/FishmanSpawner/ClimbPoints"]
-transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 2, 1, 5.2)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 2, 1, 5.2)
 
 [node name="Items" type="Node3D" parent="."]
 

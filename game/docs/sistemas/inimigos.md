@@ -44,6 +44,6 @@ Ameaçar o jogador quando o barco fica escuro. No MVP: o peixe-homem (M5) e o vo
 - `test/unit/spawn_rules_test.gd`: nada no limiar ou acima, mínimo no escuro total, quase o máximo logo abaixo do limiar, intervalo menor quanto mais escuro, escuridão de 0 a 1.
 - `test/unit/fishman_brain_test.gd`: sobe e persegue, prepara perto, acerta se o alvo continua perto, erra se ele se afastou, recupera e volta, atordoamento interrompe a preparação e dura o tempo certo, imunidade, sem atordoar subindo ou fugindo, foge com a luz, morto ignora tudo.
 - `test/scenes/boat_navigation_test.gd`: depois de montada a malha, há caminho do convés aberto até dentro da cabine, e ele passa pelo vão da porta.
-- `test/scenes/fishman_chase_test.gd`: um peixe-homem que sobe pela amurada atravessa o convés e a porta e tira vida do jogador dentro da cabine.
+- `test/scenes/fishman_chase_test.gd`: um peixe-homem começa na água, do lado de fora do casco, sobe pela amurada, atravessa o convés e a porta e tira vida do jogador dentro da cabine.
 - `test/scenes/flashlight_stun_test.gd`: com a lanterna acesa apontada para o rosto, o peixe-homem que vem pelo convés fica atordoado.
 - Conferidos com captura de tela: peixe-homem subindo pela amurada, se aproximando no convés escuro com os olhos brilhando e atordoado de olhos apagados sob a lanterna.
