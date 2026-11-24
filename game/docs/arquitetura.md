@@ -6,7 +6,7 @@ Visão do projeto como ele está **agora**. Atualize no mesmo passo de qualquer 
 Roguelite noturno de pesca e sobrevivência em primeira pessoa, para Windows, com Forward+ (decisão 0010). A cada noite (23:00 às 06:00, 7 min reais) o jogador cumpre um pedido de peixes num barco ancorado, mantém a iluminação e sobrevive a inimigos. Entre as noites, escolhe cartas de boost. A run acaba com 3 pedidos falhos ou com a morte.
 
 - Escopo, regras combinadas e roteiro de marcos: `docs/escopo-mvp.md`.
-- Estado da run: decisão 0013. Câmera e balanço do barco: decisão 0008. Visual retrô em baixa resolução: decisão 0009. Assets e registro de IA: decisão 0011 e `docs/assets.md`. Comunicação do mundo com o HUD: decisão 0012.
+- Estado da run: decisão 0013. Navegação dos inimigos: decisão 0014. Câmera e balanço do barco: decisão 0008. Visual retrô em baixa resolução: decisão 0009. Assets e registro de IA: decisão 0011 e `docs/assets.md`. Comunicação do mundo com o HUD: decisão 0012.
 
 ## Organização de pastas
 Organização por feature: cada cena fica junto do seu script e dos recursos exclusivos dela.
@@ -44,7 +44,7 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
   - `Camera3D` → `Revolver` (`weapons/revolver.tscn`), a arma da mão direita, com `Aim` (RayCast), `Model` e `MuzzleFlash`.
 
   Jogador em primeira pessoa (ver `docs/sistemas/movimento.md`). Mãos em `docs/sistemas/maos.md`, diário em `docs/sistemas/pedido.md`, vara em `docs/sistemas/pesca.md` e lanterna em `docs/sistemas/iluminacao.md`.
-- `boat/boat.tscn` → `Boat` (`Node3D`) → `Hull` e `Cabin` (`CSGCombiner3D` com colisão, camada `world`). Barco greybox de 14×5 m com o convés em y = 1. A cabine fica na proa, com a porta voltada para a popa. Dentro dela ficam a mesa (caixa CSG; decisão 0011), o `Freezer` (cena `boat/freezer.tscn`, `Interactable`) e, dos dois lados da porta, as caixas `FuelCans` e `SpareBulbs` (`SupplyCrate`). Na mesa fica a `BatteryBox`, a caixa de pilhas da lanterna. O `Hull` tem 4 postes nas amuradas para as lâmpadas. O filho `Lighting` (`lighting/boat_lighting.tscn`) tem o gerador na popa, as 6 lâmpadas, as luzes de emergência e o sorteio de falhas (ver `docs/sistemas/iluminacao.md`).
+- `boat/boat.tscn` → `Boat` (`Node3D`) → `Hull` e `Cabin` (`CSGCombiner3D` com colisão, camada `world`). Barco greybox de 14×5 m com o convés em y = 1. A cabine fica na proa, com a porta voltada para a popa. Dentro dela ficam a mesa (caixa CSG; decisão 0011), o `Freezer` (cena `boat/freezer.tscn`, `Interactable`) e, dos dois lados da porta, as caixas `FuelCans` e `SpareBulbs` (`SupplyCrate`). Na mesa fica a `BatteryBox`, a caixa de pilhas da lanterna. O `Hull` tem 4 postes nas amuradas para as lâmpadas. O `Boat` está no grupo `boat_navigation`, e o filho `Navigation` (`BoatNavigation`) monta a malha de navegação ao carregar (decisão 0014; ver `docs/sistemas/inimigos.md`). O filho `Lighting` (`lighting/boat_lighting.tscn`) tem o gerador na popa, as 6 lâmpadas, as luzes de emergência e o sorteio de falhas (ver `docs/sistemas/iluminacao.md`).
 - `night/night.tscn` → `Night` (`Node3D`, gera o pedido e encerra a noite; ver `docs/sistemas/noite.md`):
   - `NightClock`, o tempo da noite;
   - `WorldEnvironment` (`SkyCycle`) com `night/night_environment.tres` (céu procedural e neblina), que clareia no amanhecer;

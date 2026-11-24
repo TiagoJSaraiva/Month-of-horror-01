@@ -6,6 +6,17 @@
 [ext_resource type="Resource" path="res://items/data/fuel_can.tres" id="4_fuel_can"]
 [ext_resource type="Resource" path="res://items/data/spare_bulb.tres" id="5_spare_bulb"]
 [ext_resource type="PackedScene" path="res://flashlight/battery_box.tscn" id="6_battery_box"]
+[ext_resource type="Script" path="res://boat/boat_navigation.gd" id="7_boat_navigation"]
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_boat"]
+geometry_parsed_geometry_type = 1
+geometry_source_geometry_mode = 1
+geometry_source_group_name = &"boat_navigation"
+cell_size = 0.1
+cell_height = 0.1
+agent_height = 1.8
+agent_radius = 0.3
+agent_max_climb = 0.3
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hull"]
 albedo_color = Color(0.24, 0.26, 0.28, 1)
@@ -22,7 +33,7 @@ albedo_color = Color(0.72, 0.72, 0.68, 1)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_table"]
 albedo_color = Color(0.4, 0.27, 0.16, 1)
 
-[node name="Boat" type="Node3D"]
+[node name="Boat" type="Node3D" groups=["boat_navigation"]]
 
 [node name="Hull" type="CSGCombiner3D" parent="."]
 use_collision = true
@@ -137,3 +148,7 @@ item = ExtResource("5_spare_bulb")
 
 [node name="BatteryBox" parent="." instance=ExtResource("6_battery_box")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.9, 1.75, -5.2)
+
+[node name="Navigation" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_boat")
+script = ExtResource("7_boat_navigation")

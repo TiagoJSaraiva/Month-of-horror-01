@@ -114,6 +114,11 @@ pause={
 3d_physics/layer_4="water"
 3d_physics/layer_6="hurtbox"
 
+[navigation]
+
+3d/default_cell_size=0.1
+3d/default_cell_height=0.1
+
 [physics]
 
 3d/physics_engine="Jolt Physics"
