@@ -1,21 +1,24 @@
 class_name RunOverScreen
 extends CanvasLayer
 ## Tela de fim de run: o motivo (acordo quebrado ou morte), a fala final dos clientes, quantas
-## noites o jogador sobreviveu, os pontos ganhos e o botão de nova run. Feita com componentes
-## nativos do Godot: função antes de design.
+## noites o jogador sobreviveu, os pontos ganhos e os botões de nova run e de menu principal.
+## Feita com componentes nativos do Godot: função antes de design.
 
 signal new_run_requested
+signal main_menu_requested
 
 @onready var _title: Label = %Title
 @onready var _message: Label = %Message
 @onready var _nights: Label = %Nights
 @onready var _points: Label = %Points
 @onready var _new_run_button: Button = %NewRunButton
+@onready var _main_menu_button: Button = %MainMenuButton
 
 
 func _ready() -> void:
 	hide()
 	_new_run_button.pressed.connect(new_run_requested.emit)
+	_main_menu_button.pressed.connect(main_menu_requested.emit)
 
 
 func show_summary(title: String, message: String, nights_survived: int, points: int) -> void:

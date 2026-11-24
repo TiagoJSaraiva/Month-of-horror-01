@@ -6,6 +6,7 @@ extends Node
 
 signal run_over
 signal new_run_requested
+signal main_menu_requested
 ## Um menu (a seleção de cartas) abriu ou fechou: a Main solta ou recaptura o mouse.
 signal menu_opened
 signal menu_closed
@@ -38,6 +39,7 @@ func _ready() -> void:
 	_rng.randomize()
 	state.start_card_pool(card_pool.cards)
 	_run_over_screen.new_run_requested.connect(new_run_requested.emit)
+	_run_over_screen.main_menu_requested.connect(main_menu_requested.emit)
 	_card_screen.card_chosen.connect(_on_card_screen_card_chosen)
 	_card_screen.card_replaced.connect(_on_card_screen_card_replaced)
 	_card_screen.refused.connect(_close_cards)

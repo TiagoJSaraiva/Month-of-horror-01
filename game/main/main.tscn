@@ -2,7 +2,13 @@
 
 [ext_resource type="Script" path="res://main/main.gd" id="1_main"]
 [ext_resource type="PackedScene" path="res://run/run.tscn" id="2_run"]
+[ext_resource type="PackedScene" path="res://ui/main_menu/main_menu.tscn" id="3_main_menu"]
+[ext_resource type="PackedScene" path="res://ui/upgrades/upgrades_screen.tscn" id="4_upgrades_screen"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_main")
 run_scene = ExtResource("2_run")
+
+[node name="MainMenu" parent="." instance=ExtResource("3_main_menu")]
+
+[node name="UpgradesScreen" parent="." instance=ExtResource("4_upgrades_screen")]
