@@ -15,9 +15,6 @@ albedo_color = Color(0.85, 0.88, 0.9, 1)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_table"]
 albedo_color = Color(0.4, 0.27, 0.16, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_clock"]
-albedo_color = Color(0.85, 0.7, 0.2, 1)
-
 [node name="Boat" type="Node3D"]
 
 [node name="Hull" type="CSGCombiner3D" parent="."]
@@ -94,8 +91,3 @@ material = SubResource("StandardMaterial3D_freezer")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.05, 1.375, -4.8)
 size = Vector3(0.8, 0.75, 1.2)
 material = SubResource("StandardMaterial3D_table")
-
-[node name="WallClock" type="CSGBox3D" parent="Cabin"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.15, 2.75, -6.025)
-size = Vector3(0.4, 0.4, 0.05)
-material = SubResource("StandardMaterial3D_clock")

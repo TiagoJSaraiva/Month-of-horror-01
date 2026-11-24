@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://fish/fish_data.gd" id="7_fish_data"]
 [ext_resource type="Resource" path="res://fish/data/mackerel.tres" id="8_mackerel"]
 [ext_resource type="Resource" path="res://fish/data/swordfish.tres" id="9_swordfish"]
+[ext_resource type="PackedScene" path="res://night/wall_clock.tscn" id="10_wall_clock"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sea"]
 albedo_color = Color(0.015, 0.035, 0.05, 1)
@@ -30,6 +31,10 @@ script = ExtResource("6_night_clock")
 environment = ExtResource("1_environment")
 
 [node name="Boat" parent="." instance=ExtResource("2_boat")]
+
+[node name="WallClock" parent="." node_paths=PackedStringArray("night_clock") instance=ExtResource("10_wall_clock")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.15, 2.75, -6.035)
+night_clock = NodePath("../NightClock")
 
 [node name="Actors" type="Node3D" parent="."]
 

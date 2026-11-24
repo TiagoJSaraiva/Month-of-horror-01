@@ -26,11 +26,12 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
 - `main/main.tscn` (cena principal) → `Main` (`Node`, captura o mouse) → `LowResView` (`SubViewportContainer`, `stretch_shrink` 2, filtro nearest) → `SubViewport` (áudio 3D ligado) → `Night` (`%Night`). O 3D renderiza em 576×324, porque o stretch `canvas_items` fixa a base lógica em 1152×648, e é ampliado sem filtro (decisão 0009). A interface fica em irmãs de `LowResView`, em resolução nativa; hoje só `DawnOverlay`.
 - `ui/dawn_overlay/dawn_overlay.tscn` → `DawnOverlay` (`CanvasLayer`) → `Shade` (`ColorRect`) e `Message` (`Label`). `play()` escurece a tela e mostra "6:00 AM / The night is over.".
 - `player/player.tscn` → `Player` (`CharacterBody3D`) → `Head` (`MouseLook`) → `Camera3D`. Jogador em primeira pessoa (ver `docs/sistemas/movimento.md`).
-- `boat/boat.tscn` → `Boat` (`Node3D`) → `Hull` e `Cabin` (`CSGCombiner3D` com colisão, camada `world`). Barco greybox de 14×5 m com o convés em y = 1. A cabine fica na proa, com a porta voltada para a popa, e dentro dela há caixas no lugar do freezer, da mesa e do relógio (decisão 0011).
+- `boat/boat.tscn` → `Boat` (`Node3D`) → `Hull` e `Cabin` (`CSGCombiner3D` com colisão, camada `world`). Barco greybox de 14×5 m com o convés em y = 1. A cabine fica na proa, com a porta voltada para a popa, e dentro dela há caixas no lugar do freezer e da mesa (decisão 0011).
 - `night/night.tscn` → `Night` (`Node3D`, gera o pedido e encerra a noite; ver `docs/sistemas/noite.md`):
   - `NightClock`, o tempo da noite;
   - `WorldEnvironment` com `night/night_environment.tres` (céu procedural noturno e neblina);
   - `Boat`;
+  - `WallClock`, o relógio de ponteiros da cabine, ligado ao `NightClock`;
   - `Actors`, com tudo o que congela no amanhecer. Por enquanto só o `Player`, que começa na cabine olhando para a porta;
   - `TempLights`, luzes provisórias até o M4;
   - `OutsideWorld` (`BoatSway`), com `Sea` (plano escuro provisório) e `Moon` (`DirectionalLight3D`). Tudo o que fica fora do barco entra aqui (decisão 0008; ver `docs/sistemas/balanco.md`).

@@ -1,0 +1,61 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://night/wall_clock.gd" id="1_wall_clock"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_face"]
+albedo_color = Color(0.9, 0.87, 0.78, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ink"]
+albedo_color = Color(0.05, 0.05, 0.05, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_face"]
+material = SubResource("StandardMaterial3D_face")
+size = Vector3(0.4, 0.4, 0.03)
+
+[sub_resource type="BoxMesh" id="BoxMesh_mark"]
+material = SubResource("StandardMaterial3D_ink")
+size = Vector3(0.03, 0.06, 0.01)
+
+[sub_resource type="BoxMesh" id="BoxMesh_hour_hand"]
+material = SubResource("StandardMaterial3D_ink")
+size = Vector3(0.025, 0.11, 0.01)
+
+[sub_resource type="BoxMesh" id="BoxMesh_minute_hand"]
+material = SubResource("StandardMaterial3D_ink")
+size = Vector3(0.016, 0.16, 0.01)
+
+[node name="WallClock" type="Node3D"]
+script = ExtResource("1_wall_clock")
+
+[node name="Face" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_face")
+
+[node name="Mark12" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.155, 0.02)
+mesh = SubResource("BoxMesh_mark")
+
+[node name="Mark3" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, -1, 0, 1, 0, 0, 0, 0, 1, 0.155, 0, 0.02)
+mesh = SubResource("BoxMesh_mark")
+
+[node name="Mark6" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.155, 0.02)
+mesh = SubResource("BoxMesh_mark")
+
+[node name="Mark9" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, -1, 0, 1, 0, 0, 0, 0, 1, -0.155, 0, 0.02)
+mesh = SubResource("BoxMesh_mark")
+
+[node name="HourHand" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.022)
+
+[node name="Mesh" type="MeshInstance3D" parent="HourHand"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.045, 0)
+mesh = SubResource("BoxMesh_hour_hand")
+
+[node name="MinuteHand" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.03)
+
+[node name="Mesh" type="MeshInstance3D" parent="MinuteHand"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.07, 0)
+mesh = SubResource("BoxMesh_minute_hand")
