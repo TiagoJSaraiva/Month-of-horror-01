@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://main/main.gd" id="1_main"]
 [ext_resource type="PackedScene" path="res://night/night.tscn" id="2_night"]
+[ext_resource type="PackedScene" path="res://ui/dawn_overlay/dawn_overlay.tscn" id="3_dawn_overlay"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_main")
@@ -20,3 +21,6 @@ stretch_shrink = 2
 audio_listener_enable_3d = true
 
 [node name="Night" parent="LowResView/SubViewport" instance=ExtResource("2_night")]
+unique_name_in_owner = true
+
+[node name="DawnOverlay" parent="." instance=ExtResource("3_dawn_overlay")]

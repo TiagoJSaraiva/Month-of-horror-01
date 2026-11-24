@@ -1,11 +1,15 @@
 class_name Main
 extends Node
-## Cena raiz do jogo. Por enquanto só controla a captura do mouse; o menu de pausa (M8)
-## assume essa função.
+## Cena raiz do jogo: liga a noite à interface e controla a captura do mouse.
+## O menu de pausa (M8) vai assumir a captura do mouse.
+
+@onready var _night: Night = %Night
+@onready var _dawn_overlay: DawnOverlay = $DawnOverlay
 
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	_night.night_finished.connect(_on_night_night_finished)
 
 
 # Usa _input, e não _unhandled_input, porque o SubViewportContainer consome os cliques
@@ -20,3 +24,7 @@ func _input(event: InputEvent) -> void:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		# O clique que recaptura o mouse não deve virar ação de jogo (tiro, pesca).
 		get_viewport().set_input_as_handled()
+
+
+func _on_night_night_finished(_order: NightOrder) -> void:
+	_dawn_overlay.play()
