@@ -1,8 +1,8 @@
 # Status
 
 ## Onde paramos
-- MVP em andamento, seguindo o roteiro de `docs/escopo-mvp.md`. Feitos M0 a M8: fundação, noite e pedido, pesca, loop da run, iluminação, combate, tempestade, cartas e dificuldade, meta e menus.
-- Jogável hoje, tudo em greybox:
+- MVP em andamento, seguindo o roteiro de `docs/escopo-mvp.md`. Feitos M0 a M9: fundação, noite e pedido, pesca, loop da run, iluminação, combate, tempestade, cartas e dificuldade, meta e menus, mar e céu. O roteiro do MVP está completo.
+- Jogável hoje, com o barco e os personagens em greybox:
   - run de noites encadeadas, com bilhete na mesa e alfinete por resultado;
   - pedido crescente, pesca com isca e minijogo, entrega no freezer;
   - 3 vidas, passe livre secreto, tela de fim de run e nova run;
@@ -14,11 +14,13 @@
   - tempestade a partir da noite 2: balanço forte, chuva, relâmpagos, céu fechado, mais falhas e voadores que mergulham no jogador e nas lâmpadas;
   - seleção de cartas antes da noite 1 e entre as noites (9 cartas, 3 slots, 3 rerolls), com os bônus valendo na noite seguinte;
   - dificuldade crescendo a cada noite;
-  - menu principal, pausa no Esc, pontos no fim da run e upgrades permanentes salvos em `user://meta_progress.cfg`.
+  - menu principal, pausa no Esc, pontos no fim da run e upgrades permanentes salvos em `user://meta_progress.cfg`;
+  - céu do addon Sky3D seguindo o relógio da noite (estrelas, Via Láctea, lua cheia, amanhecer) e fechando na tempestade, e oceano com ondas do addon Boujie Water Shader, ambos provisórios (decisão 0016).
 - Regras de cada sistema em `docs/sistemas/` (movimento, balanço, noite, pedido, mãos, pesca, run, iluminação, combate, inimigos, tempestade, cartas, dificuldade, meta).
 
 ## Próximo passo
-- M9 Mar, céu e assets, com `/planejar`, o último marco do MVP: oceano e céu definitivos (lua e estrelas), assets CC0 no lugar da greybox (barco, peixes, inimigos, objetos), áudio (chuva, vento, trovão, gerador, inimigos) e gaivotas no amanhecer. Regras em `docs/escopo-mvp.md` (seção Mundo e visual) e nas decisões 0009 e 0011 (registro de assets em `docs/assets.md`).
+- Jogar o MVP inteiro de ponta a ponta e decidir com o desenvolvedor o que vem depois: refinar valores, ou começar o que ficou fora do MVP (assets no lugar da greybox, áudio, gaivotas no amanhecer; ver `docs/escopo-mvp.md`).
+- As decisões 0011 e 0014 ainda citam o M9 como o marco dos assets. Se os assets ficarem para depois do MVP, registrar uma nova decisão que atualize esse prazo.
 - Ao trocar o barco por asset: refazer a área seca da chuva (`night/rain_drop.gdshader`) e conferir a malha de navegação (decisão 0014).
 
 ## Para validar jogando
@@ -31,19 +33,23 @@
 - Cartas: clicar nas cartas, no reroll e na troca com o mouse; conferir os efeitos na noite seguinte.
 - Dificuldade: como ela sobe ao longo de várias noites (valores em `docs/sistemas/dificuldade.md`).
 - Meta: o fluxo menu → run → pausa → fim de run → menu, compras de upgrade, e fechar e reabrir o jogo para ver o progresso salvo.
+- Mar e céu: o mar sem água no convés, inclusive com o balanço forte; a boia com as ondas (a física da água é um plano fixo em y = 0 e as ondas sobem e descem até 0,35 m); o céu ao longo da noite e na tempestade; o desempenho do oceano.
 - Refinamento de valores fica para depois, por decisão do desenvolvedor.
 
 ## Limitações conhecidas
 - O peixe-homem não reage ao levar tiro, e o voador escuro só fica bem visível no aviso (olhos grandes).
 - `enemies/fishman/fishman.gd` e `enemies/flyer/flyer.gd` passaram de 200 linhas. Sugestão: tirar o voo e a subida pela amurada para componentes próprios.
-- A área seca da chuva está fixa nas medidas do interior da cabine (`night/rain_drop.gdshader`). Se a cabine mudar (M9), atualizar.
+- A área seca da chuva está fixa nas medidas do interior da cabine (`night/rain_drop.gdshader`). Se a cabine mudar, atualizar.
 - No `.tscn`, o `Transform3D` guarda a base por linhas. Rotações escritas à mão precisam ser conferidas rodando a cena; isso causou o bug corrigido em `25ce483`.
-- O console mostra, a cada noite, um aviso sobre a malha de navegação ler as formas CSG. É esperado até o M9 (decisão 0014).
+- O console mostra, a cada noite, um aviso sobre a malha de navegação ler as formas CSG. É esperado enquanto o barco for CSG (decisão 0014).
 - A vara atravessa paredes, não há linha de pesca e o item carregado fica por cima da dica do HUD; o galão aparece grande nas mãos.
-- Sem som (M9).
+- Sem som (fora do MVP).
 - Durante a noite não há onde ver as cartas equipadas (só na seleção); o diário seria um bom lugar.
 - O pool tem só 9 cartas: os slots enchem na noite 4 e as seleções encolhem conforme o pool esvazia.
-- Gaivotas no amanhecer ficam para o M9.
+- Gaivotas no amanhecer ficaram para depois do MVP.
+- A textura da Via Láctea do Sky3D é CC BY 4.0 e exige crédito no jogo (`docs/assets.md`); ainda não há tela de créditos.
+- Os plugins dos addons não estão ativados em `project.godot`: as classes funcionam sem eles, mas os nós não aparecem com ícone e ajuda próprios no editor.
+- `SkyDriver.environment()` não é usado por ninguém; pode sair.
 - A pausa só abre com a noite em andamento, porque a `Run` aguarda tweens e timers no amanhecer, na morte e entre as noites.
 - Testes de cena com a árvore pausada precisam esperar por frames: os timers do gdUnit4 param junto.
 - Não há menu de configurações (volume, sensibilidade do mouse).
