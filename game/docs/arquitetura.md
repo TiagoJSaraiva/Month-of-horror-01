@@ -29,12 +29,12 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
 - `boat/boat.tscn` → `Boat` (`Node3D`) → `Hull` e `Cabin` (`CSGCombiner3D` com colisão, camada `world`). Barco greybox de 14×5 m com o convés em y = 1. A cabine fica na proa, com a porta voltada para a popa, e dentro dela há caixas no lugar do freezer e da mesa (decisão 0011).
 - `night/night.tscn` → `Night` (`Node3D`, gera o pedido e encerra a noite; ver `docs/sistemas/noite.md`):
   - `NightClock`, o tempo da noite;
-  - `WorldEnvironment` com `night/night_environment.tres` (céu procedural noturno e neblina);
+  - `WorldEnvironment` (`SkyCycle`) com `night/night_environment.tres` (céu procedural e neblina), que clareia no amanhecer;
   - `Boat`;
   - `WallClock`, o relógio de ponteiros da cabine, ligado ao `NightClock`;
   - `Actors`, com tudo o que congela no amanhecer. Por enquanto só o `Player`, que começa na cabine olhando para a porta;
   - `TempLights`, luzes provisórias até o M4;
-  - `OutsideWorld` (`BoatSway`), com `Sea` (plano escuro provisório) e `Moon` (`DirectionalLight3D`). Tudo o que fica fora do barco entra aqui (decisão 0008; ver `docs/sistemas/balanco.md`).
+  - `OutsideWorld` (`BoatSway`), com `Sea` (plano escuro provisório) e `Moon` (`DirectionalLight3D` com `MoonArc`). Tudo o que fica fora do barco entra aqui (decisão 0008; ver `docs/sistemas/balanco.md`).
 
 ## Autoloads
 _Nenhum._
