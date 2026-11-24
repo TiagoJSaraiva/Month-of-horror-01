@@ -70,9 +70,9 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check.ps1           
 
 ## Git
 
-Decisão `0017`. O repositório fica na pasta acima de `game/` (cobre `game/` e `notes/`).
+Decisão `0019`. O repositório fica na pasta acima de `game/` (cobre `game/` e `notes/`).
 
-- **Todo trabalho acontece direto na `main`.** Não crie branches.
+- **Todo trabalho acontece direto na `main`.** Crie branch só a pedido explícito do desenvolvedor (ex.: testar uma feature à parte). Nela valem as mesmas regras de commit; merge na `main`, rebase e exclusão da branch também só a pedido.
 - **Commit ao fim de cada módulo.** Módulo é uma unidade coerente e verificável: um componente com seus testes, uma cena com seu script, uma correção, uma configuração. Tarefa com várias partes independentes vira vários commits; não acumule a tarefa inteira num commit só, nem faça commit de passo quebrado.
 - Antes de cada commit: `check.ps1 -Fix -Fast` passando (check completo se o módulo mexe em cena ou em teste de cena). Nunca faça commit com check falhando.
 - Adicione os arquivos do módulo pelo nome (`git add <arquivos>`) e confira `git status` e `git diff --staged` antes do commit. Mudanças que não são suas ficam fora; cite-as no resumo.

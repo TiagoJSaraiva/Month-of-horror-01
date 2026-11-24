@@ -1,7 +1,7 @@
 # Fluxo: fim de sessão ou de tarefa
 
 1. Confira o estado: `git status -sb`.
-   - Você deve estar na `main`. Se não estiver, pare e avise.
+   - Na `main`: siga todos os passos. Numa branch criada a pedido do desenvolvedor: siga os passos 1 a 4 e não faça push (o passo 5 é só da `main`); diga no resumo em que branch ficaram os commits.
    - Mudanças desta sessão ainda sem commit: faça o commit do módulo correspondente (modelo na seção **Git** de `AGENTS.md`).
    - Mudanças que não são suas: não inclua; cite no resumo.
 2. Rode o check completo:
