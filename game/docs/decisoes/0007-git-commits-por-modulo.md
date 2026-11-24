@@ -1,7 +1,7 @@
 # 0007 — Git: commits por módulo, push no fim e multiagente
 
 - **Data**: 2026-11
-- **Status**: aceita
+- **Status**: substituída por 0017
 
 ## Contexto
 Antes, o agente nunca fazia commit: só sugeria uma mensagem no `fim`. O histórico ficava com poucos commits grandes, montados à mão. Também faltava um jeito de dividir tarefas grandes entre vários agentes em paralelo.

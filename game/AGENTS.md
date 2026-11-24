@@ -26,7 +26,6 @@ Procedimentos detalhados em `.agents/fluxos/` (também expostos como comandos no
 | `planejar.md` | Qualquer tarefa que crie sistema, cena ou mais de ~3 arquivos |
 | `revisar.md` | Revisão de diff, a pedido |
 | `fim.md` | Fim de sessão ou de tarefa: check, memória, revisão dos commits e push |
-| `multiagente.md` | A pedido: tarefa com partes paralelizáveis, distribuída entre subagentes |
 
 Regras gerais:
 - Tarefa não trivial: **plano primeiro, código só após aprovação**.
@@ -71,14 +70,14 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check.ps1           
 
 ## Git
 
-Decisão `0007`. O repositório fica na pasta acima de `game/` (cobre `game/` e `notes/`).
+Decisão `0017`. O repositório fica na pasta acima de `game/` (cobre `game/` e `notes/`).
 
-- **Todo trabalho acontece direto na `main`.** Branches só existem no fluxo `multiagente`, são locais e nunca vão para o remoto.
+- **Todo trabalho acontece direto na `main`.** Não crie branches.
 - **Commit ao fim de cada módulo.** Módulo é uma unidade coerente e verificável: um componente com seus testes, uma cena com seu script, uma correção, uma configuração. Tarefa com várias partes independentes vira vários commits; não acumule a tarefa inteira num commit só, nem faça commit de passo quebrado.
 - Antes de cada commit: `check.ps1 -Fix -Fast` passando (check completo se o módulo mexe em cena ou em teste de cena). Nunca faça commit com check falhando.
 - Adicione os arquivos do módulo pelo nome (`git add <arquivos>`) e confira `git status` e `git diff --staged` antes do commit. Mudanças que não são suas ficam fora; cite-as no resumo.
 - Notas de `docs/` (sistemas, arquitetura, decisões) entram no mesmo commit do código que as motivou. `docs/status.md` é atualizado no `fim`.
-- **Push só no fluxo `fim`** (o `multiagente` termina nele), e só da `main`: `git push origin main`.
+- **Push só no fluxo `fim`**, e só da `main`: `git push origin main`.
 - Proibido: `push --force`, alterar commits já enviados (`commit --amend`, `rebase`, `reset` sobre eles), `--no-verify`, enviar outras branches ao remoto.
 
 ### Mensagem de commit
@@ -89,7 +88,7 @@ Decisão `0007`. O repositório fica na pasta acima de `game/` (cobre `game/` e 
 <corpo opcional>
 ```
 
-- **tipo**: `feat` (mecânica, cena ou conteúdo novo), `fix` (correção de bug), `refactor` (estrutura muda, comportamento não), `perf`, `test` (só testes), `docs` (só `docs/` ou instruções de agente), `assets` (arte, som, fontes), `chore` (configuração, scripts, `project.godot`, ferramentas), `merge` (integração de branch no `multiagente`).
+- **tipo**: `feat` (mecânica, cena ou conteúdo novo), `fix` (correção de bug), `refactor` (estrutura muda, comportamento não), `perf`, `test` (só testes), `docs` (só `docs/` ou instruções de agente), `assets` (arte, som, fontes), `chore` (configuração, scripts, `project.godot`, ferramentas).
 - **escopo**: sistema ou área afetada, em minúsculas (`player`, `combate`, `hud`, `input`, `status`). Omita se a mudança for transversal: `chore: atualiza gdUnit4`.
 - **resumo**: em português, verbo no presente (`adiciona`, `corrige`, `remove`), minúsculo, sem ponto final, até 72 caracteres.
 - **corpo**: só quando o porquê não é óbvio (motivo, efeito para quem joga, limitação conhecida). Linhas de até 72 caracteres, separado do resumo por uma linha em branco.

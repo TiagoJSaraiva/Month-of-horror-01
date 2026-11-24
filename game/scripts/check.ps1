@@ -30,10 +30,9 @@ function Invoke-Step([string]$Name, [scriptblock]$Action) {
     Write-Host "OK: $Name" -ForegroundColor Green
 }
 
-# Scripts do projeto, sem addons de terceiros, sem o cache do Godot e sem as
-# worktrees do fluxo multiagente (cópias do projeto, verificadas em separado)
+# Scripts do projeto, sem addons de terceiros e sem o cache do Godot
 $gdFiles = @(Get-ChildItem -Path $root -Recurse -Filter *.gd |
-    Where-Object { $_.FullName -notmatch '\\(addons|\.godot|\.worktrees)\\' } |
+    Where-Object { $_.FullName -notmatch '\\(addons|\.godot)\\' } |
     ForEach-Object { $_.FullName })
 
 # 1. Versão do Godot (também valida o GODOT_PATH)

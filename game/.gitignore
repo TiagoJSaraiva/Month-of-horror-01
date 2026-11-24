@@ -2,9 +2,6 @@
 .godot/
 /android/
 
-# Worktrees locais do fluxo multiagente
-.worktrees/
-
 # Relatórios do gdUnit4
 reports/
 
