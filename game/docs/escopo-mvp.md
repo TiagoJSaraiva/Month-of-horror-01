@@ -35,10 +35,10 @@ A run é infinita e a dificuldade sobe a cada noite (M7).
 
 ### Iluminação
 - Gerador, lâmpadas, luz de emergência, suprimentos, reparos, sorteio de falhas, lanterna e caixa de pilhas: implementados; regras em `docs/sistemas/iluminacao.md`.
-- Falta: falhas mais frequentes a cada noite e bateria que dura menos (M7), falhas mais frequentes na tempestade (M6) e atordoar com a lanterna (M5).
+- Falta: falhas mais frequentes a cada noite e bateria que dura menos (M7) e falhas mais frequentes na tempestade (M6).
 
 ### Inimigos
-- **Peixe-homem** (escuridão): implementado; regras em `docs/sistemas/inimigos.md`. Falta o atordoamento pela lanterna (fim do M5) e a força crescente por noite (M7).
+- **Peixe-homem** (escuridão): implementado, com o atordoamento pela lanterna; regras em `docs/sistemas/inimigos.md`. Falta a força crescente por noite (M7).
 - **Voador** (tempestade): aparece só durante a tempestade. Mergulha no jogador **e ataca as lâmpadas**. Morre com tiros e vai embora quando a tempestade acaba.
 - No MVP, nenhum inimigo rouba peixe.
 
@@ -47,8 +47,7 @@ A run é infinita e a dificuldade sobe a cada noite (M7).
 - O barco balança mais forte, há chuva e vento, e o céu muda. A tempestade acaba sozinha.
 
 ### Combate e vida
-- Revólver de 6 tiros, com tiro instantâneo (hitscan) e recarga infinita.
-- 100 HP, regenerando 5 HP/s depois de 5 s sem dano. Morrer encerra a run.
+- Revólver, vida com regeneração e morte encerrando a run: implementados; regras em `docs/sistemas/combate.md`.
 
 ### Vidas e mensagens
 - Regras de vidas, passe livre e bilhete: implementadas em `docs/sistemas/run.md`.
@@ -115,7 +114,7 @@ Cada marco tem o seu próprio `/planejar`. Até o M9 tudo usa primitivas (greybo
 | M2 | Pesca (feito) | Isca, lançamento, minijogo, peixe levado ao freezer |
 | M3 | Loop da run (feito) | Vidas, passe livre, mensagens na mesa, próxima noite, fim de run |
 | M4 | Iluminação (feito) | Gerador, lâmpadas, luz de emergência, lanterna e pilhas, reparos |
-| M5 | Combate | Arma, vida e regeneração, morte, peixe-homem |
+| M5 | Combate (feito) | Arma, vida e regeneração, morte, peixe-homem |
 | M6 | Tempestade | Evento, balanço forte, chuva, céu, voador |
 | M7 | Cartas e dificuldade | Seleção de cartas, raridades, rerolls, slots, escala por noite |
 | M8 | Meta e menus | Pontos, upgrades, save, menus |

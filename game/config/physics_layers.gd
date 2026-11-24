@@ -9,3 +9,4 @@ const INTERACTABLE := 1 << 2
 const WATER := 1 << 3
 const ENEMY := 1 << 4
 const HURTBOX := 1 << 5
+const LIGHT_SENSOR := 1 << 6

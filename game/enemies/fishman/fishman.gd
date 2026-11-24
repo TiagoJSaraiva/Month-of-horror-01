@@ -41,6 +41,7 @@ var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var _eyes: Node3D = $Model/Eyes
 @onready var _health: Health = $Health
 @onready var _hurtbox: Hurtbox = $Hurtbox
+@onready var _light_sensor: LightSensor = $LightSensor
 @onready var _agent: NavigationAgent3D = $NavigationAgent3D
 
 
@@ -54,6 +55,7 @@ func _ready() -> void:
 	brain.state_changed.connect(_on_brain_state_changed)
 	brain.attack_landed.connect(_on_brain_attack_landed)
 	_health.died.connect(brain.kill)
+	_light_sensor.lit.connect(stun)
 
 
 func _physics_process(delta: float) -> void:
@@ -94,7 +96,7 @@ func climb_aboard(
 	_tween.tween_property(self, "global_position", point.global_position, climb_seconds * 0.3)
 
 
-## Luz no rosto (chamado pelo sensor de luz no M5).
+## Luz da lanterna no rosto (sinal lit do LightSensor).
 func stun() -> void:
 	brain.stun()
 
@@ -153,8 +155,9 @@ func _die() -> void:
 	if _tween != null:
 		_tween.kill()
 	_collision.disabled = true
-	# Para o tiro seguinte atravessar o corpo caído.
+	# Para o tiro seguinte atravessar o corpo caído e a lanterna não o achar mais.
 	_hurtbox.collision_layer = 0
+	_light_sensor.collision_layer = 0
 	_tween = create_tween().set_parallel()
 	_tween.tween_property(_model, "rotation:x", deg_to_rad(-90.0), death_seconds)
 	_tween.tween_property(_model, "position:y", -0.6, death_seconds)

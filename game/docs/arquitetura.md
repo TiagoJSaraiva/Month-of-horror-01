@@ -40,7 +40,7 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
   - `Camera3D` → `Hands` (`%Hands`) → `CarriedItemModel`;
   - `Camera3D` → `FishingRod` → `Model`, `Aim` (RayCast) e `Bobber` (`top_level`);
   - `Camera3D` → `Interactor` (RayCast de interação);
-  - `Camera3D` → `Flashlight` (`flashlight/flashlight.tscn`), a lanterna da mão esquerda, com `Model` e `Beam` (`SpotLight3D`);
+  - `Camera3D` → `Flashlight` (`flashlight/flashlight.tscn`), a lanterna da mão esquerda, com `Model`, `Beam` (`SpotLight3D`) e `LightStun` (`ShapeCast3D` que atordoa);
   - `Camera3D` → `Revolver` (`weapons/revolver.tscn`), a arma da mão direita, com `Aim` (RayCast), `Model` e `MuzzleFlash`.
 
   Jogador em primeira pessoa (ver `docs/sistemas/movimento.md`). Mãos em `docs/sistemas/maos.md`, diário em `docs/sistemas/pedido.md`, vara em `docs/sistemas/pesca.md` e lanterna em `docs/sistemas/iluminacao.md`.
@@ -108,5 +108,6 @@ Só apresentação, do mundo para o `Hud`. Quem emite e o `Hud` recebem o `.tres
 - 4 — `water` — superfície do mar / detectada pela mira da vara e pela boia (M2).
 - 5 — `enemy` — corpos dos inimigos (`Fishman`) / colidem com `world`, `player` e `enemy`.
 - 6 — `hurtbox` — áreas que recebem tiros (`Hurtbox` dos inimigos) / detectada pela mira do revólver.
+- 7 — `light_sensor` — áreas que percebem a lanterna (`LightSensor` no rosto do peixe-homem) / detectada pelo `LightStun`.
 
 As máscaras dessas camadas estão em `config/physics_layers.gd` (`PhysicsLayers`), para as consultas de raio.

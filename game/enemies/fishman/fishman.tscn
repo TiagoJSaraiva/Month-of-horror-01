@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://enemies/fishman/fishman.gd" id="1_fishman"]
 [ext_resource type="Script" path="res://components/health.gd" id="2_health"]
 [ext_resource type="Script" path="res://components/hurtbox.gd" id="3_hurtbox"]
+[ext_resource type="Script" path="res://components/light_sensor.gd" id="4_light_sensor"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.3
@@ -11,6 +12,9 @@ height = 1.8
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hurtbox"]
 radius = 0.34
 height = 1.9
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_face"]
+radius = 0.3
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_skin"]
 albedo_color = Color(0.2, 0.3, 0.27, 1)
@@ -88,6 +92,16 @@ health = NodePath("../Health")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0)
 shape = SubResource("CapsuleShape3D_hurtbox")
+
+[node name="LightSensor" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.62, -0.04)
+collision_layer = 64
+collision_mask = 0
+monitoring = false
+script = ExtResource("4_light_sensor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LightSensor"]
+shape = SubResource("SphereShape3D_face")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 path_desired_distance = 0.4

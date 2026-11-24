@@ -35,6 +35,7 @@ Dar ao barco um nível de luz que depende de manutenção: o gerador gasta combu
 
 ## Lanterna
 - `flashlight/flashlight.tscn` / `flashlight.gd`: `Flashlight`, filha da `Camera3D` do jogador, à esquerda. Tem um `Model` e um `Beam` (`SpotLight3D` de 16 m e 22°, com sombra).
+- `flashlight/light_stun.gd`: `LightStun` (`ShapeCast3D`), filho da `Flashlight`. A lanterna o liga e desliga junto com o facho. Ligado, lança uma esfera de 0,35 m até `stun_range` (8 m) na camada `light_sensor` e avisa cada `LightSensor` alcançado (`expose_to_light()`), se um raio até ele não bater numa parede (camada `world`).
 - `flashlight/flashlight_battery.gd`: `FlashlightBattery` (`RefCounted`), carga em segundos de luz.
 - `flashlight/battery_box.tscn` / `battery_box.gd`: `BatteryBox` (`Interactable`), caixa de pilhas na mesa da cabine, com estoque infinito.
 - Regras:
@@ -42,7 +43,7 @@ Dar ao barco um nível de luz que depende de manutenção: o gerador gasta combu
   - a bateria cheia dá `battery_seconds` (90 s) de luz e só gasta acesa. Cada noite começa com ela cheia;
   - quando a carga acaba, a lanterna apaga e aparece "The flashlight died."; tentar ligar sem carga mostra "The batteries are dead.";
   - recarga só na caixa de pilhas: segurando E por 1 s, com as mãos livres e a bateria não cheia, a bateria volta cheia. Não há recarga gradual nem pilhas guardadas;
-  - a lanterna não conta para o nível de luz do barco. Atordoar o peixe-homem fica para o M5, e a duração menor a cada noite para o M7.
+  - a lanterna não conta para o nível de luz do barco. Acesa, atordoa o peixe-homem com o rosto no facho (ver `docs/sistemas/inimigos.md`). A duração menor a cada noite fica para o M7.
 - A `BatteryBox` chega à lanterna por `Hands.flashlight` (`@export`), porque a interação recebe as mãos do jogador.
 - O HUD mostra a carga na barra `Battery` (canal `battery_changed`), avisada só quando o percentual inteiro muda.
 

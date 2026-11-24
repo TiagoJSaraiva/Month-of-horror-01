@@ -1,6 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://flashlight/flashlight.gd" id="1_flashlight"]
+[ext_resource type="Script" path="res://flashlight/light_stun.gd" id="2_light_stun"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_body"]
 albedo_color = Color(0.12, 0.12, 0.13, 1)
@@ -14,6 +15,9 @@ bottom_radius = 0.02
 height = 0.16
 radial_segments = 8
 rings = 1
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_stun"]
+radius = 0.35
 
 [node name="Flashlight" type="Node3D"]
 script = ExtResource("1_flashlight")
@@ -31,3 +35,13 @@ light_energy = 2.5
 shadow_enabled = true
 spot_range = 16.0
 spot_angle = 22.0
+
+[node name="LightStun" type="ShapeCast3D" parent="."]
+enabled = false
+shape = SubResource("SphereShape3D_stun")
+target_position = Vector3(0, 0, -8)
+max_results = 4
+collision_mask = 64
+collide_with_areas = true
+collide_with_bodies = false
+script = ExtResource("2_light_stun")
