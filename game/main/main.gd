@@ -1,16 +1,17 @@
 class_name Main
 extends Node
-## Cena raiz do jogo: liga a noite à interface e controla a captura do mouse.
-## O menu de pausa (M8) vai assumir a captura do mouse.
+## Cena raiz: começa uma run, recomeça quando o jogador pede e controla a captura do mouse.
+## Os menus (M8) entram aqui; a captura do mouse durante o jogo vai para o menu de pausa.
 
-@onready var _night: Night = %Night
-@onready var _hud: Hud = $Hud
-@onready var _transition: TransitionOverlay = $TransitionOverlay
+@export var run_scene: PackedScene
+
+var _run: Run
+## Com um menu aberto, o clique pertence ao menu e não recaptura o mouse.
+var _menu_open: bool = false
 
 
 func _ready() -> void:
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	_night.night_finished.connect(_on_night_night_finished)
+	_start_run()
 
 
 # Usa _input, e não _unhandled_input, porque o SubViewportContainer consome os cliques
@@ -21,12 +22,28 @@ func _input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 		return
 	var click := event as InputEventMouseButton
-	if click != null and click.pressed and Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
+	if _menu_open or click == null or not click.pressed:
+		return
+	if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		# O clique que recaptura o mouse não deve virar ação de jogo (tiro, pesca).
 		get_viewport().set_input_as_handled()
 
 
-func _on_night_night_finished(_order: NightOrder) -> void:
-	_hud.hide()
-	_transition.play_dawn()
+func _start_run() -> void:
+	_run = run_scene.instantiate() as Run
+	_run.run_over.connect(_on_run_run_over)
+	_run.new_run_requested.connect(_on_run_new_run_requested)
+	add_child(_run)
+	_menu_open = false
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+
+func _on_run_run_over() -> void:
+	_menu_open = true
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
+
+func _on_run_new_run_requested() -> void:
+	_run.queue_free()
+	_start_run()

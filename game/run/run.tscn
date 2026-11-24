@@ -1,0 +1,32 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://run/run.gd" id="1_run"]
+[ext_resource type="PackedScene" path="res://night/night.tscn" id="2_night"]
+[ext_resource type="Resource" path="res://run/note_lines.tres" id="3_note_lines"]
+[ext_resource type="PackedScene" path="res://ui/hud/hud.tscn" id="4_hud"]
+[ext_resource type="PackedScene" path="res://ui/transition_overlay/transition_overlay.tscn" id="5_transition_overlay"]
+[ext_resource type="PackedScene" path="res://ui/run_over/run_over_screen.tscn" id="6_run_over_screen"]
+
+[node name="Run" type="Node"]
+script = ExtResource("1_run")
+night_scene = ExtResource("2_night")
+note_lines = ExtResource("3_note_lines")
+
+[node name="Hud" parent="." instance=ExtResource("4_hud")]
+
+[node name="LowResView" type="SubViewportContainer" parent="."]
+texture_filter = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+stretch_shrink = 2
+
+[node name="SubViewport" type="SubViewport" parent="LowResView"]
+audio_listener_enable_3d = true
+
+[node name="TransitionOverlay" parent="." instance=ExtResource("5_transition_overlay")]
+
+[node name="RunOverScreen" parent="." instance=ExtResource("6_run_over_screen")]

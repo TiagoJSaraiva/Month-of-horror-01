@@ -6,7 +6,7 @@ Visão do projeto como ele está **agora**. Atualize no mesmo passo de qualquer 
 Roguelite noturno de pesca e sobrevivência em primeira pessoa, para Windows, com Forward+ (decisão 0010). A cada noite (23:00 às 06:00, 7 min reais) o jogador cumpre um pedido de peixes num barco ancorado, mantém a iluminação e sobrevive a inimigos. Entre as noites, escolhe cartas de boost. A run acaba com 3 pedidos falhos ou com a morte.
 
 - Escopo, regras combinadas e roteiro de marcos: `docs/escopo-mvp.md`.
-- Câmera e balanço do barco: decisão 0008. Visual retrô em baixa resolução: decisão 0009. Assets e registro de IA: decisão 0011 e `docs/assets.md`. Comunicação do mundo com o HUD: decisão 0012.
+- Estado da run: decisão 0013. Câmera e balanço do barco: decisão 0008. Visual retrô em baixa resolução: decisão 0009. Assets e registro de IA: decisão 0011 e `docs/assets.md`. Comunicação do mundo com o HUD: decisão 0012.
 
 ## Organização de pastas
 Organização por feature: cada cena fica junto do seu script e dos recursos exclusivos dela.
@@ -24,8 +24,16 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
 ```
 
 ## Cenas principais
-- `main/main.tscn` (cena principal) → `Main` (`Node`, captura o mouse) → `LowResView` (`SubViewportContainer`, `stretch_shrink` 2, filtro nearest) → `SubViewport` (áudio 3D ligado) → `Night` (`%Night`). O 3D renderiza em 576×324, porque o stretch `canvas_items` fixa a base lógica em 1152×648, e é ampliado sem filtro (decisão 0009). A interface fica em irmãs de `LowResView`, em resolução nativa: `Hud` e `TransitionOverlay`. O `Hud` se esconde no amanhecer. Ordem dos filhos: `Hud`, `LowResView`, `TransitionOverlay`. O `Hud` vem primeiro para conectar o canal antes do `_ready` do mundo (decisão 0012).
+- `main/main.tscn` (cena principal) → `Main` (`Node`). Cria a `Run` a partir de `run_scene` (`@export`), troca por uma nova quando o jogador pede e controla a captura do mouse. Com o fim de run aberto, o clique não recaptura o mouse.
+- `run/run.tscn` → `Run` (`Node`, dona do `RunState`; decisão 0013; ver `docs/sistemas/run.md`), com filhos nesta ordem:
+  - `Hud`, primeiro, para conectar o canal antes do `_ready` do mundo (decisão 0012);
+  - `LowResView` (`SubViewportContainer`, `stretch_shrink` 2, filtro nearest) → `SubViewport` (áudio 3D ligado), onde a `Run` cria cada `Night`. O 3D renderiza em 576×324, porque o stretch `canvas_items` fixa a base lógica em 1152×648, e é ampliado sem filtro (decisão 0009);
+  - `TransitionOverlay`;
+  - `RunOverScreen` (camada 2).
+
+  A interface (`Hud` e overlays) fica fora do `SubViewport`, em resolução nativa.
 - `ui/hud/hud.tscn` → `Hud` (`CanvasLayer`) → `Crosshair`, `Prompt`, `Hint`, `Bait`, `HintTimer`, `FishingMinigameView` e `NotePanel`. `reset()` limpa o que sobrou de uma noite. Recebe tudo pelo canal `HudEvents` (decisão 0012).
+- `ui/run_over/run_over_screen.tscn` → `RunOverScreen` (`CanvasLayer`) → `Background` → `Content` com título, `%Message`, `%Nights` e `%NewRunButton`.
 - `ui/transition_overlay/transition_overlay.tscn` → `TransitionOverlay` (`CanvasLayer`) → `Shade` (`ColorRect`) e `Message` (`Label`). Transições que podem ser aguardadas com `await`: `play_dawn()` escurece a tela e mostra "6:00 AM / The night is over."; `cover()` cobre de preto; `reveal(title)` mostra um título e revela a cena.
 - `player/player.tscn` → `Player` (`CharacterBody3D`) → `Head` (`MouseLook`):
   - `Journal`, página com `Label3D`;
@@ -51,7 +59,9 @@ _Nenhum._
 
 ## Sinais entre sistemas
 - `NightClock.dawn_reached` → `Night._on_night_clock_dawn_reached` — congela `Actors` e encerra a noite.
-- `Night.night_finished(order)` → `Main._on_night_night_finished` — esconde o `Hud` e toca `TransitionOverlay.play_dawn()`.
+- `Night.night_finished(order)` → `Run._on_night_night_finished` — amanhecer, avaliação do pedido e próxima noite ou fim de run.
+- `Run.run_over` → `Main._on_run_run_over` — solta o mouse para a tela de fim de run.
+- `RunOverScreen.new_run_requested` → `Run.new_run_requested` → `Main._on_run_new_run_requested` — troca a `Run` por uma nova.
 - `NightOrder.changed` → `Journal._refresh` — o diário reescreve o texto a cada entrega. A ligação é feita em `Journal.display()`, que a `Night` chama via `Player.journal`.
 - `Freezer.fish_stored(fish, amount)` → `Night._on_freezer_fish_stored` — entrega o peixe ao pedido.
 - `Hands.fish_dropped(fish, amount, at)` → `Night._on_hands_fish_dropped` — cria o peixe no convés, em `Items`.

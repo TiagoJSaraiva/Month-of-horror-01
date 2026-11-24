@@ -4,9 +4,9 @@
 - **Status**: aceita
 
 ## Contexto
-O mundo 3D roda dentro de um `SubViewport` de baixa resolução, e a interface fica na `Main`, em resolução nativa (decisão 0009). A partir do M2, componentes do jogador precisam mostrar coisas na tela: ação disponível na mira, dicas, isca atual e o minijogo de pesca. Do M4 em diante entram bateria, vida e munição.
+O mundo 3D roda dentro de um `SubViewport` de baixa resolução, e a interface fica fora dele, em resolução nativa (decisão 0009). A partir do M2, componentes do jogador precisam mostrar coisas na tela: ação disponível na mira, dicas, isca atual e o minijogo de pesca. Do M4 em diante entram bateria, vida e munição.
 
-Pela regra "sinal para cima", cada mensagem teria de ser reemitida no `Player` e de novo na `Night` até chegar à `Main`. Seriam vários sinais repetidos em duas camadas, crescendo a cada marco.
+Pela regra "sinal para cima", cada mensagem teria de ser reemitida no `Player` e de novo na `Night` até chegar à interface. Seriam vários sinais repetidos em duas camadas, crescendo a cada marco.
 
 ## Decisão
 - Um Resource compartilhado, `ui/hud/hud_events.tres` (classe `HudEvents`), contém só sinais.
@@ -23,4 +23,4 @@ Pela regra "sinal para cima", cada mensagem teria de ser reemitida no `Player` e
 ## Consequências
 - A dependência fica visível no inspetor (`hud_events`). Testes podem usar o `.tres` ou um `HudEvents.new()` próprio.
 - Risco de o canal virar depósito de tudo. Por isso a regra é só apresentação, e cada sinal novo deve ser documentado em `docs/arquitetura.md`.
-- O canal não guarda o último valor. Por isso, na `Main`, o `Hud` vem **antes** do `LowResView`: o `_ready` do `Hud` roda antes do mundo e ele já está conectado quando os componentes emitem o estado inicial (a isca, por exemplo). Como é um `CanvasLayer`, continua desenhado por cima do 3D.
+- O canal não guarda o último valor. Por isso, na cena que contém os dois (hoje a `Run`), o `Hud` vem **antes** do `LowResView`: o `_ready` do `Hud` roda antes do mundo e ele já está conectado quando os componentes emitem o estado inicial (a isca, por exemplo). Como é um `CanvasLayer`, continua desenhado por cima do 3D.

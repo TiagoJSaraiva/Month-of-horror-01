@@ -12,13 +12,13 @@ As regras ficam aqui até o sistema existir. Ao implementar um sistema, as regra
 Roguelite noturno em primeira pessoa (decisão 0008). Um pescador num barco ancorado precisa cumprir pedidos de peixe para clientes misteriosos entre 23:00 e 06:00 (7 min reais), mantendo a iluminação do barco e sobrevivendo a ameaças. A lore fica implícita.
 
 ## Loop da run
-1. Início da run: seleção de cartas.
-2. Noite: o jogador começa na cabine, com a mensagem dos clientes na mesa.
-3. Amanhecer (fim do relógio): personagens e inimigos param, a tela escurece, tocam gaivotas e um aviso indica o fim da noite.
-4. Avaliação do pedido e atualização das vidas.
-5. Seleção de cartas e próxima noite.
+Implementado em `docs/sistemas/run.md`: noite com bilhete na mesa, amanhecer, avaliação do pedido, vidas, próxima noite e fim de run na terceira falha. Falta encaixar:
+- seleção de cartas no início da run e entre as noites (M7), entre a tela preta e a próxima noite;
+- morte do jogador durante a noite também encerra a run (M5);
+- pontos de run para upgrades permanentes no fim (M8);
+- gaivotas no amanhecer (M9).
 
-A run acaba com 3 noites falhas (não precisam ser seguidas) ou com a morte do jogador durante a noite. No fim, o jogador recebe pontos para upgrades permanentes. A run é infinita e a dificuldade sobe a cada noite.
+A run é infinita e a dificuldade sobe a cada noite (M7).
 
 ## Regras por sistema
 
@@ -116,7 +116,7 @@ Cada marco tem o seu próprio `/planejar`. Até o M9 tudo usa primitivas (greybo
 | M0 | Fundação (feito) | Andar em primeira pessoa num barco greybox, render em baixa resolução, balanço visual |
 | M1 | Noite e pedido (feito) | Relógio de 23h a 6h, céu provisório, diário, amanhecer congelando tudo |
 | M2 | Pesca (feito) | Isca, lançamento, minijogo, peixe levado ao freezer |
-| M3 | Loop da run | Vidas, passe livre, mensagens na mesa, próxima noite, fim de run |
+| M3 | Loop da run (feito) | Vidas, passe livre, mensagens na mesa, próxima noite, fim de run |
 | M4 | Iluminação | Gerador, lâmpadas, luz de emergência, lanterna e pilhas, reparos |
 | M5 | Combate | Arma, vida e regeneração, morte, peixe-homem |
 | M6 | Tempestade | Evento, balanço forte, chuva, céu, voador |

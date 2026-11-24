@@ -16,7 +16,7 @@ Controlar o tempo de uma noite (23:00 às 06:00), gerar o pedido no início e en
 
 ## Regras
 - A noite dura 7 min reais (`duration_seconds` = 420 no `NightClock`), que valem as 7 horas do jogo. Para testar, reduza esse valor no inspetor.
-- `night_number` (`@export` na `Night`, 1 por padrão) define o tamanho do pedido. A Run (M3) vai preencher esse valor.
+- `night_number` (`@export` na `Night`, 1 por padrão) define o tamanho do pedido. A `Run` preenche esse valor e o bilhete da mesa (`table_note_text`, `table_note_pin`) antes de a noite entrar na árvore.
 - `fish_species` (`@export` na `Night`) lista as espécies sorteáveis no pedido.
 - Amanhecer: `Actors` passa a `PROCESS_MODE_DISABLED`, então o jogador para de andar e de olhar. Mar, céu e balanço continuam.
 - Céu provisório até o M9: fica na paleta da noite até as 05:00 (`dawn_start` = 6/7) e chega à do amanhecer às 06:00, com suavização. O `SkyCycle` só reescreve o céu quando a mistura muda, porque cada mudança refaz a iluminação do céu. Ele escreve valores absolutos, já que o `Environment` é compartilhado entre noites.
@@ -24,7 +24,7 @@ Controlar o tempo de uma noite (23:00 às 06:00), gerar o pedido no início e en
 
 ## Sinais
 - `NightClock.dawn_reached` → `Night._on_night_clock_dawn_reached`.
-- `Night.night_finished(order: NightOrder)`: escutado pela `Main` (aviso na tela) e, no M3, pela Run (avaliação do pedido).
+- `Night.night_finished(order: NightOrder)` → `Run._on_night_night_finished`: amanhecer, avaliação do pedido e próxima noite (ver `docs/sistemas/run.md`).
 
 ## Testes
 - `test/unit/night_time_rules_test.gd`: progresso e limites, duração zero, 23:00, 02:30 e 06:00, ponteiros às 06:00 e às 23:30.
