@@ -5,7 +5,7 @@ extends Node
 
 @onready var _night: Night = %Night
 @onready var _hud: Hud = $Hud
-@onready var _dawn_overlay: DawnOverlay = $DawnOverlay
+@onready var _transition: TransitionOverlay = $TransitionOverlay
 
 
 func _ready() -> void:
@@ -29,4 +29,4 @@ func _input(event: InputEvent) -> void:
 
 func _on_night_night_finished(_order: NightOrder) -> void:
 	_hud.hide()
-	_dawn_overlay.play()
+	_transition.play_dawn()

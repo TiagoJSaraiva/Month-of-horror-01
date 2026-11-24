@@ -24,9 +24,9 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
 ```
 
 ## Cenas principais
-- `main/main.tscn` (cena principal) → `Main` (`Node`, captura o mouse) → `LowResView` (`SubViewportContainer`, `stretch_shrink` 2, filtro nearest) → `SubViewport` (áudio 3D ligado) → `Night` (`%Night`). O 3D renderiza em 576×324, porque o stretch `canvas_items` fixa a base lógica em 1152×648, e é ampliado sem filtro (decisão 0009). A interface fica em irmãs de `LowResView`, em resolução nativa: `Hud` e `DawnOverlay`. O `Hud` se esconde no amanhecer. Ordem dos filhos: `Hud`, `LowResView`, `DawnOverlay`. O `Hud` vem primeiro para conectar o canal antes do `_ready` do mundo (decisão 0012).
+- `main/main.tscn` (cena principal) → `Main` (`Node`, captura o mouse) → `LowResView` (`SubViewportContainer`, `stretch_shrink` 2, filtro nearest) → `SubViewport` (áudio 3D ligado) → `Night` (`%Night`). O 3D renderiza em 576×324, porque o stretch `canvas_items` fixa a base lógica em 1152×648, e é ampliado sem filtro (decisão 0009). A interface fica em irmãs de `LowResView`, em resolução nativa: `Hud` e `TransitionOverlay`. O `Hud` se esconde no amanhecer. Ordem dos filhos: `Hud`, `LowResView`, `TransitionOverlay`. O `Hud` vem primeiro para conectar o canal antes do `_ready` do mundo (decisão 0012).
 - `ui/hud/hud.tscn` → `Hud` (`CanvasLayer`) → `Crosshair`, `Prompt`, `Hint`, `Bait`, `HintTimer` e `FishingMinigameView`. Recebe tudo pelo canal `HudEvents` (decisão 0012).
-- `ui/dawn_overlay/dawn_overlay.tscn` → `DawnOverlay` (`CanvasLayer`) → `Shade` (`ColorRect`) e `Message` (`Label`). `play()` escurece a tela e mostra "6:00 AM / The night is over.".
+- `ui/transition_overlay/transition_overlay.tscn` → `TransitionOverlay` (`CanvasLayer`) → `Shade` (`ColorRect`) e `Message` (`Label`). Transições que podem ser aguardadas com `await`: `play_dawn()` escurece a tela e mostra "6:00 AM / The night is over."; `cover()` cobre de preto; `reveal(title)` mostra um título e revela a cena.
 - `player/player.tscn` → `Player` (`CharacterBody3D`) → `Head` (`MouseLook`):
   - `Journal`, página com `Label3D`;
   - `Camera3D` → `Hands` (`%Hands`) → `CarriedFishModel`;
@@ -50,7 +50,7 @@ _Nenhum._
 
 ## Sinais entre sistemas
 - `NightClock.dawn_reached` → `Night._on_night_clock_dawn_reached` — congela `Actors` e encerra a noite.
-- `Night.night_finished(order)` → `Main._on_night_night_finished` — toca o `DawnOverlay`.
+- `Night.night_finished(order)` → `Main._on_night_night_finished` — esconde o `Hud` e toca `TransitionOverlay.play_dawn()`.
 - `NightOrder.changed` → `Journal._refresh` — o diário reescreve o texto a cada entrega. A ligação é feita em `Journal.display()`, que a `Night` chama via `Player.journal`.
 - `Freezer.fish_stored(fish, amount)` → `Night._on_freezer_fish_stored` — entrega o peixe ao pedido.
 - `Hands.fish_dropped(fish, amount, at)` → `Night._on_hands_fish_dropped` — cria o peixe no convés, em `Items`.
