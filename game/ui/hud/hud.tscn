@@ -3,10 +3,21 @@
 [ext_resource type="Script" path="res://ui/hud/hud.gd" id="1_hud"]
 [ext_resource type="Resource" path="res://ui/hud/hud_events.tres" id="2_hud_events"]
 [ext_resource type="Script" path="res://ui/hud/fishing_minigame_view.gd" id="3_minigame_view"]
+[ext_resource type="Script" path="res://ui/hud/damage_flash.gd" id="4_damage_flash"]
 
 [node name="Hud" type="CanvasLayer"]
 script = ExtResource("1_hud")
 hud_events = ExtResource("2_hud_events")
+
+[node name="DamageFlash" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.8, 0, 0, 0)
+script = ExtResource("4_damage_flash")
 
 [node name="Crosshair" type="ColorRect" parent="."]
 anchors_preset = 8
@@ -86,6 +97,34 @@ grow_vertical = 0
 theme_override_font_sizes/font_size = 18
 horizontal_alignment = 2
 
+[node name="Health" type="HBoxContainer" parent="."]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -84.0
+offset_right = 240.0
+offset_bottom = -54.0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="Health"]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Health"
+
+[node name="Bar" type="ProgressBar" parent="Health"]
+custom_minimum_size = Vector2(120, 12)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+max_value = 1.0
+step = 0.0
+value = 1.0
+show_percentage = false
+
 [node name="Battery" type="HBoxContainer" parent="."]
 anchors_preset = 2
 anchor_top = 1.0
@@ -99,6 +138,7 @@ mouse_filter = 2
 theme_override_constants/separation = 10
 
 [node name="Label" type="Label" parent="Battery"]
+custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "Battery"

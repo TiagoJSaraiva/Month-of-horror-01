@@ -32,10 +32,10 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
   - `RunOverScreen` (camada 2).
 
   A interface (`Hud` e overlays) fica fora do `SubViewport`, em resolução nativa.
-- `ui/hud/hud.tscn` → `Hud` (`CanvasLayer`) → `Crosshair`, `Prompt`, `HoldBar`, `Hint`, `Bait`, `Battery` (rótulo e barra), `HintTimer`, `FishingMinigameView` e `NotePanel`. `reset()` limpa o que sobrou de uma noite. Recebe tudo pelo canal `HudEvents` (decisão 0012).
+- `ui/hud/hud.tscn` → `Hud` (`CanvasLayer`) → `DamageFlash`, `Crosshair`, `Prompt`, `HoldBar`, `Hint`, `Bait`, `Health` e `Battery` (rótulo e barra), `HintTimer`, `FishingMinigameView` e `NotePanel`. `reset()` limpa o que sobrou de uma noite. Recebe tudo pelo canal `HudEvents` (decisão 0012).
 - `ui/run_over/run_over_screen.tscn` → `RunOverScreen` (`CanvasLayer`) → `Background` → `Content` com título, `%Message`, `%Nights` e `%NewRunButton`.
 - `ui/transition_overlay/transition_overlay.tscn` → `TransitionOverlay` (`CanvasLayer`) → `Shade` (`ColorRect`) e `Message` (`Label`). Transições que podem ser aguardadas com `await`: `play_dawn()` escurece a tela e mostra "6:00 AM / The night is over."; `cover()` cobre de preto; `reveal(title)` mostra um título e revela a cena.
-- `player/player.tscn` → `Player` (`CharacterBody3D`) → `Head` (`MouseLook`):
+- `player/player.tscn` → `Player` (`CharacterBody3D`) → `Health` (vida; ver `docs/sistemas/combate.md`) e `Head` (`MouseLook`):
   - `Journal`, página com `Label3D`;
   - `Camera3D` → `Hands` (`%Hands`) → `CarriedItemModel`;
   - `Camera3D` → `FishingRod` → `Model`, `Aim` (RayCast) e `Bobber` (`top_level`);
@@ -79,6 +79,7 @@ Só apresentação, do mundo para o `Hud`. Quem emite e o `Hud` recebem o `.tres
 - `bait_changed(bait_name)` — isca atual.
 - `minigame_started(minigame)` e `minigame_finished` — o `FishingMinigameView` desenha o minijogo lendo o modelo enquanto ele dura.
 - `note_opened(text)` e `note_closed` — o `NotePanel` mostra o bilhete da mesa.
+- `health_changed(current, maximum)` e `player_damaged` — vida do jogador na barra `Health` e clarão do `DamageFlash`; emitidos pelo `Health` do jogador.
 - `battery_changed(ratio)` — carga da lanterna na barra `Battery`; a `Flashlight` só emite quando o percentual inteiro muda.
 
 ## Input map

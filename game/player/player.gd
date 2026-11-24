@@ -13,6 +13,8 @@ var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var journal: Journal = $Head/Journal
 ## Mãos do jogador. Públicas para a Night ouvir o peixe largado.
 @onready var hands: Hands = %Hands
+## Vida do jogador. Pública para a Night ouvir a morte e os inimigos causarem dano.
+@onready var health: Health = $Health
 @onready var _head: Node3D = $Head
 
 

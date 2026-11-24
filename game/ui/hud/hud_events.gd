@@ -22,5 +22,9 @@ signal note_closed
 signal hold_progress_changed(ratio: float)
 ## Carga da bateria da lanterna, de 0 a 1.
 signal battery_changed(ratio: float)
+## Vida do jogador.
+signal health_changed(current: float, maximum: float)
+## O jogador levou dano: o HUD pisca em vermelho.
+signal player_damaged
 
 @warning_ignore_restore("unused_signal")
