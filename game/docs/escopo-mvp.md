@@ -123,7 +123,7 @@ Cada marco tem o seu próprio `/planejar`. Até o M9 tudo usa primitivas (greybo
 
 | # | Marco | Resultado jogável |
 |---|---|---|
-| M0 | Fundação | Andar em primeira pessoa num barco greybox, render em baixa resolução, balanço visual |
+| M0 | Fundação (feito) | Andar em primeira pessoa num barco greybox, render em baixa resolução, balanço visual |
 | M1 | Noite e pedido | Relógio de 23h a 6h, céu provisório, diário, amanhecer congelando tudo |
 | M2 | Pesca | Isca, lançamento, minijogo, peixe levado ao freezer |
 | M3 | Loop da run | Vidas, passe livre, mensagens na mesa, próxima noite, fim de run |

@@ -23,6 +23,7 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
 ```
 
 ## Cenas principais
+- `main/main.tscn` (cena principal) → `Main` (`Node`, captura o mouse) → `LowResView` (`SubViewportContainer`, `stretch_shrink` 2, filtro nearest) → `SubViewport` (áudio 3D ligado) → `Night`. O 3D renderiza em 576×324, porque o stretch `canvas_items` fixa a base lógica em 1152×648, e é ampliado sem filtro (decisão 0009). A interface futura entra como irmã de `LowResView`, em resolução nativa.
 - `player/player.tscn` → `Player` (`CharacterBody3D`) → `Head` (`MouseLook`) → `Camera3D`. Jogador em primeira pessoa (ver `docs/sistemas/movimento.md`).
 - `boat/boat.tscn` → `Boat` (`Node3D`) → `Hull` e `Cabin` (`CSGCombiner3D` com colisão, camada `world`). Barco greybox de 14×5 m com o convés em y = 1. A cabine fica na proa, com a porta voltada para a popa, e dentro dela há caixas no lugar do freezer, da mesa e do relógio (decisão 0011).
 - `night/night.tscn` → `Night` (`Node3D`):
