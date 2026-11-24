@@ -24,7 +24,7 @@ A run acaba com 3 noites falhas (não precisam ser seguidas) ou com a morte do j
 
 ### Noite e pedido
 - Noite de 7 min reais, ajustável em Resource. As horas aparecem num relógio de parede na cabine.
-- Pedido: 3 peixes na noite 1 e +1 por noite, numa mistura aleatória das 2 espécies.
+- Pedido: implementado; regras em `docs/sistemas/pedido.md`.
 - Diário: uma tecla faz o personagem segurá-lo com as duas mãos. Mostra a noite atual, os peixes pedidos e os já entregues. Não mostra a hora.
 - Um peixe só conta depois de guardado no freezer da cabine. Peixe fora do freezer ao amanhecer não conta.
 
