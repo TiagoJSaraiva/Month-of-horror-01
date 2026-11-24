@@ -4,7 +4,7 @@
 Dar a sensação de estar num barco balançando sem mover o barco na física (decisão 0008).
 
 ## Componentes
-- `night/boat_sway.gd`: `BoatSway`, script do nó `OutsideWorld` da cena da noite. Gira o próprio nó (mar, lua e o que mais estiver fora do barco) com o inverso do balanço e aplica a mesma rotação a `Environment.sky_rotation` (o `night/sky_environment.tres`, o mesmo do `Sky3D`).
+- `night/boat_sway.gd`: `BoatSway`, script do nó `OutsideWorld` da cena da noite. Gira o próprio nó (o mar e o que mais estiver fora do barco) com o inverso do balanço e aplica a mesma rotação a `Environment.sky_rotation` (o `night/sky_environment.tres`, o mesmo do `Sky3D`).
 - `night/sway_rules.gd`: `SwayRules.angles()`, regra pura que devolve os ângulos de arfagem (x) e rolagem (z) para um instante.
 
 ## Regras

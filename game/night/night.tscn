@@ -24,15 +24,8 @@
 [ext_resource type="Script" path="res://enemies/flyer_spawner.gd" id="25_flyer_spawner"]
 [ext_resource type="PackedScene" path="res://enemies/flyer/flyer.tscn" id="26_flyer"]
 [ext_resource type="Resource" path="res://difficulty/difficulty_curve.tres" id="27_difficulty"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sea"]
-albedo_color = Color(0.015, 0.035, 0.05, 1)
-metallic = 0.4
-roughness = 0.2
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_sea"]
-material = SubResource("StandardMaterial3D_sea")
-size = Vector2(2000, 2000)
+[ext_resource type="Script" path="res://addons/boujie_water_shader/types/ocean.gd" id="28_ocean"]
+[ext_resource type="Material" path="res://night/sea/ocean_material.tres" id="29_ocean_material"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_water"]
 size = Vector3(2000, 0.2, 2000)
@@ -111,8 +104,11 @@ flyer_scene = ExtResource("26_flyer")
 script = ExtResource("4_boat_sway")
 environment = ExtResource("1_environment")
 
-[node name="Sea" type="MeshInstance3D" parent="OutsideWorld"]
-mesh = SubResource("PlaneMesh_sea")
+[node name="Sea" type="Node3D" parent="OutsideWorld"]
+script = ExtResource("28_ocean")
+material = ExtResource("29_ocean_material")
+levels_of_detail = 4
+far_edge = 1000
 
 [node name="Water" type="StaticBody3D" parent="OutsideWorld"]
 collision_layer = 8

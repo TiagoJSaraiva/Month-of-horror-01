@@ -12,8 +12,7 @@ As regras ficam aqui até o sistema existir. Ao implementar um sistema, as regra
 Roguelite noturno em primeira pessoa (decisão 0008). Um pescador num barco ancorado precisa cumprir pedidos de peixe para clientes misteriosos entre 23:00 e 06:00 (7 min reais), mantendo a iluminação do barco e sobrevivendo a ameaças. A lore fica implícita.
 
 ## Loop da run
-Implementado em `docs/sistemas/run.md`: noite com bilhete na mesa, amanhecer, avaliação do pedido, vidas, próxima noite e fim de run na terceira falha ou na morte do jogador. Falta encaixar:
-- gaivotas no amanhecer (M9).
+Implementado em `docs/sistemas/run.md`: noite com bilhete na mesa, amanhecer, avaliação do pedido, vidas, próxima noite e fim de run na terceira falha ou na morte do jogador. As gaivotas no amanhecer ficaram para depois do MVP.
 
 A run é infinita e a dificuldade sobe a cada noite (M7).
 
@@ -84,7 +83,7 @@ A run é infinita e a dificuldade sobe a cada noite (M7).
 - Regras em classes puras testadas em `test/unit/`: sorteio de cartas, geração e avaliação do pedido, cálculo de stats, minijogo, nível de luz e pontos.
 
 ## Roteiro
-Cada marco tem o seu próprio `/planejar`. Até o M9 tudo usa primitivas (greybox), para nenhuma mecânica esperar por asset.
+Cada marco tem o seu próprio `/planejar`. No MVP tudo usa primitivas (greybox), para nenhuma mecânica esperar por asset.
 
 | # | Marco | Resultado jogável |
 |---|---|---|
@@ -97,6 +96,8 @@ Cada marco tem o seu próprio `/planejar`. Até o M9 tudo usa primitivas (greybo
 | M6 | Tempestade (feito) | Evento, balanço forte, chuva, céu, voador |
 | M7 | Cartas e dificuldade (feito) | Seleção de cartas, raridades, rerolls, slots, escala por noite |
 | M8 | Meta e menus (feito) | Pontos, upgrades, save, menus |
-| M9 | Mar, céu e assets | Oceano e céu definitivos, assets CC0, áudio |
+| M9 | Mar e céu (feito) | Oceano com ondas e céu com lua, estrelas e tempestade, por addons (decisão 0016, provisória) |
+
+Ficaram para depois do MVP, por escolha do desenvolvedor, porque a estética toda deve mudar: assets no lugar da greybox (barco, peixes, inimigos, objetos), áudio (chuva, vento, trovão, gerador, inimigos) e gaivotas no amanhecer.
 
 Se o prazo apertar, a tempestade (M6) é a primeira candidata a corte ou simplificação.

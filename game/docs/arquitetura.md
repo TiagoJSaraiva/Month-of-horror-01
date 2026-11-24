@@ -56,7 +56,7 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
   - `TableNote`, o bilhete dos clientes na mesa (ver `docs/sistemas/run.md`);
   - `Actors`, com tudo o que congela no amanhecer: o `Player`, que começa na cabine olhando para a porta, o `FishmanSpawner` (`ClimbPoints` e os peixes-homens criados) e o `FlyerSpawner` (voadores da tempestade); ver `docs/sistemas/inimigos.md`;
   - `Items`, itens largados no convés (`DroppedItem`);
-  - `OutsideWorld` (`BoatSway`), com `Sea` (plano escuro provisório), `Water` (`WaterSurface`, a física da superfície) e o `Environment` do céu girando junto (`sky_rotation`). Tudo o que fica fora do barco entra aqui (decisão 0008; ver `docs/sistemas/balanco.md`).
+  - `OutsideWorld` (`BoatSway`), com `Sea` (nó `Ocean` do addon Boujie Water Shader, com ondas; decisão 0016), `Water` (`WaterSurface`, a física da superfície) e o `Environment` do céu girando junto (`sky_rotation`). Tudo o que fica fora do barco entra aqui (decisão 0008; ver `docs/sistemas/balanco.md`).
 
 ## Autoloads
 _Nenhum._
