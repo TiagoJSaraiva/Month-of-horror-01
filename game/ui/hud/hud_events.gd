@@ -18,5 +18,7 @@ signal minigame_finished
 ## Texto do bilhete da mesa, mostrado até note_closed.
 signal note_opened(text: String)
 signal note_closed
+## Progresso, de 0 a 1, da ação que exige segurar E. 0 esconde a barra.
+signal hold_progress_changed(ratio: float)
 
 @warning_ignore_restore("unused_signal")

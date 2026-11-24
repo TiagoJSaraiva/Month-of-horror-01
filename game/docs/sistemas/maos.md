@@ -14,9 +14,12 @@ Garantir que o jogador faça uma coisa por vez com as mãos: usar a ferramenta (
 - `config/physics_layers.gd`: `PhysicsLayers`, máscaras das camadas de física usadas em consultas de raio.
 - `components/interactable.gd`: `Interactable` (`Area3D`, camada `interactable`). Base de tudo com que o jogador interage:
   - `get_prompt(hands)` devolve a ação disponível com estas mãos (vazio = nenhuma);
+  - `get_hold_seconds(hands)` diz quantos segundos é preciso segurar E (0 = instantânea);
   - `interact(hands)` executa a ação;
   - `focus_exited()` é chamado quando a mira sai do objeto.
 - `player/interactor.gd`: `Interactor` (RayCast de 2,2 m na `Camera3D`, camadas `world` e `interactable`, detecta áreas). A cada frame de física manda a ação do `Interactable` na mira para o HUD (`prompt_changed`) e avisa o alvo anterior com `focus_exited()` quando a mira muda. Com E (`interact`), executa a ação. Paredes bloqueiam a mira.
+  - Ações com segurar (`get_hold_seconds` > 0) aparecem como "[E] X (hold)" e só acontecem depois de segurar E pelo tempo pedido. Soltar E, tirar a mira do alvo (mesmo para outro alvo com a mesma ação) ou a ação deixar de existir cancelam. O progresso vai para o HUD (`hold_progress_changed`).
+- `player/interaction_hold.gd`: `InteractionHold` (`RefCounted`), regra pura do progresso de segurar.
 - `boat/freezer.tscn` / `freezer.gd`: `Freezer` (`Interactable`), com um `StaticBody3D` que bloqueia o jogador. A área é 5 cm maior que o corpo para a mira achá-la primeiro. Só oferece ação carregando um peixe ("Store X"); outros itens não entram.
 - `items/dropped_item.tscn` / `dropped_item.gd`: `DroppedItem` (`Interactable`), item no convés, criado pela `Night` em `Items`, com a base da malha apoiada no chão. Só oferece ação com as mãos livres ("Pick up X").
 
@@ -33,9 +36,10 @@ Garantir que o jogador faça uma coisa por vez com as mãos: usar a ferramenta (
 - `Hands.changed`: a ferramenta escuta para se esconder fora do modo `TOOL`.
 - `Hands.item_dropped(item, amount, at)` → `Night._on_hands_item_dropped`: cria o `DroppedItem` em `Items`.
 - `Freezer.fish_stored(fish, amount)` → `Night._on_freezer_fish_stored`: `order.deliver()`.
-- Pelo canal `HudEvents`: `prompt_changed`, emitido pelo `Interactor`.
+- Pelo canal `HudEvents`: `prompt_changed` e `hold_progress_changed`, emitidos pelo `Interactor`.
 
 ## Testes
 - `test/unit/hands_state_test.gd`: modo inicial, diário abre e fecha, diário bloqueado com linha na água ou carregando, carregar exige mãos livres, carregar bloqueia a ferramenta, item ou quantidade inválidos, comparação do item carregado, soltar libera as mãos e cada mudança é anunciada.
+- `test/unit/interaction_hold_test.gd`: começa inativo, progresso cresce, completa uma única vez, cancelar zera, duração zero completa na hora.
 - `test/scenes/freezer_delivery_test.gd`: com um Mackerel nas mãos, mirando o freezer, E entrega o peixe ao pedido e esvazia as mãos. Também confirma que a mira do Jolt detecta `Area3D`.
 - Largar e pegar de novo foi conferido com captura de tela.

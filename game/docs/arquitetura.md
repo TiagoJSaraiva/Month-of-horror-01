@@ -32,7 +32,7 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
   - `RunOverScreen` (camada 2).
 
   A interface (`Hud` e overlays) fica fora do `SubViewport`, em resolução nativa.
-- `ui/hud/hud.tscn` → `Hud` (`CanvasLayer`) → `Crosshair`, `Prompt`, `Hint`, `Bait`, `HintTimer`, `FishingMinigameView` e `NotePanel`. `reset()` limpa o que sobrou de uma noite. Recebe tudo pelo canal `HudEvents` (decisão 0012).
+- `ui/hud/hud.tscn` → `Hud` (`CanvasLayer`) → `Crosshair`, `Prompt`, `HoldBar`, `Hint`, `Bait`, `HintTimer`, `FishingMinigameView` e `NotePanel`. `reset()` limpa o que sobrou de uma noite. Recebe tudo pelo canal `HudEvents` (decisão 0012).
 - `ui/run_over/run_over_screen.tscn` → `RunOverScreen` (`CanvasLayer`) → `Background` → `Content` com título, `%Message`, `%Nights` e `%NewRunButton`.
 - `ui/transition_overlay/transition_overlay.tscn` → `TransitionOverlay` (`CanvasLayer`) → `Shade` (`ColorRect`) e `Message` (`Label`). Transições que podem ser aguardadas com `await`: `play_dawn()` escurece a tela e mostra "6:00 AM / The night is over."; `cover()` cobre de preto; `reveal(title)` mostra um título e revela a cena.
 - `player/player.tscn` → `Player` (`CharacterBody3D`) → `Head` (`MouseLook`):
@@ -71,6 +71,7 @@ _Nenhum._
 ### Canal `HudEvents` (`ui/hud/hud_events.tres`, decisão 0012)
 Só apresentação, do mundo para o `Hud`. Quem emite e o `Hud` recebem o `.tres` por `@export`.
 - `prompt_changed(text)` — ação disponível no que está na mira; texto vazio esconde. O `Hud` acrescenta "[E]".
+- `hold_progress_changed(ratio)` — progresso da ação que exige segurar E; 0 esconde a `HoldBar`.
 - `hint_requested(text, seconds)` — mensagem embaixo da tela; com `seconds` 0, fica até a próxima.
 - `bait_changed(bait_name)` — isca atual.
 - `minigame_started(minigame)` e `minigame_finished` — o `FishingMinigameView` desenha o minijogo lendo o modelo enquanto ele dura.
@@ -85,7 +86,7 @@ Só apresentação, do mundo para o `Hud`. Quem emite e o `Hud` recebem o `.tres
 | `primary_action` | Botão esquerdo | Lançar, fisgar e (segurando) puxar a linha |
 | `secondary_action` | Botão direito | Recolher a linha ou desistir do peixe |
 | `cycle_bait` | Q | Trocar a isca (com a linha fora d'água) |
-| `interact` | E | Interagir com o que está na mira (guardar peixe, pegar peixe) |
+| `interact` | E | Interagir com o que está na mira; algumas ações exigem segurar |
 | `pause` | Esc | Solta o mouse (o menu de pausa assume no M8) |
 
 ## Camadas de colisão

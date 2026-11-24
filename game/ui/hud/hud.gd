@@ -1,13 +1,14 @@
 class_name Hud
 extends CanvasLayer
-## HUD em resolução nativa: mira, ação disponível, dicas, isca atual, minijogo de pesca e
-## bilhete da mesa. Recebe tudo pelo HudEvents (decisão 0012).
+## HUD em resolução nativa: mira, ação disponível e progresso de segurar E, dicas, isca atual,
+## minijogo de pesca e bilhete da mesa. Recebe tudo pelo HudEvents (decisão 0012).
 
 const INTERACT_KEY_LABEL := "[E]"
 
 @export var hud_events: HudEvents
 
 @onready var _prompt: Label = $Prompt
+@onready var _hold_bar: ProgressBar = $HoldBar
 @onready var _hint: Label = $Hint
 @onready var _bait: Label = $Bait
 @onready var _hint_timer: Timer = $HintTimer
@@ -30,12 +31,14 @@ func _ready() -> void:
 	hud_events.minigame_finished.connect(_minigame_view.hide_minigame)
 	hud_events.note_opened.connect(_on_hud_events_note_opened)
 	hud_events.note_closed.connect(_note_panel.hide)
+	hud_events.hold_progress_changed.connect(_on_hud_events_hold_progress_changed)
 
 
 ## Limpa o que sobrou da noite anterior e mostra o HUD. A isca é mantida: a vara da nova
 ## noite a anuncia de novo.
 func reset() -> void:
 	_prompt.text = ""
+	_hold_bar.hide()
 	_hint.text = ""
 	_hint_timer.stop()
 	_minigame_view.hide_minigame()
@@ -45,6 +48,11 @@ func reset() -> void:
 
 func _on_hud_events_prompt_changed(text: String) -> void:
 	_prompt.text = "" if text.is_empty() else "%s %s" % [INTERACT_KEY_LABEL, text]
+
+
+func _on_hud_events_hold_progress_changed(ratio: float) -> void:
+	_hold_bar.value = ratio
+	_hold_bar.visible = ratio > 0.0
 
 
 func _on_hud_events_hint_requested(text: String, seconds: float) -> void:

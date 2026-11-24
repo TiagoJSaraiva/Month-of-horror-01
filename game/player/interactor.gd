@@ -1,7 +1,10 @@
 class_name Interactor
 extends RayCast3D
 ## Mira de interação do jogador: acha o Interactable à frente, anuncia a ação disponível no
-## HUD e a executa com E. Avisa o objeto quando a mira sai dele.
+## HUD e a executa com E. Ações demoradas exigem segurar E sem tirar a mira do alvo; o
+## progresso vai para o HUD. Avisa o objeto quando a mira sai dele.
+
+const HOLD_PROMPT_FORMAT := "%s (hold)"
 
 @export var hands: Hands
 @export var hud_events: HudEvents
@@ -11,6 +14,9 @@ var _target: Interactable
 ## Interactable na mira com ação disponível.
 var _focused: Interactable
 var _prompt: String = ""
+var _hold := InteractionHold.new()
+## Alvo da ação sendo segurada. Outro alvo com o mesmo texto (outra lâmpada) não continua.
+var _hold_target: Interactable
 
 
 func _ready() -> void:
@@ -20,7 +26,7 @@ func _ready() -> void:
 		set_process_unhandled_input(false)
 
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	var target := get_collider() as Interactable
 	if target != _target:
 		# O alvo anterior pode ter sido liberado (um peixe pego do convés, por exemplo).
@@ -31,10 +37,42 @@ func _physics_process(_delta: float) -> void:
 	_focused = target if not prompt.is_empty() else null
 	if prompt != _prompt:
 		_prompt = prompt
-		hud_events.prompt_changed.emit(prompt)
+		hud_events.prompt_changed.emit(_prompt_text())
+	_update_hold(delta)
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed(&"interact") and _focused != null:
+	if not event.is_action_pressed(&"interact") or _focused == null:
+		return
+	var hold_seconds: float = _focused.get_hold_seconds(hands)
+	if hold_seconds <= 0.0:
 		_focused.interact(hands)
-		get_viewport().set_input_as_handled()
+	else:
+		_hold.start(hold_seconds)
+		_hold_target = _focused
+	get_viewport().set_input_as_handled()
+
+
+func _prompt_text() -> String:
+	if _focused == null:
+		return ""
+	if _focused.get_hold_seconds(hands) > 0.0:
+		return HOLD_PROMPT_FORMAT % _prompt
+	return _prompt
+
+
+func _update_hold(delta: float) -> void:
+	if not _hold.is_active():
+		return
+	# Soltar E, tirar a mira do alvo ou a ação deixar de existir cancelam o progresso.
+	if _focused == null or _focused != _hold_target or not Input.is_action_pressed(&"interact"):
+		_hold.cancel()
+		_hold_target = null
+		hud_events.hold_progress_changed.emit(0.0)
+		return
+	if _hold.advance(delta):
+		_hold_target = null
+		hud_events.hold_progress_changed.emit(0.0)
+		_focused.interact(hands)
+	else:
+		hud_events.hold_progress_changed.emit(_hold.ratio())

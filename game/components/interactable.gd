@@ -10,6 +10,11 @@ func get_prompt(_hands: Hands) -> String:
 	return ""
 
 
+## Segundos segurando a tecla até a ação acontecer. 0 é instantânea.
+func get_hold_seconds(_hands: Hands) -> float:
+	return 0.0
+
+
 ## Executa a ação. O Interactor só chama quando [method get_prompt] não está vazio.
 func interact(_hands: Hands) -> void:
 	pass
