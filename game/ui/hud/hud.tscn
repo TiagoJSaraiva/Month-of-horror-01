@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://ui/hud/hud.gd" id="1_hud"]
 [ext_resource type="Resource" path="res://ui/hud/hud_events.tres" id="2_hud_events"]
+[ext_resource type="Script" path="res://ui/hud/fishing_minigame_view.gd" id="3_minigame_view"]
 
 [node name="Hud" type="CanvasLayer"]
 script = ExtResource("1_hud")
@@ -69,3 +70,20 @@ horizontal_alignment = 2
 
 [node name="HintTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="FishingMinigameView" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -160.0
+offset_right = -130.0
+offset_bottom = 160.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("3_minigame_view")

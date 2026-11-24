@@ -1,6 +1,6 @@
 class_name Hud
 extends CanvasLayer
-## HUD em resolução nativa: mira, ação disponível, dicas e isca atual.
+## HUD em resolução nativa: mira, ação disponível, dicas, isca atual e minijogo de pesca.
 ## Recebe tudo pelo HudEvents (decisão 0012).
 
 const INTERACT_KEY_LABEL := "[E]"
@@ -11,6 +11,7 @@ const INTERACT_KEY_LABEL := "[E]"
 @onready var _hint: Label = $Hint
 @onready var _bait: Label = $Bait
 @onready var _hint_timer: Timer = $HintTimer
+@onready var _minigame_view: FishingMinigameView = $FishingMinigameView
 
 
 func _ready() -> void:
@@ -24,6 +25,8 @@ func _ready() -> void:
 	hud_events.prompt_changed.connect(_on_hud_events_prompt_changed)
 	hud_events.hint_requested.connect(_on_hud_events_hint_requested)
 	hud_events.bait_changed.connect(_on_hud_events_bait_changed)
+	hud_events.minigame_started.connect(_minigame_view.show_minigame)
+	hud_events.minigame_finished.connect(_minigame_view.hide_minigame)
 
 
 func _on_hud_events_prompt_changed(text: String) -> void:

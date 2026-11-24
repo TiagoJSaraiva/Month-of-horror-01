@@ -4,6 +4,12 @@
 [ext_resource type="Script" path="res://player/mouse_look.gd" id="2_mouse_look"]
 [ext_resource type="Script" path="res://player/journal.gd" id="3_journal"]
 [ext_resource type="Script" path="res://player/hands.gd" id="4_hands"]
+[ext_resource type="Script" path="res://fishing/fishing_rod.gd" id="5_fishing_rod"]
+[ext_resource type="PackedScene" path="res://fishing/bobber.tscn" id="6_bobber"]
+[ext_resource type="Resource" path="res://ui/hud/hud_events.tres" id="7_hud_events"]
+[ext_resource type="Script" path="res://fish/bait_data.gd" id="8_bait_data"]
+[ext_resource type="Resource" path="res://fish/data/worm.tres" id="9_worm"]
+[ext_resource type="Resource" path="res://fish/data/squid.tres" id="10_squid"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.35
@@ -33,6 +39,13 @@ roughness = 0.4
 material = SubResource("StandardMaterial3D_carried_fish")
 size = Vector3(0.45, 0.1, 0.12)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rod"]
+albedo_color = Color(0.22, 0.15, 0.1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_rod"]
+material = SubResource("StandardMaterial3D_rod")
+size = Vector3(0.025, 0.025, 0.9)
+
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 2
 collision_mask = 1
@@ -60,6 +73,24 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, -0.55)
 visible = false
 cast_shadow = 0
 mesh = SubResource("BoxMesh_carried_fish")
+
+[node name="FishingRod" type="Node3D" parent="Head/Camera3D" node_paths=PackedStringArray("hands")]
+script = ExtResource("5_fishing_rod")
+hands = NodePath("../Hands")
+hud_events = ExtResource("7_hud_events")
+baits = Array[ExtResource("8_bait_data")]([ExtResource("9_worm"), ExtResource("10_squid")])
+
+[node name="Model" type="MeshInstance3D" parent="Head/Camera3D/FishingRod"]
+transform = Transform3D(1, 0, 0, 0, 0.866, -0.5, 0, 0.5, 0.866, 0.22, -0.2, -0.6)
+cast_shadow = 0
+mesh = SubResource("BoxMesh_rod")
+
+[node name="Aim" type="RayCast3D" parent="Head/Camera3D/FishingRod"]
+target_position = Vector3(0, 0, -15)
+collision_mask = 9
+
+[node name="Bobber" parent="Head/Camera3D/FishingRod" instance=ExtResource("6_bobber")]
+top_level = true
 
 [node name="Journal" type="Node3D" parent="Head"]
 transform = Transform3D(1, 0, 0, 0, 0.603, 0.798, 0, -0.798, 0.603, 0, -0.33, -0.25)

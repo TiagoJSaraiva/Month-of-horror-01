@@ -14,6 +14,7 @@
 [ext_resource type="Resource" path="res://night/sky_palettes/night.tres" id="12_night_palette"]
 [ext_resource type="Resource" path="res://night/sky_palettes/dawn.tres" id="13_dawn_palette"]
 [ext_resource type="Script" path="res://night/moon_arc.gd" id="14_moon_arc"]
+[ext_resource type="Script" path="res://night/water_surface.gd" id="15_water_surface"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sea"]
 albedo_color = Color(0.015, 0.035, 0.05, 1)
@@ -23,6 +24,9 @@ roughness = 0.2
 [sub_resource type="PlaneMesh" id="PlaneMesh_sea"]
 material = SubResource("StandardMaterial3D_sea")
 size = Vector2(2000, 2000)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_water"]
+size = Vector3(2000, 0.2, 2000)
 
 [node name="Night" type="Node3D"]
 script = ExtResource("5_night")
@@ -78,6 +82,15 @@ environment = ExtResource("1_environment")
 
 [node name="Sea" type="MeshInstance3D" parent="OutsideWorld"]
 mesh = SubResource("PlaneMesh_sea")
+
+[node name="Water" type="StaticBody3D" parent="OutsideWorld"]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("15_water_surface")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="OutsideWorld/Water"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+shape = SubResource("BoxShape3D_water")
 
 [node name="Moon" type="DirectionalLight3D" parent="OutsideWorld" node_paths=PackedStringArray("night_clock")]
 transform = Transform3D(1, 0, 0, 0, 0.819152, 0.573576, 0, -0.573576, 0.819152, 0, 0, 0)

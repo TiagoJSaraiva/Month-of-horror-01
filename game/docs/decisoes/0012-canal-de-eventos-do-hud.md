@@ -23,3 +23,4 @@ Pela regra "sinal para cima", cada mensagem teria de ser reemitida no `Player` e
 ## Consequências
 - A dependência fica visível no inspetor (`hud_events`). Testes podem usar o `.tres` ou um `HudEvents.new()` próprio.
 - Risco de o canal virar depósito de tudo. Por isso a regra é só apresentação, e cada sinal novo deve ser documentado em `docs/arquitetura.md`.
+- O canal não guarda o último valor. Por isso, na `Main`, o `Hud` vem **antes** do `LowResView`: o `_ready` do `Hud` roda antes do mundo e ele já está conectado quando os componentes emitem o estado inicial (a isca, por exemplo). Como é um `CanvasLayer`, continua desenhado por cima do 3D.

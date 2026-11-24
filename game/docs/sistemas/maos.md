@@ -14,7 +14,7 @@ Garantir que o jogador faça uma coisa por vez com as mãos: usar a ferramenta (
 
 ## Regras
 - Modos: `TOOL` (ferramenta pronta), `JOURNAL` (diário aberto) e `CARRYING` (peixe nas duas mãos).
-- `tool_busy` (linha na água) impede abrir o diário e pegar coisas até a ferramenta parar.
+- `tool_busy` (linha na água) impede abrir o diário e pegar coisas até a ferramenta parar. Quem liga e desliga é a ferramenta (`FishingRod`).
 - O diário só abre no modo `TOOL` com a ferramenta parada; Tab de novo fecha.
 - Carregar um peixe exige o modo `TOOL` com a ferramenta parada. Carregando, não dá para usar a ferramenta nem abrir o diário.
 - O jogador carrega um "pacote" de uma espécie, com quantidade (a carta lendária de duplicar peixe gera 2).
