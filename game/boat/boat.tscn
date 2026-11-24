@@ -1,0 +1,101 @@
+[gd_scene format=3]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hull"]
+albedo_color = Color(0.24, 0.26, 0.28, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bulwark"]
+albedo_color = Color(0.55, 0.56, 0.55, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cabin"]
+albedo_color = Color(0.72, 0.72, 0.68, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_freezer"]
+albedo_color = Color(0.85, 0.88, 0.9, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_table"]
+albedo_color = Color(0.4, 0.27, 0.16, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_clock"]
+albedo_color = Color(0.85, 0.7, 0.2, 1)
+
+[node name="Boat" type="Node3D"]
+
+[node name="Hull" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="HullBody" type="CSGBox3D" parent="Hull"]
+size = Vector3(5, 2, 14)
+material = SubResource("StandardMaterial3D_hull")
+
+[node name="PortBulwark" type="CSGBox3D" parent="Hull"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.425, 1.55, 0)
+size = Vector3(0.15, 1.1, 14)
+material = SubResource("StandardMaterial3D_bulwark")
+
+[node name="StarboardBulwark" type="CSGBox3D" parent="Hull"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.425, 1.55, 0)
+size = Vector3(0.15, 1.1, 14)
+material = SubResource("StandardMaterial3D_bulwark")
+
+[node name="BowBulwark" type="CSGBox3D" parent="Hull"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, -6.925)
+size = Vector3(5, 1.1, 0.15)
+material = SubResource("StandardMaterial3D_bulwark")
+
+[node name="SternBulwark" type="CSGBox3D" parent="Hull"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 6.925)
+size = Vector3(5, 1.1, 0.15)
+material = SubResource("StandardMaterial3D_bulwark")
+
+[node name="Cabin" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="Shell" type="CSGBox3D" parent="Cabin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, -4.2)
+size = Vector3(3.2, 2.6, 4)
+material = SubResource("StandardMaterial3D_cabin")
+
+[node name="Interior" type="CSGBox3D" parent="Cabin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, -4.2)
+operation = 2
+size = Vector3(2.9, 2.4, 3.7)
+material = SubResource("StandardMaterial3D_cabin")
+
+[node name="Door" type="CSGBox3D" parent="Cabin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.05, -2.275)
+operation = 2
+size = Vector3(1, 2.1, 0.4)
+material = SubResource("StandardMaterial3D_cabin")
+
+[node name="FrontWindow" type="CSGBox3D" parent="Cabin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, -6.125)
+operation = 2
+size = Vector3(1.6, 0.6, 0.4)
+material = SubResource("StandardMaterial3D_cabin")
+
+[node name="PortWindow" type="CSGBox3D" parent="Cabin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.525, 2.6, -4.2)
+operation = 2
+size = Vector3(0.4, 0.6, 1.2)
+material = SubResource("StandardMaterial3D_cabin")
+
+[node name="StarboardWindow" type="CSGBox3D" parent="Cabin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.525, 2.6, -4.2)
+operation = 2
+size = Vector3(0.4, 0.6, 1.2)
+material = SubResource("StandardMaterial3D_cabin")
+
+[node name="Freezer" type="CSGBox3D" parent="Cabin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1, 1.45, -4.8)
+size = Vector3(0.7, 0.9, 1.4)
+material = SubResource("StandardMaterial3D_freezer")
+
+[node name="Table" type="CSGBox3D" parent="Cabin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.05, 1.375, -4.8)
+size = Vector3(0.8, 0.75, 1.2)
+material = SubResource("StandardMaterial3D_table")
+
+[node name="WallClock" type="CSGBox3D" parent="Cabin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9, 2.75, -6.025)
+size = Vector3(0.4, 0.4, 0.05)
+material = SubResource("StandardMaterial3D_clock")
