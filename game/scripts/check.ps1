@@ -40,7 +40,18 @@ Invoke-Step "Versão do Godot" {
     & (Join-Path $PSScriptRoot "check-godot-version.ps1")
 }
 
-# 2. Formatação e 3. lint (gdtoolkit)
+# 2. gdtoolkit instalado. Sem esta etapa, um gdformat ou gdlint ausente passaria como OK:
+#    o PowerShell não altera o $LASTEXITCODE quando o comando não existe.
+Invoke-Step "gdtoolkit (gdformat e gdlint)" {
+    foreach ($tool in @("gdformat", "gdlint")) {
+        if (-not (Get-Command $tool -ErrorAction SilentlyContinue)) {
+            Write-Host "$tool não encontrado. Instale o gdtoolkit (pip install `"gdtoolkit==4.*`") e confira se a pasta Scripts do Python está no PATH." -ForegroundColor Yellow
+            $global:LASTEXITCODE = 1
+        }
+    }
+}
+
+# 3. Formatação e 4. lint (gdtoolkit)
 if ($gdFiles.Count -gt 0) {
     if ($Fix) {
         Invoke-Step "Aplicar formatação (gdformat)" { gdformat $gdFiles }
@@ -51,7 +62,7 @@ if ($gdFiles.Count -gt 0) {
     Write-Host "`n(sem scripts .gd do projeto: formatação e lint pulados)" -ForegroundColor DarkGray
 }
 
-# 4. Parse de todos os scripts: importa o projeto em modo headless e procura erros na saída.
+# 5. Parse de todos os scripts: importa o projeto em modo headless e procura erros na saída.
 #    O Godot nem sempre retorna exit code != 0 com erro de script, por isso a busca no texto.
 #    Não amplie o regex para "ERROR" genérico: há ruído conhecido (Remote Debugger).
 Invoke-Step "Parse dos scripts (Godot headless)" {
@@ -67,7 +78,7 @@ Invoke-Step "Parse dos scripts (Godot headless)" {
     }
 }
 
-# 5. Testes (gdUnit4). O runtest.cmd lê o executável do Godot em GODOT_BIN.
+# 6. Testes (gdUnit4). O runtest.cmd lê o executável do Godot em GODOT_BIN.
 $testDir = if ($Fast) { "test/unit" } else { "test" }
 if (Test-Path (Join-Path $root $testDir)) {
     Invoke-Step "Testes gdUnit4 ($testDir)" {
