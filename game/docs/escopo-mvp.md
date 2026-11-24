@@ -25,20 +25,14 @@ A run acaba com 3 noites falhas (não precisam ser seguidas) ou com a morte do j
 ### Noite e pedido
 - Tempo da noite, amanhecer e relógio de parede: implementados; regras em `docs/sistemas/noite.md`.
 - Pedido e diário: implementados; regras em `docs/sistemas/pedido.md`.
-- Um peixe só conta depois de guardado no freezer da cabine. Peixe fora do freezer ao amanhecer não conta.
+- Entrega no freezer: implementada; regras em `docs/sistemas/maos.md`.
 
 ### Mãos
-- Lanterna sempre na mão esquerda, só liga e desliga.
-- A mão direita alterna entre vara e arma.
-- Diário e itens carregados (peixe, galão, lâmpada) ocupam as duas mãos: nesse momento não dá para atirar nem pescar.
+- Diário, peixe carregado e vara: implementados; regras em `docs/sistemas/maos.md`.
+- Falta: lanterna sempre na mão esquerda, só liga e desliga (M4); a mão direita alterna entre vara e arma (M5); galão e lâmpada também ocupam as duas mãos (M4).
 
 ### Pesca
-- Minijogo no estilo Stardew Valley (manter o peixe dentro da barra), em overlay 2D. O jogador pode cancelar, e o peixe escapa.
-- "Poder de pesca" (carta e upgrade) é a velocidade com que a barra de captura enche.
-- Duas iscas infinitas, trocadas por tecla antes de lançar. Cada isca só atrai a sua espécie.
-- Pesca de qualquer ponto da amurada, mirando a água.
-- Carrega 1 peixe por vez; o duplicado da carta lendária vai junto. Pode largar no convés e pegar de novo.
-- 2 espécies no MVP, novas espécies entram por Resource.
+- Implementada; regras em `docs/sistemas/pesca.md`.
 
 ### Iluminação
 - 6 lâmpadas ao alcance da mão. Nível de luz = lâmpadas boas ÷ total, com o gerador funcionando. Gerador vazio ou quebrado deixa só a luz de emergência, fraca.
@@ -124,7 +118,7 @@ Cada marco tem o seu próprio `/planejar`. Até o M9 tudo usa primitivas (greybo
 |---|---|---|
 | M0 | Fundação (feito) | Andar em primeira pessoa num barco greybox, render em baixa resolução, balanço visual |
 | M1 | Noite e pedido (feito) | Relógio de 23h a 6h, céu provisório, diário, amanhecer congelando tudo |
-| M2 | Pesca | Isca, lançamento, minijogo, peixe levado ao freezer |
+| M2 | Pesca (feito) | Isca, lançamento, minijogo, peixe levado ao freezer |
 | M3 | Loop da run | Vidas, passe livre, mensagens na mesa, próxima noite, fim de run |
 | M4 | Iluminação | Gerador, lâmpadas, luz de emergência, lanterna e pilhas, reparos |
 | M5 | Combate | Arma, vida e regeneração, morte, peixe-homem |

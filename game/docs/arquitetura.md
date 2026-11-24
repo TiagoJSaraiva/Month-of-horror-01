@@ -30,16 +30,18 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
 - `player/player.tscn` → `Player` (`CharacterBody3D`) → `Head` (`MouseLook`):
   - `Journal`, página com `Label3D`;
   - `Camera3D` → `Hands` (`%Hands`) → `CarriedFishModel`;
-  - `Camera3D` → `FishingRod` → `Model`, `Aim` (RayCast) e `Bobber` (`top_level`).
+  - `Camera3D` → `FishingRod` → `Model`, `Aim` (RayCast) e `Bobber` (`top_level`);
+  - `Camera3D` → `Interactor` (RayCast de interação).
 
   Jogador em primeira pessoa (ver `docs/sistemas/movimento.md`). Mãos em `docs/sistemas/maos.md`, diário em `docs/sistemas/pedido.md` e vara em `docs/sistemas/pesca.md`.
-- `boat/boat.tscn` → `Boat` (`Node3D`) → `Hull` e `Cabin` (`CSGCombiner3D` com colisão, camada `world`). Barco greybox de 14×5 m com o convés em y = 1. A cabine fica na proa, com a porta voltada para a popa, e dentro dela há caixas no lugar do freezer e da mesa (decisão 0011).
+- `boat/boat.tscn` → `Boat` (`Node3D`) → `Hull` e `Cabin` (`CSGCombiner3D` com colisão, camada `world`). Barco greybox de 14×5 m com o convés em y = 1. A cabine fica na proa, com a porta voltada para a popa. Dentro dela ficam a mesa (caixa CSG; decisão 0011) e o `Freezer` (cena `boat/freezer.tscn`, `Interactable`).
 - `night/night.tscn` → `Night` (`Node3D`, gera o pedido e encerra a noite; ver `docs/sistemas/noite.md`):
   - `NightClock`, o tempo da noite;
   - `WorldEnvironment` (`SkyCycle`) com `night/night_environment.tres` (céu procedural e neblina), que clareia no amanhecer;
   - `Boat`;
   - `WallClock`, o relógio de ponteiros da cabine, ligado ao `NightClock`;
   - `Actors`, com tudo o que congela no amanhecer. Por enquanto só o `Player`, que começa na cabine olhando para a porta;
+  - `Items`, peixes largados no convés (`DroppedFish`);
   - `TempLights`, luzes provisórias até o M4;
   - `OutsideWorld` (`BoatSway`), com `Sea` (plano escuro provisório), `Water` (`WaterSurface`, a física da superfície) e `Moon` (`DirectionalLight3D` com `MoonArc`). Tudo o que fica fora do barco entra aqui (decisão 0008; ver `docs/sistemas/balanco.md`).
 
@@ -50,6 +52,10 @@ _Nenhum._
 - `NightClock.dawn_reached` → `Night._on_night_clock_dawn_reached` — congela `Actors` e encerra a noite.
 - `Night.night_finished(order)` → `Main._on_night_night_finished` — toca o `DawnOverlay`.
 - `NightOrder.changed` → `Journal._refresh` — o diário reescreve o texto a cada entrega. A ligação é feita em `Journal.display()`, que a `Night` chama via `Player.journal`.
+- `Freezer.fish_stored(fish, amount)` → `Night._on_freezer_fish_stored` — entrega o peixe ao pedido.
+- `Hands.fish_dropped(fish, amount, at)` → `Night._on_hands_fish_dropped` — cria o peixe no convés, em `Items`.
+- `Hands.changed` → `FishingRod._on_hands_changed` — a vara só aparece no modo `TOOL`.
+- `FishingAttempt.state_changed(state)` → `FishingRod._on_attempt_state_changed` — boia, mensagens, minijogo e peixe para as mãos.
 
 ### Canal `HudEvents` (`ui/hud/hud_events.tres`, decisão 0012)
 Só apresentação, do mundo para o `Hud`. Quem emite e o `Hud` recebem o `.tres` por `@export`.
@@ -67,6 +73,7 @@ Só apresentação, do mundo para o `Hud`. Quem emite e o `Hud` recebem o `.tres
 | `primary_action` | Botão esquerdo | Lançar, fisgar e (segurando) puxar a linha |
 | `secondary_action` | Botão direito | Recolher a linha ou desistir do peixe |
 | `cycle_bait` | Q | Trocar a isca (com a linha fora d'água) |
+| `interact` | E | Interagir com o que está na mira (guardar peixe, pegar peixe) |
 | `pause` | Esc | Solta o mouse (o menu de pausa assume no M8) |
 
 ## Camadas de colisão
