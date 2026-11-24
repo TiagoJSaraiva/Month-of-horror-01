@@ -33,6 +33,19 @@ Dar ao barco um nível de luz que depende de manutenção: o gerador gasta combu
 - A chance num passo de tempo é `1 - e^(-delta / média)`, para o sorteio não depender da taxa de quadros. Média zero ou negativa desliga a falha. A tempestade (M6) e a dificuldade por noite (M7) vão alterar as médias.
 - No amanhecer, a `Night` desliga o processamento da `Lighting`: o combustível para de gastar e as falhas param.
 
+## Lanterna
+- `flashlight/flashlight.tscn` / `flashlight.gd`: `Flashlight`, filha da `Camera3D` do jogador, à esquerda. Tem um `Model` e um `Beam` (`SpotLight3D` de 16 m e 22°, com sombra).
+- `flashlight/flashlight_battery.gd`: `FlashlightBattery` (`RefCounted`), carga em segundos de luz.
+- `flashlight/battery_box.tscn` / `battery_box.gd`: `BatteryBox` (`Interactable`), caixa de pilhas na mesa da cabine, com estoque infinito.
+- Regras:
+  - F (`toggle_flashlight`) liga e desliga, com as mãos em qualquer modo;
+  - a bateria cheia dá `battery_seconds` (90 s) de luz e só gasta acesa. Cada noite começa com ela cheia;
+  - quando a carga acaba, a lanterna apaga e aparece "The flashlight died."; tentar ligar sem carga mostra "The batteries are dead.";
+  - recarga só na caixa de pilhas: segurando E por 1 s, com as mãos livres e a bateria não cheia, a bateria volta cheia. Não há recarga gradual nem pilhas guardadas;
+  - a lanterna não conta para o nível de luz do barco. Atordoar o peixe-homem fica para o M5, e a duração menor a cada noite para o M7.
+- A `BatteryBox` chega à lanterna por `Hands.flashlight` (`@export`), porque a interação recebe as mãos do jogador.
+- O HUD mostra a carga na barra `Battery` (canal `battery_changed`), avisada só quando o percentual inteiro muda.
+
 ## Sinais
 - `GeneratorState.running_changed` → `Generator` → `Generator.running_changed` → `BoatLighting`: energia das lâmpadas, emergência e nível de luz.
 - `Bulb.changed` (queimou ou foi trocada) → `BoatLighting._refresh_light_level`.
@@ -41,5 +54,6 @@ Dar ao barco um nível de luz que depende de manutenção: o gerador gasta combu
 ## Testes
 - `test/unit/lighting_rules_test.gd`: nível cheio, parcial, sem energia e sem lâmpadas; chance de falha nula sem tempo ou sem média, crescente com o tempo, 1 - 1/e num intervalo médio e igual em passos divididos.
 - `test/unit/generator_state_test.gd`: começa cheio, gasta funcionando, vazio para e avisa uma vez, reabastecer religa, quebrado não gasta, conserto religa, conserto sem combustível continua parado e capacidade zero nunca funciona.
+- `test/unit/flashlight_battery_test.gd`: começa cheia, gasta, acaba uma vez só sem ficar negativa, pilhas novas enchem e capacidade zero fica sempre vazia.
 - `test/scenes/lighting_maintenance_test.gd`: com o gerador vazio, o nível é 0 e a emergência acende. Segurando E no gerador com o galão nas mãos, o nível volta a 1, a emergência apaga e as mãos ficam livres.
-- Conferidos com captura de tela: cabine com as caixas, convés aceso, convés só com a emergência, lâmpadas queimadas, gerador quebrado e galão nas mãos diante do gerador vazio.
+- Conferidos com captura de tela: cabine com as caixas, convés aceso, convés só com a emergência, lâmpadas queimadas, gerador quebrado, galão nas mãos diante do gerador vazio, lanterna acesa no escuro com a barra da bateria e a caixa de pilhas.

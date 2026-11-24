@@ -11,6 +11,7 @@
 [ext_resource type="Resource" path="res://fish/data/worm.tres" id="9_worm"]
 [ext_resource type="Resource" path="res://fish/data/squid.tres" id="10_squid"]
 [ext_resource type="Script" path="res://player/interactor.gd" id="11_interactor"]
+[ext_resource type="PackedScene" path="res://flashlight/flashlight.tscn" id="12_flashlight"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.35
@@ -55,10 +56,11 @@ script = ExtResource("2_mouse_look")
 current = true
 fov = 75.0
 
-[node name="Hands" type="Node3D" parent="Head/Camera3D" node_paths=PackedStringArray("journal")]
+[node name="Hands" type="Node3D" parent="Head/Camera3D" node_paths=PackedStringArray("journal", "flashlight")]
 unique_name_in_owner = true
 script = ExtResource("4_hands")
 journal = NodePath("../../Journal")
+flashlight = NodePath("../Flashlight")
 
 [node name="CarriedItemModel" type="MeshInstance3D" parent="Head/Camera3D/Hands"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, -0.55)
@@ -112,4 +114,8 @@ collision_mask = 5
 collide_with_areas = true
 script = ExtResource("11_interactor")
 hands = NodePath("../Hands")
+hud_events = ExtResource("7_hud_events")
+
+[node name="Flashlight" parent="Head/Camera3D" instance=ExtResource("12_flashlight")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.24, -0.2, -0.42)
 hud_events = ExtResource("7_hud_events")

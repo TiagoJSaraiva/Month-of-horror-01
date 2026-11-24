@@ -28,16 +28,15 @@ A run é infinita e a dificuldade sobe a cada noite (M7).
 - Entrega no freezer: implementada; regras em `docs/sistemas/maos.md`.
 
 ### Mãos
-- Diário, peixe carregado e vara: implementados; regras em `docs/sistemas/maos.md`.
-- Falta: lanterna sempre na mão esquerda, só liga e desliga (M4); a mão direita alterna entre vara e arma (M5); galão e lâmpada também ocupam as duas mãos (M4).
+- Diário, itens carregados (peixe, galão, lâmpada), interação de segurar e vara: implementados; regras em `docs/sistemas/maos.md`. Lanterna na mão esquerda: `docs/sistemas/iluminacao.md`.
+- Falta: a mão direita alterna entre vara e arma (M5).
 
 ### Pesca
 - Implementada; regras em `docs/sistemas/pesca.md`.
 
 ### Iluminação
-- Gerador, lâmpadas, luz de emergência, suprimentos, reparos e sorteio de falhas: implementados; regras em `docs/sistemas/iluminacao.md`.
-- Falta: falhas mais frequentes a cada noite (M7) e na tempestade (M6).
-- A lanterna não aumenta o nível de luz: serve para enxergar e atordoar. A bateria só recarrega com pilhas pegas na cabine, sem recarga gradual no MVP. A bateria dura menos a cada noite. O modo exato de troca das pilhas é definido no plano do marco de iluminação.
+- Gerador, lâmpadas, luz de emergência, suprimentos, reparos, sorteio de falhas, lanterna e caixa de pilhas: implementados; regras em `docs/sistemas/iluminacao.md`.
+- Falta: falhas mais frequentes a cada noite e bateria que dura menos (M7), falhas mais frequentes na tempestade (M6) e atordoar com a lanterna (M5).
 
 ### Inimigos
 - **Peixe-homem** (escuridão): abaixo de um limiar de luz, sobe pela amurada, com mais frequência quanto mais escuro estiver. Fica atordoado com a lanterna no rosto por cerca de 1 s, foge para o mar quando a luz volta acima do limiar e morre com tiros.
@@ -116,7 +115,7 @@ Cada marco tem o seu próprio `/planejar`. Até o M9 tudo usa primitivas (greybo
 | M1 | Noite e pedido (feito) | Relógio de 23h a 6h, céu provisório, diário, amanhecer congelando tudo |
 | M2 | Pesca (feito) | Isca, lançamento, minijogo, peixe levado ao freezer |
 | M3 | Loop da run (feito) | Vidas, passe livre, mensagens na mesa, próxima noite, fim de run |
-| M4 | Iluminação | Gerador, lâmpadas, luz de emergência, lanterna e pilhas, reparos |
+| M4 | Iluminação (feito) | Gerador, lâmpadas, luz de emergência, lanterna e pilhas, reparos |
 | M5 | Combate | Arma, vida e regeneração, morte, peixe-homem |
 | M6 | Tempestade | Evento, balanço forte, chuva, céu, voador |
 | M7 | Cartas e dificuldade | Seleção de cartas, raridades, rerolls, slots, escala por noite |

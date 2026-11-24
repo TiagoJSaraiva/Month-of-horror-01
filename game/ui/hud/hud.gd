@@ -1,7 +1,8 @@
 class_name Hud
 extends CanvasLayer
 ## HUD em resolução nativa: mira, ação disponível e progresso de segurar E, dicas, isca atual,
-## minijogo de pesca e bilhete da mesa. Recebe tudo pelo HudEvents (decisão 0012).
+## bateria da lanterna, minijogo de pesca e bilhete da mesa. Recebe tudo pelo HudEvents
+## (decisão 0012).
 
 const INTERACT_KEY_LABEL := "[E]"
 
@@ -11,6 +12,7 @@ const INTERACT_KEY_LABEL := "[E]"
 @onready var _hold_bar: ProgressBar = $HoldBar
 @onready var _hint: Label = $Hint
 @onready var _bait: Label = $Bait
+@onready var _battery_bar: ProgressBar = $Battery/Bar
 @onready var _hint_timer: Timer = $HintTimer
 @onready var _minigame_view: FishingMinigameView = $FishingMinigameView
 @onready var _note_panel: Control = $NotePanel
@@ -32,6 +34,7 @@ func _ready() -> void:
 	hud_events.note_opened.connect(_on_hud_events_note_opened)
 	hud_events.note_closed.connect(_note_panel.hide)
 	hud_events.hold_progress_changed.connect(_on_hud_events_hold_progress_changed)
+	hud_events.battery_changed.connect(_on_hud_events_battery_changed)
 
 
 ## Limpa o que sobrou da noite anterior e mostra o HUD. A isca é mantida: a vara da nova
@@ -65,6 +68,10 @@ func _on_hud_events_hint_requested(text: String, seconds: float) -> void:
 
 func _on_hud_events_bait_changed(bait_name: String) -> void:
 	_bait.text = "Bait: %s" % bait_name
+
+
+func _on_hud_events_battery_changed(ratio: float) -> void:
+	_battery_bar.value = ratio
 
 
 func _on_hud_events_note_opened(text: String) -> void:

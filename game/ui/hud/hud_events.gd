@@ -20,5 +20,7 @@ signal note_opened(text: String)
 signal note_closed
 ## Progresso, de 0 a 1, da ação que exige segurar E. 0 esconde a barra.
 signal hold_progress_changed(ratio: float)
+## Carga da bateria da lanterna, de 0 a 1.
+signal battery_changed(ratio: float)
 
 @warning_ignore_restore("unused_signal")

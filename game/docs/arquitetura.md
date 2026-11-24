@@ -32,17 +32,18 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
   - `RunOverScreen` (camada 2).
 
   A interface (`Hud` e overlays) fica fora do `SubViewport`, em resolução nativa.
-- `ui/hud/hud.tscn` → `Hud` (`CanvasLayer`) → `Crosshair`, `Prompt`, `HoldBar`, `Hint`, `Bait`, `HintTimer`, `FishingMinigameView` e `NotePanel`. `reset()` limpa o que sobrou de uma noite. Recebe tudo pelo canal `HudEvents` (decisão 0012).
+- `ui/hud/hud.tscn` → `Hud` (`CanvasLayer`) → `Crosshair`, `Prompt`, `HoldBar`, `Hint`, `Bait`, `Battery` (rótulo e barra), `HintTimer`, `FishingMinigameView` e `NotePanel`. `reset()` limpa o que sobrou de uma noite. Recebe tudo pelo canal `HudEvents` (decisão 0012).
 - `ui/run_over/run_over_screen.tscn` → `RunOverScreen` (`CanvasLayer`) → `Background` → `Content` com título, `%Message`, `%Nights` e `%NewRunButton`.
 - `ui/transition_overlay/transition_overlay.tscn` → `TransitionOverlay` (`CanvasLayer`) → `Shade` (`ColorRect`) e `Message` (`Label`). Transições que podem ser aguardadas com `await`: `play_dawn()` escurece a tela e mostra "6:00 AM / The night is over."; `cover()` cobre de preto; `reveal(title)` mostra um título e revela a cena.
 - `player/player.tscn` → `Player` (`CharacterBody3D`) → `Head` (`MouseLook`):
   - `Journal`, página com `Label3D`;
   - `Camera3D` → `Hands` (`%Hands`) → `CarriedItemModel`;
   - `Camera3D` → `FishingRod` → `Model`, `Aim` (RayCast) e `Bobber` (`top_level`);
-  - `Camera3D` → `Interactor` (RayCast de interação).
+  - `Camera3D` → `Interactor` (RayCast de interação);
+  - `Camera3D` → `Flashlight` (`flashlight/flashlight.tscn`), a lanterna da mão esquerda, com `Model` e `Beam` (`SpotLight3D`).
 
-  Jogador em primeira pessoa (ver `docs/sistemas/movimento.md`). Mãos em `docs/sistemas/maos.md`, diário em `docs/sistemas/pedido.md` e vara em `docs/sistemas/pesca.md`.
-- `boat/boat.tscn` → `Boat` (`Node3D`) → `Hull` e `Cabin` (`CSGCombiner3D` com colisão, camada `world`). Barco greybox de 14×5 m com o convés em y = 1. A cabine fica na proa, com a porta voltada para a popa. Dentro dela ficam a mesa (caixa CSG; decisão 0011), o `Freezer` (cena `boat/freezer.tscn`, `Interactable`) e, dos dois lados da porta, as caixas `FuelCans` e `SpareBulbs` (`SupplyCrate`). O `Hull` tem 4 postes nas amuradas para as lâmpadas. O filho `Lighting` (`lighting/boat_lighting.tscn`) tem o gerador na popa, as 6 lâmpadas, as luzes de emergência e o sorteio de falhas (ver `docs/sistemas/iluminacao.md`).
+  Jogador em primeira pessoa (ver `docs/sistemas/movimento.md`). Mãos em `docs/sistemas/maos.md`, diário em `docs/sistemas/pedido.md`, vara em `docs/sistemas/pesca.md` e lanterna em `docs/sistemas/iluminacao.md`.
+- `boat/boat.tscn` → `Boat` (`Node3D`) → `Hull` e `Cabin` (`CSGCombiner3D` com colisão, camada `world`). Barco greybox de 14×5 m com o convés em y = 1. A cabine fica na proa, com a porta voltada para a popa. Dentro dela ficam a mesa (caixa CSG; decisão 0011), o `Freezer` (cena `boat/freezer.tscn`, `Interactable`) e, dos dois lados da porta, as caixas `FuelCans` e `SpareBulbs` (`SupplyCrate`). Na mesa fica a `BatteryBox`, a caixa de pilhas da lanterna. O `Hull` tem 4 postes nas amuradas para as lâmpadas. O filho `Lighting` (`lighting/boat_lighting.tscn`) tem o gerador na popa, as 6 lâmpadas, as luzes de emergência e o sorteio de falhas (ver `docs/sistemas/iluminacao.md`).
 - `night/night.tscn` → `Night` (`Node3D`, gera o pedido e encerra a noite; ver `docs/sistemas/noite.md`):
   - `NightClock`, o tempo da noite;
   - `WorldEnvironment` (`SkyCycle`) com `night/night_environment.tres` (céu procedural e neblina), que clareia no amanhecer;
@@ -78,6 +79,7 @@ Só apresentação, do mundo para o `Hud`. Quem emite e o `Hud` recebem o `.tres
 - `bait_changed(bait_name)` — isca atual.
 - `minigame_started(minigame)` e `minigame_finished` — o `FishingMinigameView` desenha o minijogo lendo o modelo enquanto ele dura.
 - `note_opened(text)` e `note_closed` — o `NotePanel` mostra o bilhete da mesa.
+- `battery_changed(ratio)` — carga da lanterna na barra `Battery`; a `Flashlight` só emite quando o percentual inteiro muda.
 
 ## Input map
 | Ação | Teclas | Uso |
@@ -89,6 +91,7 @@ Só apresentação, do mundo para o `Hud`. Quem emite e o `Hud` recebem o `.tres
 | `secondary_action` | Botão direito | Recolher a linha ou desistir do peixe |
 | `cycle_bait` | Q | Trocar a isca (com a linha fora d'água) |
 | `interact` | E | Interagir com o que está na mira; algumas ações exigem segurar |
+| `toggle_flashlight` | F (tecla física) | Liga e desliga a lanterna |
 | `pause` | Esc | Solta o mouse (o menu de pausa assume no M8) |
 
 ## Camadas de colisão

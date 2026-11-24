@@ -1,0 +1,33 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://flashlight/flashlight.gd" id="1_flashlight"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_body"]
+albedo_color = Color(0.12, 0.12, 0.13, 1)
+metallic = 0.5
+roughness = 0.5
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_body"]
+material = SubResource("StandardMaterial3D_body")
+top_radius = 0.025
+bottom_radius = 0.02
+height = 0.16
+radial_segments = 8
+rings = 1
+
+[node name="Flashlight" type="Node3D"]
+script = ExtResource("1_flashlight")
+
+[node name="Model" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, 0)
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_body")
+
+[node name="Beam" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.09)
+visible = false
+light_color = Color(1, 0.96, 0.88, 1)
+light_energy = 2.5
+shadow_enabled = true
+spot_range = 16.0
+spot_angle = 22.0

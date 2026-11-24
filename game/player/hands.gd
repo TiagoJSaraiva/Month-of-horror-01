@@ -7,6 +7,9 @@ signal changed
 signal item_dropped(item: ItemData, amount: int, at: Vector3)
 
 @export var journal: Journal
+## Lanterna da mão esquerda. As Hands não a usam: ela fica aqui para objetos com que o
+## jogador interage, como a caixa de pilhas, chegarem a ela.
+@export var flashlight: Flashlight
 ## Distância à frente do jogador em que o item largado cai, em metros.
 @export var drop_distance: float = 0.7
 ## Até quantos metros abaixo das mãos procurar o convés.

@@ -7,6 +7,7 @@ Garantir que o jogador faça uma coisa por vez com as mãos: usar a ferramenta (
 - `player/hands_state.gd`: `HandsState` (`RefCounted`), regras puras dos modos e do item carregado.
 - `player/hands.gd`: `Hands`, filho da `Camera3D` do jogador (nome único `%Hands`).
   - Trata o Tab (`toggle_journal`) e o G (`drop_item`).
+  - Guarda a referência à `Flashlight` da mão esquerda (`@export`), para objetos como a caixa de pilhas chegarem a ela pela interação. A lanterna funciona com as mãos em qualquer modo (ver `docs/sistemas/iluminacao.md`).
   - Abre e fecha o `Journal` (por `@export`, decisão 0006) e mostra o `CarriedItemModel` com a malha do item carregado.
   - Ao largar, procura o convés 0,7 m à frente com uma consulta de raio; sem convés ali (além da amurada), larga aos pés.
 - `player/journal.gd`: passivo, com `open()` e `close()`.
