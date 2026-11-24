@@ -25,6 +25,11 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
 ## Cenas principais
 - `player/player.tscn` → `Player` (`CharacterBody3D`) → `Head` (`MouseLook`) → `Camera3D`. Jogador em primeira pessoa (ver `docs/sistemas/movimento.md`).
 - `boat/boat.tscn` → `Boat` (`Node3D`) → `Hull` e `Cabin` (`CSGCombiner3D` com colisão, camada `world`). Barco greybox de 14×5 m com o convés em y = 1. A cabine fica na proa, com a porta voltada para a popa, e dentro dela há caixas no lugar do freezer, da mesa e do relógio (decisão 0011).
+- `night/night.tscn` → `Night` (`Node3D`):
+  - `WorldEnvironment` com `night/night_environment.tres` (céu procedural noturno e neblina);
+  - `Boat` e `Player`, que começa na cabine olhando para a porta;
+  - `TempLights`, luzes provisórias até o M4;
+  - `OutsideWorld`, com `Sea` (plano escuro provisório) e `Moon` (`DirectionalLight3D`). Tudo o que fica fora do barco entra aqui (decisão 0008).
 
 ## Autoloads
 _Nenhum._
