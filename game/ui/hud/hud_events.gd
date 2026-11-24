@@ -26,5 +26,7 @@ signal battery_changed(ratio: float)
 signal health_changed(current: float, maximum: float)
 ## O jogador levou dano: o HUD pisca em vermelho.
 signal player_damaged
+## Balas no tambor do revólver e se ele está recarregando.
+signal ammo_changed(loaded: int, capacity: int, reloading: bool)
 
 @warning_ignore_restore("unused_signal")

@@ -10,15 +10,16 @@ Lançar a linha, esperar a mordida, fisgar e vencer o minijogo para pegar o peix
 - `fishing/fishing_minigame.gd`: `FishingMinigame` (`RefCounted`), regras puras do minijogo.
 - `fishing/fishing_rod.gd`: `FishingRod`, filho da `Camera3D` do jogador, ligado a `Hands` e `HudEvents` por `@export`.
   - Trata botão esquerdo (lançar, fisgar, puxar segurando), botão direito (recolher ou desistir) e Q (trocar isca, só com a linha fora d'água).
-  - Conduz a `FishingAttempt` e mostra `Model` (vara greybox) só no modo `TOOL`.
+  - Conduz a `FishingAttempt` e mostra `Model` (vara greybox) só com a vara pronta na mão (`is_tool_ready(ROD)`).
   - `Aim` é um RayCast de 15 m nas camadas `world` e `water`.
 - `fishing/bobber.tscn` / `bobber.gd`: `Bobber`, boia vermelha sem sombreamento, filha da vara com `top_level`. A cada frame de física procura a água por raio e acompanha a altura dela, que muda com o balanço. Na mordida afunda 12 cm.
 - `night/water_surface.gd`: `WaterSurface` (`StaticBody3D`, camada `water`, sem máscara), caixa de 2000×0,2×2000 m com o topo em y = 0, dentro do `OutsideWorld`.
 - `ui/hud/fishing_minigame_view.gd`: `FishingMinigameView`, `Control` do `Hud` que desenha o trilho, a barra, o peixe e a captura lendo o modelo.
 
 ## Regras
-- Lançar exige o modo `TOOL` (ver `docs/sistemas/maos.md`) e a mira na água: o primeiro objeto atingido pelo `Aim` precisa ser a `WaterSurface`. Mirar o barco mostra "Aim at the water to cast.". Dá para lançar de qualquer ponto, desde que a mira passe por cima da amurada.
+- Lançar exige a vara pronta na mão (ver `docs/sistemas/maos.md`) e a mira na água: o primeiro objeto atingido pelo `Aim` precisa ser a `WaterSurface`. Mirar o barco mostra "Aim at the water to cast.". Dá para lançar de qualquer ponto, desde que a mira passe por cima da amurada.
 - Com a linha na água, `tool_busy` fica ligado: não dá para abrir o diário nem pegar coisas.
+- Sacar o revólver (tecla 2) com a linha na água cancela a tentativa: antes da fisgada recolhe a linha, durante o minijogo o peixe escapa.
 - A isca escolhida define a espécie que morde. As iscas ficam em `baits` (`@export` na vara), e a atual aparece no HUD.
 - Pescado, o peixe vai para as mãos (modo `CARRYING`) depois de a vara liberar `tool_busy`.
 - Mensagens no HUD: "Waiting for a bite...", "Something's biting! Click to hook it.", "Hold the mouse button to reel.", "You caught a X!" e "It got away...". As de resultado somem em 2,5 s.
@@ -36,7 +37,7 @@ Lançar a linha, esperar a mordida, fisgar e vencer o minijogo para pegar o peix
 
 ## Sinais
 - `FishingAttempt.state_changed(state)` → `FishingRod._on_attempt_state_changed`: boia, mensagens, minijogo e peixe para as mãos.
-- `Hands.changed` → `FishingRod._on_hands_changed`: mostra ou esconde a vara.
+- `Hands.changed` → `FishingRod._on_hands_changed`: mostra ou esconde a vara e cancela a tentativa quando a vara sai da mão.
 - Pelo canal `HudEvents`: `bait_changed`, `hint_requested`, `minigame_started(minigame)` e `minigame_finished`.
 
 ## Testes

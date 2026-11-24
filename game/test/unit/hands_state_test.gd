@@ -96,3 +96,33 @@ func test_changes_are_announced() -> void:
 	_hands.stop_carrying()
 
 	assert_int(emissions[0]).is_equal(4)
+
+
+func test_starts_with_the_rod() -> void:
+	assert_bool(_hands.is_tool_ready(HandsState.Tool.ROD)).is_true()
+	assert_bool(_hands.is_tool_ready(HandsState.Tool.REVOLVER)).is_false()
+
+
+func test_selecting_a_tool_switches_the_right_hand() -> void:
+	assert_bool(_hands.select_tool(HandsState.Tool.REVOLVER)).is_true()
+
+	assert_bool(_hands.is_tool_ready(HandsState.Tool.REVOLVER)).is_true()
+	assert_bool(_hands.is_tool_ready(HandsState.Tool.ROD)).is_false()
+	assert_bool(_hands.select_tool(HandsState.Tool.REVOLVER)).is_false()
+
+
+func test_tool_switch_needs_the_tool_mode() -> void:
+	_hands.start_carrying(_mackerel, 1)
+	assert_bool(_hands.select_tool(HandsState.Tool.REVOLVER)).is_false()
+
+	_hands.stop_carrying()
+	_hands.toggle_journal()
+	assert_bool(_hands.select_tool(HandsState.Tool.REVOLVER)).is_false()
+	assert_int(_hands.tool).is_equal(HandsState.Tool.ROD)
+
+
+func test_tool_switch_is_allowed_with_the_line_out() -> void:
+	# A vara ouve a troca e recolhe a linha; a regra só não pode bloquear.
+	_hands.tool_busy = true
+
+	assert_bool(_hands.select_tool(HandsState.Tool.REVOLVER)).is_true()

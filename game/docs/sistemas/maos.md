@@ -1,12 +1,12 @@
 # Mãos
 
 ## Propósito
-Garantir que o jogador faça uma coisa por vez com as mãos: usar a ferramenta (vara; arma no M5), ler o diário ou carregar um item com as duas mãos (peixe, galão, lâmpada de reposição).
+Garantir que o jogador faça uma coisa por vez com as mãos: usar a ferramenta da mão direita (vara ou revólver), ler o diário ou carregar um item com as duas mãos (peixe, galão, lâmpada de reposição).
 
 ## Componentes
 - `player/hands_state.gd`: `HandsState` (`RefCounted`), regras puras dos modos e do item carregado.
 - `player/hands.gd`: `Hands`, filho da `Camera3D` do jogador (nome único `%Hands`).
-  - Trata o Tab (`toggle_journal`) e o G (`drop_item`).
+  - Trata o Tab (`toggle_journal`), o G (`drop_item`) e a troca de ferramenta: 1 (`equip_rod`) e 2 (`equip_revolver`).
   - Guarda a referência à `Flashlight` da mão esquerda (`@export`), para objetos como a caixa de pilhas chegarem a ela pela interação. A lanterna funciona com as mãos em qualquer modo (ver `docs/sistemas/iluminacao.md`).
   - Abre e fecha o `Journal` (por `@export`, decisão 0006) e mostra o `CarriedItemModel` com a malha do item carregado.
   - Ao largar, procura o convés 0,7 m à frente com uma consulta de raio; sem convés ali (além da amurada), larga aos pés.
@@ -27,6 +27,8 @@ Garantir que o jogador faça uma coisa por vez com as mãos: usar a ferramenta (
 
 ## Regras
 - Modos: `TOOL` (ferramenta pronta), `JOURNAL` (diário aberto) e `CARRYING` (item nas duas mãos).
+- Ferramenta da mão direita (`HandsState.Tool`): `ROD` (padrão no início de cada noite) ou `REVOLVER`. `is_tool_ready(tool)` exige o modo `TOOL` e aquela ferramenta. A troca só acontece no modo `TOOL`; com o diário aberto ou carregando, as teclas 1 e 2 não fazem nada.
+- Trocar para o revólver com a linha na água é permitido: a vara ouve a troca e recolhe a linha, e o peixe em andamento se perde.
 - `tool_busy` (linha na água) impede abrir o diário e pegar coisas até a ferramenta parar. Quem liga e desliga é a ferramenta (`FishingRod`).
 - O diário só abre no modo `TOOL` com a ferramenta parada; Tab de novo fecha.
 - Carregar um item exige o modo `TOOL` com a ferramenta parada. Carregando, não dá para usar a ferramenta nem abrir o diário.
@@ -41,7 +43,7 @@ Garantir que o jogador faça uma coisa por vez com as mãos: usar a ferramenta (
 - Pelo canal `HudEvents`: `prompt_changed` e `hold_progress_changed`, emitidos pelo `Interactor`.
 
 ## Testes
-- `test/unit/hands_state_test.gd`: modo inicial, diário abre e fecha, diário bloqueado com linha na água ou carregando, carregar exige mãos livres, carregar bloqueia a ferramenta, item ou quantidade inválidos, comparação do item carregado, soltar libera as mãos e cada mudança é anunciada.
+- `test/unit/hands_state_test.gd`: modo inicial, diário abre e fecha, diário bloqueado com linha na água ou carregando, carregar exige mãos livres, carregar bloqueia a ferramenta, item ou quantidade inválidos, comparação do item carregado, soltar libera as mãos, cada mudança é anunciada, começa com a vara, troca de ferramenta, troca só no modo `TOOL` e troca permitida com a linha na água.
 - `test/unit/interaction_hold_test.gd`: começa inativo, progresso cresce, completa uma única vez, cancelar zera, duração zero completa na hora.
 - `test/scenes/freezer_delivery_test.gd`: com um Mackerel nas mãos, mirando o freezer, E entrega o peixe ao pedido e esvazia as mãos. Também confirma que a mira do Jolt detecta `Area3D`.
 - Largar e pegar de novo foi conferido com captura de tela.

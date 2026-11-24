@@ -28,7 +28,7 @@ A run é infinita e a dificuldade sobe a cada noite (M7).
 
 ### Mãos
 - Diário, itens carregados (peixe, galão, lâmpada), interação de segurar e vara: implementados; regras em `docs/sistemas/maos.md`. Lanterna na mão esquerda: `docs/sistemas/iluminacao.md`.
-- Falta: a mão direita alterna entre vara e arma (M5).
+- A mão direita alterna entre vara e revólver: implementado; ver `docs/sistemas/maos.md`.
 
 ### Pesca
 - Implementada; regras em `docs/sistemas/pesca.md`.

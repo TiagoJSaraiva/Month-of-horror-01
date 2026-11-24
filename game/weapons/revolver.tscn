@@ -1,0 +1,73 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://weapons/revolver.gd" id="1_revolver"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_metal"]
+albedo_color = Color(0.18, 0.18, 0.2, 1)
+metallic = 0.7
+roughness = 0.35
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_grip"]
+albedo_color = Color(0.3, 0.18, 0.1, 1)
+roughness = 0.8
+
+[sub_resource type="BoxMesh" id="BoxMesh_frame"]
+material = SubResource("StandardMaterial3D_metal")
+size = Vector3(0.035, 0.05, 0.1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_barrel"]
+material = SubResource("StandardMaterial3D_metal")
+top_radius = 0.012
+bottom_radius = 0.012
+height = 0.16
+radial_segments = 8
+rings = 1
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_cylinder"]
+material = SubResource("StandardMaterial3D_metal")
+top_radius = 0.025
+bottom_radius = 0.025
+height = 0.05
+radial_segments = 8
+rings = 1
+
+[sub_resource type="BoxMesh" id="BoxMesh_grip"]
+material = SubResource("StandardMaterial3D_grip")
+size = Vector3(0.03, 0.1, 0.045)
+
+[node name="Revolver" type="Node3D"]
+script = ExtResource("1_revolver")
+
+[node name="Aim" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, -40)
+collision_mask = 33
+collide_with_areas = true
+
+[node name="Model" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.19, -0.42)
+
+[node name="Frame" type="MeshInstance3D" parent="Model"]
+cast_shadow = 0
+mesh = SubResource("BoxMesh_frame")
+
+[node name="Cylinder" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0.005, -0.03)
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_cylinder")
+
+[node name="Barrel" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0.012, -0.13)
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_barrel")
+
+[node name="Grip" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 0.94, 0.342, 0, -0.342, 0.94, 0, -0.06, 0.04)
+cast_shadow = 0
+mesh = SubResource("BoxMesh_grip")
+
+[node name="MuzzleFlash" type="OmniLight3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.012, -0.24)
+visible = false
+light_color = Color(1, 0.75, 0.4, 1)
+light_energy = 4.0
+omni_range = 8.0

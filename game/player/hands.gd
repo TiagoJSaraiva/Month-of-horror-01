@@ -1,7 +1,8 @@
 class_name Hands
 extends Node3D
-## Coordena as mãos do jogador: abre e fecha o diário, carrega e larga itens.
-## A vara (e no M5 a arma) consulta [member state] antes de agir.
+## Coordena as mãos do jogador: troca a ferramenta da mão direita (1 vara, 2 revólver), abre e
+## fecha o diário, carrega e larga itens. A vara e o revólver consultam [member state] antes de
+## agir.
 
 signal changed
 signal item_dropped(item: ItemData, amount: int, at: Vector3)
@@ -30,6 +31,12 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(&"toggle_journal"):
 		state.toggle_journal()
+		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed(&"equip_rod"):
+		state.select_tool(HandsState.Tool.ROD)
+		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed(&"equip_revolver"):
+		state.select_tool(HandsState.Tool.REVOLVER)
 		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed(&"drop_item") and state.is_carrying():
 		_drop_carried_item()

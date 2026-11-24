@@ -1,13 +1,17 @@
 class_name HandsState
 extends RefCounted
-## O que as mãos do jogador estão fazendo, uma coisa por vez: a ferramenta (vara; arma no
-## M5), o diário aberto ou um item carregado com as duas mãos (peixe, galão, lâmpada).
+## O que as mãos do jogador estão fazendo, uma coisa por vez: a ferramenta da mão direita
+## (vara ou revólver), o diário aberto ou um item carregado com as duas mãos (peixe, galão,
+## lâmpada).
 
 signal changed
 
 enum Mode { TOOL, JOURNAL, CARRYING }
+enum Tool { ROD, REVOLVER }
 
 var mode: Mode = Mode.TOOL
+## Ferramenta da mão direita, usada no modo TOOL.
+var tool: Tool = Tool.ROD
 ## A ferramenta está em uso (linha na água): nada mais pode ocupar as mãos até ela parar.
 var tool_busy: bool = false
 var carried_item: ItemData
@@ -16,6 +20,20 @@ var carried_amount: int = 0
 
 func can_use_tool() -> bool:
 	return mode == Mode.TOOL
+
+
+func is_tool_ready(which: Tool) -> bool:
+	return mode == Mode.TOOL and tool == which
+
+
+## Troca a ferramenta da mão direita, só com as mãos no modo TOOL. A ferramenta que estava em
+## uso (linha na água) ouve changed e se cancela.
+func select_tool(which: Tool) -> bool:
+	if mode != Mode.TOOL or tool == which:
+		return false
+	tool = which
+	changed.emit()
+	return true
 
 
 ## Pegar algo com as duas mãos exige a ferramenta parada.

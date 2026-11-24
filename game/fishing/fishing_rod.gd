@@ -32,7 +32,7 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if hands == null or baits.is_empty() or not hands.state.can_use_tool():
+	if hands == null or baits.is_empty() or not hands.state.is_tool_ready(HandsState.Tool.ROD):
 		return
 	if event.is_action_pressed(&"primary_action"):
 		if _attempt == null:
@@ -102,4 +102,7 @@ func _finish(message: String) -> void:
 
 
 func _on_hands_changed() -> void:
-	_model.visible = hands.state.can_use_tool()
+	_model.visible = hands.state.is_tool_ready(HandsState.Tool.ROD)
+	# Sacar o revólver com a linha na água recolhe a linha: o peixe em andamento se perde.
+	if _attempt != null and hands.state.tool != HandsState.Tool.ROD:
+		_attempt.cancel()

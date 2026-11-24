@@ -1,8 +1,8 @@
 class_name Hud
 extends CanvasLayer
 ## HUD em resolução nativa: mira, ação disponível e progresso de segurar E, dicas, isca atual,
-## vida, bateria da lanterna, clarão de dano, minijogo de pesca e bilhete da mesa. Recebe tudo
-## pelo HudEvents (decisão 0012).
+## vida, bateria da lanterna, munição, clarão de dano, minijogo de pesca e bilhete da mesa.
+## Recebe tudo pelo HudEvents (decisão 0012).
 
 const INTERACT_KEY_LABEL := "[E]"
 
@@ -12,6 +12,7 @@ const INTERACT_KEY_LABEL := "[E]"
 @onready var _hold_bar: ProgressBar = $HoldBar
 @onready var _hint: Label = $Hint
 @onready var _bait: Label = $Bait
+@onready var _ammo: Label = $Ammo
 @onready var _battery_bar: ProgressBar = $Battery/Bar
 @onready var _health_bar: ProgressBar = $Health/Bar
 @onready var _damage_flash: DamageFlash = $DamageFlash
@@ -39,6 +40,7 @@ func _ready() -> void:
 	hud_events.battery_changed.connect(_on_hud_events_battery_changed)
 	hud_events.health_changed.connect(_on_hud_events_health_changed)
 	hud_events.player_damaged.connect(_damage_flash.flash)
+	hud_events.ammo_changed.connect(_on_hud_events_ammo_changed)
 
 
 ## Limpa o que sobrou da noite anterior e mostra o HUD. A isca é mantida: a vara da nova
@@ -81,6 +83,10 @@ func _on_hud_events_battery_changed(ratio: float) -> void:
 
 func _on_hud_events_health_changed(current: float, maximum: float) -> void:
 	_health_bar.value = current / maximum if maximum > 0.0 else 0.0
+
+
+func _on_hud_events_ammo_changed(loaded: int, capacity: int, reloading: bool) -> void:
+	_ammo.text = "Reloading..." if reloading else "Ammo: %d/%d" % [loaded, capacity]
 
 
 func _on_hud_events_note_opened(text: String) -> void:
