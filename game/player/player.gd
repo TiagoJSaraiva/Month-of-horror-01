@@ -9,6 +9,8 @@ extends CharacterBody3D
 
 var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
+## Diário nas mãos do jogador. Público para a Night entregar o pedido a ele.
+@onready var journal: Journal = $Head/Journal
 @onready var _head: Node3D = $Head
 
 

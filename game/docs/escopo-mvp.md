@@ -24,8 +24,7 @@ A run acaba com 3 noites falhas (não precisam ser seguidas) ou com a morte do j
 
 ### Noite e pedido
 - Tempo da noite, amanhecer e relógio de parede: implementados; regras em `docs/sistemas/noite.md`.
-- Pedido: implementado; regras em `docs/sistemas/pedido.md`.
-- Diário: uma tecla faz o personagem segurá-lo com as duas mãos. Mostra a noite atual, os peixes pedidos e os já entregues. Não mostra a hora.
+- Pedido e diário: implementados; regras em `docs/sistemas/pedido.md`.
 - Um peixe só conta depois de guardado no freezer da cabine. Peixe fora do freezer ao amanhecer não conta.
 
 ### Mãos
@@ -124,7 +123,7 @@ Cada marco tem o seu próprio `/planejar`. Até o M9 tudo usa primitivas (greybo
 | # | Marco | Resultado jogável |
 |---|---|---|
 | M0 | Fundação (feito) | Andar em primeira pessoa num barco greybox, render em baixa resolução, balanço visual |
-| M1 | Noite e pedido | Relógio de 23h a 6h, céu provisório, diário, amanhecer congelando tudo |
+| M1 | Noite e pedido (feito) | Relógio de 23h a 6h, céu provisório, diário, amanhecer congelando tudo |
 | M2 | Pesca | Isca, lançamento, minijogo, peixe levado ao freezer |
 | M3 | Loop da run | Vidas, passe livre, mensagens na mesa, próxima noite, fim de run |
 | M4 | Iluminação | Gerador, lâmpadas, luz de emergência, lanterna e pilhas, reparos |

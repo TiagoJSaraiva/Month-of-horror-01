@@ -2,10 +2,26 @@
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_player"]
 [ext_resource type="Script" path="res://player/mouse_look.gd" id="2_mouse_look"]
+[ext_resource type="Script" path="res://player/journal.gd" id="3_journal"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.35
 height = 1.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cover"]
+albedo_color = Color(0.25, 0.16, 0.1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_cover"]
+material = SubResource("StandardMaterial3D_cover")
+size = Vector3(0.24, 0.32, 0.02)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_page"]
+shading_mode = 0
+albedo_color = Color(0.85, 0.82, 0.7, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_page"]
+material = SubResource("StandardMaterial3D_page")
+size = Vector2(0.21, 0.29)
 
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 2
@@ -23,3 +39,26 @@ script = ExtResource("2_mouse_look")
 [node name="Camera3D" type="Camera3D" parent="Head"]
 current = true
 fov = 75.0
+
+[node name="Journal" type="Node3D" parent="Head"]
+transform = Transform3D(1, 0, 0, 0, 0.603, 0.798, 0, -0.798, 0.603, 0, -0.33, -0.25)
+script = ExtResource("3_journal")
+
+[node name="Cover" type="MeshInstance3D" parent="Head/Journal"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.011)
+cast_shadow = 0
+mesh = SubResource("BoxMesh_cover")
+
+[node name="Page" type="MeshInstance3D" parent="Head/Journal"]
+cast_shadow = 0
+mesh = SubResource("QuadMesh_page")
+
+[node name="Text" type="Label3D" parent="Head/Journal/Page"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.09, 0.125, 0.001)
+cast_shadow = 0
+pixel_size = 0.0008
+modulate = Color(0.1, 0.08, 0.06, 1)
+outline_size = 0
+font_size = 32
+horizontal_alignment = 0
+vertical_alignment = 0
