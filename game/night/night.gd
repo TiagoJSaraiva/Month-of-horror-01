@@ -63,6 +63,11 @@ func _ready() -> void:
 	_storm.roll(night_number, _rng)
 
 
+## A noite já terminou, pelo amanhecer ou pela morte.
+func is_ended() -> bool:
+	return _ended
+
+
 func _on_night_clock_dawn_reached() -> void:
 	if _ended:
 		return

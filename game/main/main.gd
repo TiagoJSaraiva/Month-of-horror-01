@@ -21,13 +21,10 @@ func _ready() -> void:
 	_show_main_menu()
 
 
-# Usa _input, e não _unhandled_input, porque o SubViewportContainer consome os cliques
-# antes que eles cheguem à fase "unhandled".
+# Recaptura o mouse com um clique fora dos menus (depois de trocar de janela, por exemplo). O
+# Esc fica com o menu de pausa da Run. Usa _input, e não _unhandled_input, porque o
+# SubViewportContainer consome os cliques antes que eles cheguem à fase "unhandled".
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed(&"pause"):
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-		get_viewport().set_input_as_handled()
-		return
 	var click := event as InputEventMouseButton
 	if _menu_open or click == null or not click.pressed:
 		return
@@ -51,6 +48,7 @@ func _start_run() -> void:
 	_run.menu_closed.connect(_close_menu)
 	_run.new_run_requested.connect(_on_run_new_run_requested)
 	_run.main_menu_requested.connect(_on_run_main_menu_requested)
+	_run.quit_to_menu_requested.connect(_on_run_main_menu_requested)
 	# Antes de entrar na árvore: a Run já pode abrir a seleção de cartas no _ready dela.
 	_close_menu()
 	add_child(_run)

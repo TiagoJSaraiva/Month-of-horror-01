@@ -7,7 +7,9 @@ extends Node
 signal run_over
 signal new_run_requested
 signal main_menu_requested
-## Um menu (a seleção de cartas) abriu ou fechou: a Main solta ou recaptura o mouse.
+## O jogador saiu pelo menu de pausa: os pontos já foram pagos e a Main volta ao menu.
+signal quit_to_menu_requested
+## Um menu (seleção de cartas ou pausa) abriu ou fechou: a Main solta ou recaptura o mouse.
 signal menu_opened
 signal menu_closed
 
@@ -32,6 +34,7 @@ var _points_paid: bool = false
 @onready var _night_viewport: SubViewport = $LowResView/SubViewport
 @onready var _transition: TransitionOverlay = $TransitionOverlay
 @onready var _card_screen: CardSelectionScreen = $CardSelectionScreen
+@onready var _pause_menu: PauseMenu = $PauseMenu
 @onready var _run_over_screen: RunOverScreen = $RunOverScreen
 
 
@@ -44,6 +47,9 @@ func _ready() -> void:
 	_card_screen.card_replaced.connect(_on_card_screen_card_replaced)
 	_card_screen.refused.connect(_close_cards)
 	_card_screen.reroll_requested.connect(_on_card_screen_reroll_requested)
+	_pause_menu.toggle_requested.connect(_on_pause_menu_toggle_requested)
+	_pause_menu.resume_requested.connect(_resume)
+	_pause_menu.quit_requested.connect(_on_pause_menu_quit_requested)
 	_hud.hide()
 	_offer_cards()
 
@@ -51,6 +57,40 @@ func _ready() -> void:
 ## Noite em andamento, ou null entre as noites.
 func current_night() -> Night:
 	return _night
+
+
+## A pausa só abre com uma noite em andamento: na seleção de cartas, no amanhecer e no fim de run,
+## pausar prenderia as transições que a Run aguarda.
+func can_pause() -> bool:
+	return _night != null and not _night.is_ended() and not _card_screen.visible
+
+
+func _pause() -> void:
+	get_tree().paused = true
+	_pause_menu.open()
+	menu_opened.emit()
+
+
+func _resume() -> void:
+	get_tree().paused = false
+	_pause_menu.close()
+	menu_closed.emit()
+
+
+func _on_pause_menu_toggle_requested() -> void:
+	if get_tree().paused:
+		_resume()
+	elif can_pause():
+		_pause()
+
+
+# Sair conta como derrota: os peixes já entregues valem, e os pontos são pagos.
+func _on_pause_menu_quit_requested() -> void:
+	get_tree().paused = false
+	_pause_menu.close()
+	state.add_delivered_fish(_night.order.delivered_total())
+	_pay_points()
+	quit_to_menu_requested.emit()
 
 
 # Mostra a seleção de cartas; com o pool vazio, pula direto para a noite.

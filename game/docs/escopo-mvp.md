@@ -13,7 +13,6 @@ Roguelite noturno em primeira pessoa (decisão 0008). Um pescador num barco anco
 
 ## Loop da run
 Implementado em `docs/sistemas/run.md`: noite com bilhete na mesa, amanhecer, avaliação do pedido, vidas, próxima noite e fim de run na terceira falha ou na morte do jogador. Falta encaixar:
-- pontos de run para upgrades permanentes no fim (M8);
 - gaivotas no amanhecer (M9).
 
 A run é infinita e a dificuldade sobe a cada noite (M7).
@@ -58,9 +57,7 @@ A run é infinita e a dificuldade sobe a cada noite (M7).
 - Curva por noite: implementada; regras em `docs/sistemas/dificuldade.md`.
 
 ### Meta-progressão
-- Pontos = 10 × noites cumpridas + 1 por peixe entregue, pagos no fim da run.
-- Upgrades permanentes: vida, dano e poder da vara. Cada um dá +10% por nível, até 5 níveis, com custo crescente.
-- Só a meta-progressão é salva. Sair no meio da run conta como derrota, e os pontos são pagos normalmente.
+- Pontos, upgrades permanentes, save da meta-progressão, menus e pausa: implementados; regras em `docs/sistemas/meta.md`.
 
 ### Mundo e visual
 - Barco ancorado, sem navegação. Ambientes: barco e mar.
@@ -99,7 +96,7 @@ Cada marco tem o seu próprio `/planejar`. Até o M9 tudo usa primitivas (greybo
 | M5 | Combate (feito) | Arma, vida e regeneração, morte, peixe-homem |
 | M6 | Tempestade (feito) | Evento, balanço forte, chuva, céu, voador |
 | M7 | Cartas e dificuldade (feito) | Seleção de cartas, raridades, rerolls, slots, escala por noite |
-| M8 | Meta e menus | Pontos, upgrades, save, menus |
+| M8 | Meta e menus (feito) | Pontos, upgrades, save, menus |
 | M9 | Mar, céu e assets | Oceano e céu definitivos, assets CC0, áudio |
 
 Se o prazo apertar, a tempestade (M6) é a primeira candidata a corte ou simplificação.

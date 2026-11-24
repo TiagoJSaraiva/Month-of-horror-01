@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" path="res://ui/run_over/run_over_screen.tscn" id="6_run_over_screen"]
 [ext_resource type="PackedScene" path="res://ui/card_selection/card_selection_screen.tscn" id="7_card_selection"]
 [ext_resource type="Resource" path="res://cards/card_pool.tres" id="8_card_pool"]
+[ext_resource type="PackedScene" path="res://ui/pause_menu/pause_menu.tscn" id="9_pause_menu"]
 
 [node name="Run" type="Node"]
 script = ExtResource("1_run")
@@ -33,5 +34,7 @@ audio_listener_enable_3d = true
 [node name="TransitionOverlay" parent="." instance=ExtResource("5_transition_overlay")]
 
 [node name="CardSelectionScreen" parent="." instance=ExtResource("7_card_selection")]
+
+[node name="PauseMenu" parent="." instance=ExtResource("9_pause_menu")]
 
 [node name="RunOverScreen" parent="." instance=ExtResource("6_run_over_screen")]

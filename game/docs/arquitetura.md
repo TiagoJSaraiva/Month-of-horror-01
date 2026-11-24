@@ -30,6 +30,7 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
   - `LowResView` (`SubViewportContainer`, `stretch_shrink` 2, filtro nearest) → `SubViewport` (áudio 3D ligado), onde a `Run` cria cada `Night`. O 3D renderiza em 576×324, porque o stretch `canvas_items` fixa a base lógica em 1152×648, e é ampliado sem filtro (decisão 0009);
   - `TransitionOverlay`;
   - `CardSelectionScreen` (camada 2), a seleção de cartas;
+  - `PauseMenu` (camada 2, processa com o jogo pausado), a pausa;
   - `RunOverScreen` (camada 2).
 
   A interface (`Hud` e overlays) fica fora do `SubViewport`, em resolução nativa.
@@ -67,6 +68,7 @@ _Nenhum._
 - `Run.run_over` e `Run.menu_opened` → `Main._open_menu` — solta o mouse para a seleção de cartas e o fim de run; `Run.menu_closed` → `Main._close_menu` o recaptura.
 - `CardSelectionScreen.card_chosen`, `card_replaced`, `refused` e `reroll_requested` → `Run` — a `Run` aplica no `RunState` e segue para a noite.
 - `RunOverScreen.new_run_requested` → `Run.new_run_requested` → `Main._on_run_new_run_requested` — troca a `Run` por uma nova. `RunOverScreen.main_menu_requested` → `Run.main_menu_requested` → `Main._on_run_main_menu_requested` — libera a `Run` e volta ao menu.
+- `PauseMenu.toggle_requested`, `resume_requested` e `quit_requested` → `Run` — pausa, continua ou sai; `Run.quit_to_menu_requested` → `Main` volta ao menu.
 - `MainMenu.new_run_requested`, `upgrades_requested` e `quit_requested` e `UpgradesScreen.back_requested` → `Main`.
 - `Storm.strength_changed(strength)` → `Night._on_storm_strength_changed` — a `Night` repassa a intensidade ao céu (`SkyCycle.storm_weight`), ao balanço, à lua, ao clima (`StormWeather`) e às falhas de manutenção.
 - `NightOrder.changed` → `Journal._refresh` — o diário reescreve o texto a cada entrega. A ligação é feita em `Journal.display()`, que a `Night` chama via `Player.journal`.
@@ -105,7 +107,7 @@ Só apresentação, do mundo para o `Hud`. Quem emite e o `Hud` recebem o `.tres
 | `toggle_flashlight` | F (tecla física) | Liga e desliga a lanterna |
 | `equip_rod`, `equip_revolver` | 1, 2 (tecla física) | Troca a ferramenta da mão direita (tratadas pelo `Hands`) |
 | `reload` | R (tecla física) | Recarrega o revólver |
-| `pause` | Esc | Solta o mouse (o menu de pausa assume no M8) |
+| `pause` | Esc | Abre e fecha o menu de pausa durante a noite (tratada pelo `PauseMenu`) |
 
 ## Camadas de colisão
 - 1 — `world` — barco e cenário / detectada pelo jogador.
