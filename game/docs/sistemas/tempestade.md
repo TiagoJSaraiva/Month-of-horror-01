@@ -8,7 +8,6 @@ Uma ameaça de tempo limitado numa noite: o barco balança forte, o céu fecha, 
 - `night/storm_plan.gd`: `StormPlan` (`RefCounted`), a tempestade sorteada para a noite: `has_storm`, `start_seconds` e `duration_seconds`.
 - `night/storm_rules.gd`: `StormRules`, regras puras do sorteio (`plan`) e da intensidade ao longo do tempo (`strength`).
 - `night/storm.gd`: `Storm`, nó da `Night`, ligado ao `NightClock`, ao `StormSettings` e ao `HudEvents` por `@export`. A `Night` chama `roll(night_number, rng)` no `_ready`. Emite `started`, `ended` e `strength_changed(strength)`.
-- `night/sky_palettes/storm.tres`: paleta da tempestade (cinza-esverdeada, luz ambiente fraca, neblina mais densa).
 - `night/storm_weather.tscn` / `storm_weather.gd`: `StormWeather`, nó da `Night` com o clima:
   - `Rain`: `GPUParticles3D` 9 m acima do barco, cobrindo 24×32 m, até 2500 gotas inclinadas pelo vento (+X), com a quantidade (`amount_ratio`) igual à intensidade;
   - `Lightning`: `DirectionalLight3D` azulada, apagada fora do clarão.
@@ -22,9 +21,8 @@ Uma ameaça de tempo limitado numa noite: o barco balança forte, o céu fecha, 
 - Intensidade de 0 a 1: sobe em 8 s (`ramp_seconds`) depois do início, fica em 1 e desce nos últimos 8 s, com suavização. O `Storm` só anuncia mudanças de pelo menos 0,01, porque cada anúncio refaz a iluminação do céu.
 - Dicas no HUD por 3 s: "The wind is picking up..." no início e "The storm is passing." no fim.
 - A `Night` repassa a intensidade (`_on_storm_strength_changed`):
-  - `SkyCycle.storm_weight`: o céu, a luz ambiente e a neblina vão para a paleta da tempestade;
+  - `SkyDriver.set_storm_strength`: o céu do Sky3D fecha. As nuvens vão de 25% a 100% de cobertura, a neblina engrossa, a lua apaga e o brilho do céu cai a 35% (ver `docs/sistemas/noite.md`);
   - `BoatSway.set_storm_strength`: o balanço vai de 1× a 3× (`storm_intensity`), só na amplitude;
-  - `MoonArc.cloud_cover`: a lua apaga;
   - `BoatLighting.set_storm_strength`: as falhas do gerador e das lâmpadas ficam até 3× mais frequentes (`storm_failure_multiplier`);
   - `StormWeather.set_strength`: a quantidade de chuva.
 - Voadores: aparecem só durante a tempestade e vão embora quando ela acaba (ver `docs/sistemas/inimigos.md`).
@@ -38,6 +36,5 @@ Uma ameaça de tempo limitado numa noite: o barco balança forte, o céu fecha, 
 
 ## Testes
 - `test/unit/storm_rules_test.gd`: sem tempestade antes da noite permitida, chance decide, início e duração nos intervalos e antes do fim, noite curta encolhe a tempestade, intensidade zero fora, rampa de subida, pico e descida, nunca acima de 1.
-- `test/unit/sky_palette_test.gd`: mistura de paletas nas pontas e no meio, inclusive a neblina.
-- `test/scenes/storm_test.gd`: com a tempestade forçada e curta, no pico o balanço passa do normal, o céu e a cobertura de nuvens passam de 0,9; no fim tudo volta ao normal.
+- `test/scenes/storm_test.gd`: com a tempestade forçada e curta, no pico o balanço passa do normal, a intensidade no `SkyDriver` passa de 0,9, as nuvens aumentam e a lua apaga; no fim tudo volta ao normal.
 - Conferidos com captura de tela: o convés na tempestade e fora dela, a chuva no convés, a cabine seca por dentro (com chuva só vista pelas janelas e pela porta) e o convés iluminado pelo relâmpago.

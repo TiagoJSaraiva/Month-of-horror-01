@@ -31,9 +31,8 @@ var _ended: bool = false
 @onready var _clock: NightClock = $NightClock
 @onready var _storm: Storm = $Storm
 @onready var _weather: StormWeather = $StormWeather
-@onready var _sky_cycle: SkyCycle = $WorldEnvironment
+@onready var _sky_driver: SkyDriver = $SkyDriver
 @onready var _sway: BoatSway = $OutsideWorld
-@onready var _moon: MoonArc = $OutsideWorld/Moon
 @onready var _actors: Node3D = $Actors
 @onready var _player: Player = $Actors/Player
 @onready var _fishman_spawner: FishmanSpawner = $Actors/FishmanSpawner
@@ -131,9 +130,8 @@ func _apply_difficulty() -> void:
 
 
 func _on_storm_strength_changed(strength: float) -> void:
-	_sky_cycle.storm_weight = strength
+	_sky_driver.set_storm_strength(strength)
 	_sway.set_storm_strength(strength)
-	_moon.cloud_cover = strength
 	_weather.set_strength(strength)
 	_lighting.set_storm_strength(strength)
 

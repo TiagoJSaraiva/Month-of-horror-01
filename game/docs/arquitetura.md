@@ -6,7 +6,7 @@ Visão do projeto como ele está **agora**. Atualize no mesmo passo de qualquer 
 Roguelite noturno de pesca e sobrevivência em primeira pessoa, para Windows, com Forward+ (decisão 0010). A cada noite (23:00 às 06:00, 7 min reais) o jogador cumpre um pedido de peixes num barco ancorado, mantém a iluminação e sobrevive a inimigos. Entre as noites, escolhe cartas de boost. A run acaba com 3 pedidos falhos ou com a morte.
 
 - Escopo, regras combinadas e roteiro de marcos: `docs/escopo-mvp.md`.
-- Estado da run: decisão 0013. Navegação dos inimigos: decisão 0014. Meta-progressão: decisão 0015. Câmera e balanço do barco: decisão 0008. Visual retrô em baixa resolução: decisão 0009. Assets e registro de IA: decisão 0011 e `docs/assets.md`. Comunicação do mundo com o HUD: decisão 0012.
+- Estado da run: decisão 0013. Navegação dos inimigos: decisão 0014. Meta-progressão: decisão 0015. Mar e céu por addons: decisão 0016. Câmera e balanço do barco: decisão 0008. Visual retrô em baixa resolução: decisão 0009. Assets e registro de IA: decisão 0011 e `docs/assets.md`. Comunicação do mundo com o HUD: decisão 0012.
 
 ## Organização de pastas
 Organização por feature: cada cena fica junto do seu script e dos recursos exclusivos dela.
@@ -50,13 +50,13 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
 - `night/night.tscn` → `Night` (`Node3D`, gera o pedido, aplica os bônus das cartas e a curva de dificuldade (`difficulty`) e encerra a noite; ver `docs/sistemas/noite.md` e `docs/sistemas/dificuldade.md`):
   - `NightClock`, o tempo da noite;
   - `Storm`, a tempestade sorteada para a noite, e `StormWeather`, a chuva e os relâmpagos (ver `docs/sistemas/tempestade.md`);
-  - `WorldEnvironment` (`SkyCycle`) com `night/night_environment.tres` (céu procedural e neblina), que clareia no amanhecer e fecha na tempestade;
+  - `Sky3D` (addon, decisão 0016) com `night/sky_environment.tres` e o `SkyDriver`, que o guia pelo `NightClock` e pela tempestade: estrelas, lua, amanhecer e céu fechado;
   - `Boat`;
   - `WallClock`, o relógio de ponteiros da cabine, ligado ao `NightClock`;
   - `TableNote`, o bilhete dos clientes na mesa (ver `docs/sistemas/run.md`);
   - `Actors`, com tudo o que congela no amanhecer: o `Player`, que começa na cabine olhando para a porta, o `FishmanSpawner` (`ClimbPoints` e os peixes-homens criados) e o `FlyerSpawner` (voadores da tempestade); ver `docs/sistemas/inimigos.md`;
   - `Items`, itens largados no convés (`DroppedItem`);
-  - `OutsideWorld` (`BoatSway`), com `Sea` (plano escuro provisório), `Water` (`WaterSurface`, a física da superfície) e `Moon` (`DirectionalLight3D` com `MoonArc`). Tudo o que fica fora do barco entra aqui (decisão 0008; ver `docs/sistemas/balanco.md`).
+  - `OutsideWorld` (`BoatSway`), com `Sea` (plano escuro provisório), `Water` (`WaterSurface`, a física da superfície) e o `Environment` do céu girando junto (`sky_rotation`). Tudo o que fica fora do barco entra aqui (decisão 0008; ver `docs/sistemas/balanco.md`).
 
 ## Autoloads
 _Nenhum._
@@ -70,7 +70,7 @@ _Nenhum._
 - `RunOverScreen.new_run_requested` → `Run.new_run_requested` → `Main._on_run_new_run_requested` — troca a `Run` por uma nova. `RunOverScreen.main_menu_requested` → `Run.main_menu_requested` → `Main._on_run_main_menu_requested` — libera a `Run` e volta ao menu.
 - `PauseMenu.toggle_requested`, `resume_requested` e `quit_requested` → `Run` — pausa, continua ou sai; `Run.quit_to_menu_requested` → `Main` volta ao menu.
 - `MainMenu.new_run_requested`, `upgrades_requested` e `quit_requested` e `UpgradesScreen.back_requested` → `Main`.
-- `Storm.strength_changed(strength)` → `Night._on_storm_strength_changed` — a `Night` repassa a intensidade ao céu (`SkyCycle.storm_weight`), ao balanço, à lua, ao clima (`StormWeather`) e às falhas de manutenção.
+- `Storm.strength_changed(strength)` → `Night._on_storm_strength_changed` — a `Night` repassa a intensidade ao céu (`SkyDriver`), ao balanço, ao clima (`StormWeather`) e às falhas de manutenção.
 - `NightOrder.changed` → `Journal._refresh` — o diário reescreve o texto a cada entrega. A ligação é feita em `Journal.display()`, que a `Night` chama via `Player.journal`.
 - `Freezer.fish_stored(fish, amount)` → `Night._on_freezer_fish_stored` — entrega o peixe ao pedido.
 - `Hands.item_dropped(item, amount, at)` → `Night._on_hands_item_dropped` — cria o item no convés, em `Items`.
