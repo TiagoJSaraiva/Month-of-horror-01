@@ -15,5 +15,8 @@ signal bait_changed(bait_name: String)
 ## O HUD desenha o minijogo lendo o modelo até receber minigame_finished.
 signal minigame_started(minigame: FishingMinigame)
 signal minigame_finished
+## Texto do bilhete da mesa, mostrado até note_closed.
+signal note_opened(text: String)
+signal note_closed
 
 @warning_ignore_restore("unused_signal")

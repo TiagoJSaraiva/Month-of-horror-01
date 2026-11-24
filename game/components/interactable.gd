@@ -13,3 +13,8 @@ func get_prompt(_hands: Hands) -> String:
 ## Executa a ação. O Interactor só chama quando [method get_prompt] não está vazio.
 func interact(_hands: Hands) -> void:
 	pass
+
+
+## Chamado quando a mira de interação deixa de apontar para este objeto.
+func focus_exited() -> void:
+	pass

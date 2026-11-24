@@ -16,6 +16,7 @@
 [ext_resource type="Script" path="res://night/moon_arc.gd" id="14_moon_arc"]
 [ext_resource type="Script" path="res://night/water_surface.gd" id="15_water_surface"]
 [ext_resource type="PackedScene" path="res://fish/dropped_fish.tscn" id="16_dropped_fish"]
+[ext_resource type="PackedScene" path="res://night/table_note.tscn" id="17_table_note"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sea"]
 albedo_color = Color(0.015, 0.035, 0.05, 1)
@@ -49,6 +50,9 @@ dawn_palette = ExtResource("13_dawn_palette")
 [node name="WallClock" parent="." node_paths=PackedStringArray("night_clock") instance=ExtResource("10_wall_clock")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.15, 2.75, -6.035)
 night_clock = NodePath("../NightClock")
+
+[node name="TableNote" parent="." instance=ExtResource("17_table_note")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.05, 1.752, -4.8)
 
 [node name="Actors" type="Node3D" parent="."]
 

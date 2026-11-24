@@ -11,8 +11,11 @@ Garantir que o jogador faça uma coisa por vez com as mãos: usar a ferramenta (
   - Ao largar, procura o convés 0,7 m à frente com uma consulta de raio; sem convés ali (além da amurada), larga aos pés.
 - `player/journal.gd`: passivo, com `open()` e `close()`.
 - `config/physics_layers.gd`: `PhysicsLayers`, máscaras das camadas de física usadas em consultas de raio.
-- `components/interactable.gd`: `Interactable` (`Area3D`, camada `interactable`). Base de tudo com que o jogador interage: `get_prompt(hands)` devolve a ação disponível com estas mãos (vazio = nenhuma) e `interact(hands)` a executa.
-- `player/interactor.gd`: `Interactor` (RayCast de 2,2 m na `Camera3D`, camadas `world` e `interactable`, detecta áreas). A cada frame de física manda a ação do `Interactable` na mira para o HUD (`prompt_changed`). Com E (`interact`), executa a ação. Paredes bloqueiam a mira.
+- `components/interactable.gd`: `Interactable` (`Area3D`, camada `interactable`). Base de tudo com que o jogador interage:
+  - `get_prompt(hands)` devolve a ação disponível com estas mãos (vazio = nenhuma);
+  - `interact(hands)` executa a ação;
+  - `focus_exited()` é chamado quando a mira sai do objeto.
+- `player/interactor.gd`: `Interactor` (RayCast de 2,2 m na `Camera3D`, camadas `world` e `interactable`, detecta áreas). A cada frame de física manda a ação do `Interactable` na mira para o HUD (`prompt_changed`) e avisa o alvo anterior com `focus_exited()` quando a mira muda. Com E (`interact`), executa a ação. Paredes bloqueiam a mira.
 - `boat/freezer.tscn` / `freezer.gd`: `Freezer` (`Interactable`), com um `StaticBody3D` que bloqueia o jogador. A área é 5 cm maior que o corpo para a mira achá-la primeiro. Só oferece ação carregando peixe ("Store X").
 - `fish/dropped_fish.tscn` / `dropped_fish.gd`: `DroppedFish` (`Interactable`), peixe no convés, criado pela `Night` em `Items`. Só oferece ação com as mãos livres ("Pick up X").
 

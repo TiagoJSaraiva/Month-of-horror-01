@@ -1,0 +1,45 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://night/table_note.gd" id="1_table_note"]
+[ext_resource type="Resource" path="res://ui/hud/hud_events.tres" id="2_hud_events"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_interaction"]
+size = Vector3(0.3, 0.12, 0.22)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_paper"]
+albedo_color = Color(0.88, 0.85, 0.75, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_card"]
+material = SubResource("StandardMaterial3D_paper")
+size = Vector3(0.22, 0.004, 0.15)
+
+[sub_resource type="SphereMesh" id="SphereMesh_pin"]
+radius = 0.022
+height = 0.044
+
+[node name="TableNote" type="Area3D"]
+collision_layer = 4
+collision_mask = 0
+monitoring = false
+script = ExtResource("1_table_note")
+hud_events = ExtResource("2_hud_events")
+
+[node name="InteractionShape" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+shape = SubResource("BoxShape3D_interaction")
+
+[node name="Card" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.002, 0)
+mesh = SubResource("BoxMesh_card")
+
+[node name="Pin" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, -0.05)
+cast_shadow = 0
+mesh = SubResource("SphereMesh_pin")
+
+[node name="Mark" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.14, -0.05)
+pixel_size = 0.002
+billboard = 1
+font_size = 64
+outline_size = 10

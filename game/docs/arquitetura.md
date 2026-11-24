@@ -25,7 +25,7 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
 
 ## Cenas principais
 - `main/main.tscn` (cena principal) → `Main` (`Node`, captura o mouse) → `LowResView` (`SubViewportContainer`, `stretch_shrink` 2, filtro nearest) → `SubViewport` (áudio 3D ligado) → `Night` (`%Night`). O 3D renderiza em 576×324, porque o stretch `canvas_items` fixa a base lógica em 1152×648, e é ampliado sem filtro (decisão 0009). A interface fica em irmãs de `LowResView`, em resolução nativa: `Hud` e `TransitionOverlay`. O `Hud` se esconde no amanhecer. Ordem dos filhos: `Hud`, `LowResView`, `TransitionOverlay`. O `Hud` vem primeiro para conectar o canal antes do `_ready` do mundo (decisão 0012).
-- `ui/hud/hud.tscn` → `Hud` (`CanvasLayer`) → `Crosshair`, `Prompt`, `Hint`, `Bait`, `HintTimer` e `FishingMinigameView`. Recebe tudo pelo canal `HudEvents` (decisão 0012).
+- `ui/hud/hud.tscn` → `Hud` (`CanvasLayer`) → `Crosshair`, `Prompt`, `Hint`, `Bait`, `HintTimer`, `FishingMinigameView` e `NotePanel`. `reset()` limpa o que sobrou de uma noite. Recebe tudo pelo canal `HudEvents` (decisão 0012).
 - `ui/transition_overlay/transition_overlay.tscn` → `TransitionOverlay` (`CanvasLayer`) → `Shade` (`ColorRect`) e `Message` (`Label`). Transições que podem ser aguardadas com `await`: `play_dawn()` escurece a tela e mostra "6:00 AM / The night is over."; `cover()` cobre de preto; `reveal(title)` mostra um título e revela a cena.
 - `player/player.tscn` → `Player` (`CharacterBody3D`) → `Head` (`MouseLook`):
   - `Journal`, página com `Label3D`;
@@ -40,6 +40,7 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
   - `WorldEnvironment` (`SkyCycle`) com `night/night_environment.tres` (céu procedural e neblina), que clareia no amanhecer;
   - `Boat`;
   - `WallClock`, o relógio de ponteiros da cabine, ligado ao `NightClock`;
+  - `TableNote`, o bilhete dos clientes na mesa (ver `docs/sistemas/run.md`);
   - `Actors`, com tudo o que congela no amanhecer. Por enquanto só o `Player`, que começa na cabine olhando para a porta;
   - `Items`, peixes largados no convés (`DroppedFish`);
   - `TempLights`, luzes provisórias até o M4;
@@ -63,6 +64,7 @@ Só apresentação, do mundo para o `Hud`. Quem emite e o `Hud` recebem o `.tres
 - `hint_requested(text, seconds)` — mensagem embaixo da tela; com `seconds` 0, fica até a próxima.
 - `bait_changed(bait_name)` — isca atual.
 - `minigame_started(minigame)` e `minigame_finished` — o `FishingMinigameView` desenha o minijogo lendo o modelo enquanto ele dura.
+- `note_opened(text)` e `note_closed` — o `NotePanel` mostra o bilhete da mesa.
 
 ## Input map
 | Ação | Teclas | Uso |
