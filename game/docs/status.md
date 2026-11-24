@@ -17,8 +17,10 @@
   - menu principal, pausa no Esc, pontos no fim da run e upgrades permanentes salvos em `user://meta_progress.cfg`;
   - céu do addon Sky3D seguindo o relógio da noite (estrelas, Via Láctea, lua cheia, amanhecer) e fechando na tempestade, e oceano com ondas do addon Boujie Water Shader, ambos provisórios (decisão 0016).
 - Regras de cada sistema em `docs/sistemas/` (movimento, balanço, noite, pedido, mãos, pesca, run, iluminação, combate, inimigos, tempestade, cartas, dificuldade, meta).
+- Infraestrutura alinhada ao `godot-template`: sem o fluxo multiagente (0017), parse que compila todos os scripts com os autoloads (0018), check reprovando gdtoolkit ausente e branch só a pedido do desenvolvedor (0019).
 
 ## Próximo passo
+- Em tarefa própria (com `/planejar`): adotar a regra do `##` em toda função, decisão 0011 do `godot-template`. Hoje 292 das 420 funções, em 65 arquivos, estão sem `##`. Documentar sistema por sistema e só depois trazer do modelo `scripts/check-docs.ps1` e `scripts/check-doc-review.ps1` para o `check.ps1`, com uma decisão nova; antes disso, o check reprovaria o projeto.
 - Jogar o MVP inteiro de ponta a ponta e decidir com o desenvolvedor o que vem depois: refinar valores, ou começar o que ficou fora do MVP (assets no lugar da greybox, áudio, gaivotas no amanhecer; ver `docs/escopo-mvp.md`).
 - As decisões 0011 e 0014 ainda citam o M9 como o marco dos assets. Se os assets ficarem para depois do MVP, registrar uma nova decisão que atualize esse prazo.
 - Ao trocar o barco por asset: refazer a área seca da chuva (`night/rain_drop.gdshader`) e conferir a malha de navegação (decisão 0014).
