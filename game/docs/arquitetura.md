@@ -24,11 +24,12 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
 ```
 
 ## Cenas principais
-- `main/main.tscn` (cena principal) → `Main` (`Node`). Cria a `Run` a partir de `run_scene` (`@export`), troca por uma nova quando o jogador pede e controla a captura do mouse. Com o fim de run aberto, o clique não recaptura o mouse.
+- `main/main.tscn` (cena principal) → `Main` (`Node`). Cria a `Run` a partir de `run_scene` (`@export`), troca por uma nova quando o jogador pede e controla a captura do mouse. Com um menu aberto (seleção de cartas ou fim de run), o clique não recaptura o mouse.
 - `run/run.tscn` → `Run` (`Node`, dona do `RunState`; decisão 0013; ver `docs/sistemas/run.md`), com filhos nesta ordem:
   - `Hud`, primeiro, para conectar o canal antes do `_ready` do mundo (decisão 0012);
   - `LowResView` (`SubViewportContainer`, `stretch_shrink` 2, filtro nearest) → `SubViewport` (áudio 3D ligado), onde a `Run` cria cada `Night`. O 3D renderiza em 576×324, porque o stretch `canvas_items` fixa a base lógica em 1152×648, e é ampliado sem filtro (decisão 0009);
   - `TransitionOverlay`;
+  - `CardSelectionScreen` (camada 2), a seleção de cartas;
   - `RunOverScreen` (camada 2).
 
   A interface (`Hud` e overlays) fica fora do `SubViewport`, em resolução nativa.
@@ -63,7 +64,8 @@ _Nenhum._
 - `NightClock.dawn_reached` → `Night._on_night_clock_dawn_reached` — congela `Actors` e a `Lighting` do barco e encerra a noite.
 - `Night.night_finished(order)` → `Run._on_night_night_finished` — amanhecer, avaliação do pedido e próxima noite ou fim de run.
 - `Player.health.died` → `Night._on_player_health_died` → `Night.player_died` → `Run._on_night_player_died` — a morte congela a noite e encerra a run com "YOU DIED".
-- `Run.run_over` → `Main._on_run_run_over` — solta o mouse para a tela de fim de run.
+- `Run.run_over` e `Run.menu_opened` → `Main._open_menu` — solta o mouse para a seleção de cartas e o fim de run; `Run.menu_closed` → `Main._close_menu` o recaptura.
+- `CardSelectionScreen.card_chosen`, `card_replaced`, `refused` e `reroll_requested` → `Run` — a `Run` aplica no `RunState` e segue para a noite.
 - `RunOverScreen.new_run_requested` → `Run.new_run_requested` → `Main._on_run_new_run_requested` — troca a `Run` por uma nova.
 - `Storm.strength_changed(strength)` → `Night._on_storm_strength_changed` — a `Night` repassa a intensidade ao céu (`SkyCycle.storm_weight`), ao balanço, à lua, ao clima (`StormWeather`) e às falhas de manutenção.
 - `NightOrder.changed` → `Journal._refresh` — o diário reescreve o texto a cada entrega. A ligação é feita em `Journal.display()`, que a `Night` chama via `Player.journal`.

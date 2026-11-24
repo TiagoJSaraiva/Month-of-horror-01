@@ -32,16 +32,23 @@ func _input(event: InputEvent) -> void:
 
 func _start_run() -> void:
 	_run = run_scene.instantiate() as Run
-	_run.run_over.connect(_on_run_run_over)
+	_run.run_over.connect(_open_menu)
+	_run.menu_opened.connect(_open_menu)
+	_run.menu_closed.connect(_close_menu)
 	_run.new_run_requested.connect(_on_run_new_run_requested)
+	# Antes de entrar na árvore: a Run já pode abrir a seleção de cartas no _ready dela.
+	_close_menu()
 	add_child(_run)
-	_menu_open = false
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 
-func _on_run_run_over() -> void:
+func _open_menu() -> void:
 	_menu_open = true
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
+
+func _close_menu() -> void:
+	_menu_open = false
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 
 func _on_run_new_run_requested() -> void:

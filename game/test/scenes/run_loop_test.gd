@@ -1,6 +1,6 @@
 extends GdUnitTestSuite
-## Comportamento principal da run: um pedido não cumprido custa uma vida e a próxima noite
-## começa com o pedido maior e o bilhete de aviso na mesa.
+## Comportamento principal da run: um pedido não cumprido custa uma vida e, depois da seleção
+## de cartas, a próxima noite começa com o pedido maior e o bilhete de aviso na mesa.
 
 const RUN_SCENE := "res://run/run.tscn"
 const SHORT_NIGHT_SECONDS := 0.3
@@ -13,12 +13,19 @@ func test_unfinished_order_costs_a_life_and_starts_the_next_night() -> void:
 	var runner: GdUnitSceneRunner = scene_runner(RUN_SCENE)
 	var run := runner.scene() as Run
 	_shorten_transitions(runner, run)
-	var clock := runner.find_child("NightClock") as NightClock
+	var cards := runner.find_child("CardSelectionScreen") as CardSelectionScreen
+	cards.card_buttons()[0].pressed.emit()
+	var clock := run.current_night().find_child("NightClock") as NightClock
 	clock.duration_seconds = SHORT_NIGHT_SECONDS
 
-	# O estado avança antes da troca de cena, que acontece sob a tela preta: espera a noite 2.
+	# Entre as noites há outra seleção: escolhe a primeira carta e espera a noite 2.
 	var waited := 0
-	while run.current_night().night_number < 2 and waited < TIMEOUT_MILLIS:
+	while (
+		(run.current_night() == null or run.current_night().night_number < 2)
+		and waited < TIMEOUT_MILLIS
+	):
+		if cards.visible:
+			cards.card_buttons()[0].pressed.emit()
 		await await_millis(POLL_MILLIS)
 		waited += POLL_MILLIS
 

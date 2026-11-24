@@ -16,6 +16,8 @@ func test_player_death_ends_the_run() -> void:
 	# Array para a lambda alterar o contador por referência.
 	var run_over_count: Array[int] = [0]
 	run.run_over.connect(func() -> void: run_over_count[0] += 1)
+	var cards := runner.find_child("CardSelectionScreen") as CardSelectionScreen
+	cards.card_buttons()[0].pressed.emit()
 	await await_millis(100)
 	var player := run.current_night().find_child("Player") as Player
 

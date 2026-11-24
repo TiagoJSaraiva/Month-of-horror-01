@@ -6,11 +6,14 @@
 [ext_resource type="PackedScene" path="res://ui/hud/hud.tscn" id="4_hud"]
 [ext_resource type="PackedScene" path="res://ui/transition_overlay/transition_overlay.tscn" id="5_transition_overlay"]
 [ext_resource type="PackedScene" path="res://ui/run_over/run_over_screen.tscn" id="6_run_over_screen"]
+[ext_resource type="PackedScene" path="res://ui/card_selection/card_selection_screen.tscn" id="7_card_selection"]
+[ext_resource type="Resource" path="res://cards/card_pool.tres" id="8_card_pool"]
 
 [node name="Run" type="Node"]
 script = ExtResource("1_run")
 night_scene = ExtResource("2_night")
 note_lines = ExtResource("3_note_lines")
+card_pool = ExtResource("8_card_pool")
 
 [node name="Hud" parent="." instance=ExtResource("4_hud")]
 
@@ -28,5 +31,7 @@ stretch_shrink = 2
 audio_listener_enable_3d = true
 
 [node name="TransitionOverlay" parent="." instance=ExtResource("5_transition_overlay")]
+
+[node name="CardSelectionScreen" parent="." instance=ExtResource("7_card_selection")]
 
 [node name="RunOverScreen" parent="." instance=ExtResource("6_run_over_screen")]

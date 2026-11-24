@@ -13,7 +13,6 @@ Roguelite noturno em primeira pessoa (decisão 0008). Um pescador num barco anco
 
 ## Loop da run
 Implementado em `docs/sistemas/run.md`: noite com bilhete na mesa, amanhecer, avaliação do pedido, vidas, próxima noite e fim de run na terceira falha ou na morte do jogador. Falta encaixar:
-- seleção de cartas no início da run e entre as noites (M7), entre a tela preta e a próxima noite;
 - pontos de run para upgrades permanentes no fim (M8);
 - gaivotas no amanhecer (M9).
 

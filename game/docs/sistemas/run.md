@@ -27,11 +27,12 @@ Encadear as noites de uma run, avaliar cada pedido no amanhecer, contar as vidas
 - Morte: o jogador sem vida encerra a run na hora, sem avaliar o pedido. A `Night` congela `Actors` e a `Lighting`, para o relógio (o amanhecer não chega mais) e emite `player_died`. Uma trava faz valer só o primeiro fim da noite, amanhecer ou morte.
 - Noites sobrevividas (`RunRules.nights_survived`): no acordo quebrado, conta a noite atual; na morte, não. Zero mostra "You didn't survive a single night.".
 - Fluxo:
+  0. Antes da noite 1 e entre as noites: seleção de cartas (ver `docs/sistemas/cartas.md`).
   1. Começo de cada noite: a `Run` cria a `Night` com `night_number` e o bilhete, limpa o HUD (`Hud.reset()`) e mostra "NIGHT N" sobre a tela preta, que some em seguida.
   2. Amanhecer: esconde o HUD, toca `play_dawn()` e espera `dawn_hold_seconds` (3 s).
   3. Avalia o pedido com `state.finish_night(order.missing_total())`.
   4. Se a run acabou, mostra a `RunOverScreen` com "THE DEAL IS OFF" e a fala `run_over`, e emite `run_over`.
-  5. Senão, cobre a tela de preto, libera a noite antiga e começa a próxima.
+  5. Senão, cobre a tela de preto, libera a noite antiga, mostra a seleção de cartas e começa a próxima noite.
 - Na morte: esconde o HUD, marca `state.die()`, cobre a tela de preto e mostra a `RunOverScreen` com "YOU DIED" e a fala `death`.
 - Nova run: o botão emite `new_run_requested`, e a `Main` troca a `Run` inteira por uma nova.
 

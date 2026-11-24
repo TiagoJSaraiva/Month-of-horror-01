@@ -10,6 +10,7 @@ Dar ao jogador boosts escolhidos ao longo da run, que mudam atributos do jogador
 - `cards/card_pool.gd` + `cards/card_pool.tres`: `CardPool` (Resource), as cartas com que cada run começa, as chances de raridade (60% comum, 30% rara, o resto lendária) e o tamanho da seleção (3).
 - `cards/card_rules.gd`: `CardRules`, regras puras do sorteio de raridade, da montagem da seleção e da soma dos percentuais.
 - `run/run_state.gd`: o `RunState` guarda o pool restante (`card_pool`), as cartas equipadas (`equipped`, 3 slots) e os rerolls (`rerolls_left`, 3 por run), com `choose()`, `replace()`, `can_refuse()` e `use_reroll()`.
+- `ui/card_selection/card_selection_screen.tscn` / `.gd`: `CardSelectionScreen` (`CanvasLayer`, camada 2, fundo opaco). Mostra as cartas como botões (nome, raridade e efeito), as equipadas, `Reroll (N)` e, com os slots cheios, `Refuse`. Com os slots cheios, clicar numa carta mostra um botão por carta equipada para escolher qual sai. Emite `card_chosen`, `card_replaced`, `refused` e `reroll_requested`; quem aplica as regras é a `Run`.
 - `run/player_stats.gd`: `PlayerStats` (`RefCounted`), os bônus somados por atributo; dá o valor final de cada atributo a partir do valor base.
 
 ## Cartas do MVP
@@ -29,15 +30,17 @@ Dar ao jogador boosts escolhidos ao longo da run, que mudam atributos do jogador
 - Seleção: cada uma das 3 cartas tem a raridade sorteada à parte. Nenhuma carta se repete na mesma seleção.
 - Se a raridade sorteada não tem cartas no pool, vale a próxima disponível: primeiro as de baixo (lendária → rara → comum), depois as de cima. Com menos de 3 cartas no pool, a seleção fica menor; com o pool vazio, fica vazia.
 - Bônus do mesmo atributo somam: +20% e +10% dão +30%. Tempos usam percentuais negativos, e o valor final nunca fica negativo. A chance de peixe em dobro é o percentual lido como fração (50% = 0,5).
-
 - Slots e pool:
   - escolher uma carta a equipa num slot livre e a tira do pool;
   - com os 3 slots cheios, a nova carta substitui uma equipada ou a seleção é recusada;
   - a carta substituída não volta ao pool; a recusada continua nele;
   - recusar só vale com os slots cheios: com slot livre, escolher é obrigatório.
 - 3 rerolls por run, cada um sorteia a seleção inteira de novo.
+- Quando aparece: antes da noite 1 e entre as noites (depois do amanhecer, com a tela preta), menos quando a run acaba. Com o pool vazio, a seleção é pulada. Enquanto ela está aberta, o mouse fica solto (`Run.menu_opened` e `menu_closed` → `Main`).
 
 ## Testes
 - `test/unit/card_rules_test.gd`: raridade pelas chances, 3 cartas diferentes, raridade sem cartas cai para a próxima, ordem da troca de raridade, pool pequeno ou vazio, soma dos percentuais e o pool do MVP com 3 cartas de cada raridade.
 - `test/unit/player_stats_test.gd`: sem cartas fica o valor base, cartas somam, percentual negativo encurta um tempo, valor nunca negativo, chance em fração.
 - `test/unit/run_cards_test.gd`: escolher equipa e tira do pool, 3 slots no máximo, recusar só com os slots cheios, a substituída não volta, substituir exige carta equipada e carta do pool, 3 rerolls, o pool da run é uma cópia.
+- `test/scenes/card_selection_test.gd`: a run começa na seleção, sem noite, com 3 cartas; escolher a primeira equipa, tira do pool, fecha a tela e começa a noite 1.
+- Conferidas com captura de tela: a seleção e a troca com os slots cheios.
