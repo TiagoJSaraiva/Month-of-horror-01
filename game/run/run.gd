@@ -77,6 +77,7 @@ func _start_night() -> void:
 	_night.night_number = state.night_number
 	_night.table_note_text = note_lines.text_for(kind)
 	_night.table_note_pin = RunRules.pin_for(kind)
+	_night.player_stats = state.player_stats()
 	_night.night_finished.connect(_on_night_night_finished)
 	_night.player_died.connect(_on_night_player_died)
 	_night_viewport.add_child(_night)

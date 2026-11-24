@@ -17,6 +17,8 @@ signal running_changed(running: bool)
 
 ## Criado no _ready, com a capacidade do inspetor.
 var state: GeneratorState
+## Multiplica os tempos de reabastecer e consertar (bônus da run: 0,5 é a metade).
+var hold_multiplier: float = 1.0
 
 var _status_material := StandardMaterial3D.new()
 
@@ -62,7 +64,10 @@ func get_prompt(hands: Hands) -> String:
 
 
 func get_hold_seconds(hands: Hands) -> float:
-	return refuel_seconds if hands.state.is_carrying_item(fuel_can) else repair_seconds
+	var seconds: float = (
+		refuel_seconds if hands.state.is_carrying_item(fuel_can) else repair_seconds
+	)
+	return seconds * hold_multiplier
 
 
 func interact(hands: Hands) -> void:

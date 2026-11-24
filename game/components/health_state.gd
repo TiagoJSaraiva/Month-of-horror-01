@@ -21,6 +21,14 @@ func _init(maximum: float, regen_rate: float = 0.0, regen_delay: float = 0.0) ->
 	regen_delay_seconds = maxf(regen_delay, 0.0)
 
 
+## Troca o máximo e enche a vida (bônus aplicados no começo da noite).
+func reset_max(maximum: float) -> void:
+	max_health = maxf(maximum, 0.0)
+	current = max_health
+	_since_damage = 0.0
+	changed.emit()
+
+
 func is_dead() -> bool:
 	return current <= 0.0
 

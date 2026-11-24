@@ -33,6 +33,13 @@ func bulbs() -> Array[Bulb]:
 	return _bulbs
 
 
+## Multiplica os tempos de manutenção do gerador e das lâmpadas (bônus da run).
+func set_maintenance_time_multiplier(multiplier: float) -> void:
+	_generator.hold_multiplier = multiplier
+	for bulb: Bulb in _bulbs:
+		bulb.hold_multiplier = multiplier
+
+
 ## Intensidade da tempestade, de 0 a 1: as falhas ficam mais frequentes.
 func set_storm_strength(strength: float) -> void:
 	_failures.set_storm_strength(strength)

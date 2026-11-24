@@ -52,6 +52,14 @@ func is_on() -> bool:
 	return _beam.visible
 
 
+## Troca a capacidade da bateria e a deixa cheia (bônus da run e dificuldade da noite, depois do
+## _ready).
+func set_battery_seconds(seconds: float) -> void:
+	battery_seconds = seconds
+	battery = FlashlightBattery.new(seconds)
+	_announce_battery()
+
+
 ## Pilhas novas: a bateria volta cheia.
 func recharge() -> void:
 	battery.recharge()

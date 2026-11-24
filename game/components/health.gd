@@ -28,6 +28,12 @@ func _process(delta: float) -> void:
 	state.update(delta)
 
 
+## Troca a vida máxima e enche a vida. Usado para os bônus da run, depois do _ready.
+func set_max_health(value: float) -> void:
+	max_health = value
+	state.reset_max(value)
+
+
 func is_dead() -> bool:
 	return state.is_dead()
 

@@ -13,6 +13,9 @@ signal changed
 @export var glass_color: Color = Color(0.45, 0.45, 0.42)
 @export var burnt_glass_color: Color = Color(0.06, 0.06, 0.06)
 
+## Multiplica o tempo de troca (bônus da run: 0,5 é a metade).
+var hold_multiplier: float = 1.0
+
 var _broken: bool = false
 var _powered: bool = false
 # Material próprio de cada lâmpada; a emissão fica sempre ligada para trocar só a cor, sem
@@ -63,7 +66,7 @@ func get_prompt(hands: Hands) -> String:
 
 
 func get_hold_seconds(_hands: Hands) -> float:
-	return replace_seconds
+	return replace_seconds * hold_multiplier
 
 
 func interact(hands: Hands) -> void:

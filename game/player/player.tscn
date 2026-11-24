@@ -76,6 +76,7 @@ visible = false
 cast_shadow = 0
 
 [node name="FishingRod" type="Node3D" parent="Head/Camera3D" node_paths=PackedStringArray("hands")]
+unique_name_in_owner = true
 script = ExtResource("5_fishing_rod")
 hands = NodePath("../Hands")
 hud_events = ExtResource("7_hud_events")
@@ -125,9 +126,11 @@ hands = NodePath("../Hands")
 hud_events = ExtResource("7_hud_events")
 
 [node name="Flashlight" parent="Head/Camera3D" instance=ExtResource("12_flashlight")]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.24, -0.2, -0.42)
 hud_events = ExtResource("7_hud_events")
 
 [node name="Revolver" parent="Head/Camera3D" node_paths=PackedStringArray("hands") instance=ExtResource("14_revolver")]
+unique_name_in_owner = true
 hands = NodePath("../Hands")
 hud_events = ExtResource("7_hud_events")

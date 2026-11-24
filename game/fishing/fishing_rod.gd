@@ -8,6 +8,8 @@ extends Node3D
 @export var baits: Array[BaitData] = []
 ## Multiplica a velocidade da captura no minijogo. Cartas e upgrades vão aumentar.
 @export var fishing_power: float = 1.0
+## Chance, de 0 a 1, de o peixe pescado vir em dobro (carta lendária).
+@export var double_catch_chance: float = 0.0
 ## Quanto tempo, em segundos, as mensagens de resultado ficam na tela.
 @export var result_hint_seconds: float = 2.5
 
@@ -98,7 +100,8 @@ func _finish(message: String) -> void:
 	hud_events.hint_requested.emit(message, result_hint_seconds)
 	# O peixe vai para as mãos só depois de a vara liberar as mãos.
 	if caught_fish != null:
-		hands.carry_item(caught_fish)
+		var amount: int = 2 if _rng.randf() < double_catch_chance else 1
+		hands.carry_item(caught_fish, amount)
 
 
 func _on_hands_changed() -> void:

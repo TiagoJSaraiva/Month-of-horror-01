@@ -18,6 +18,8 @@ var order: NightOrder
 ## mesa fica sem bilhete.
 var table_note_text: String = ""
 var table_note_pin: RunRules.Pin = RunRules.Pin.BLUE
+## Bônus da run (cartas). A Run define antes de a noite entrar na árvore; sem isso, nenhum bônus.
+var player_stats := PlayerStats.new()
 
 var _rng := RandomNumberGenerator.new()
 ## A noite já terminou, pelo amanhecer ou pela morte. Só o primeiro fim vale.
@@ -52,6 +54,7 @@ func _ready() -> void:
 	_flyer_spawner.start(_storm, _lighting, _player, _player.health)
 	_storm.strength_changed.connect(_on_storm_strength_changed)
 	_storm.roll(night_number, _rng)
+	_apply_player_stats()
 
 
 func _on_night_clock_dawn_reached() -> void:
@@ -78,6 +81,13 @@ func _end() -> void:
 	_lighting.process_mode = Node.PROCESS_MODE_DISABLED
 	_storm.process_mode = Node.PROCESS_MODE_DISABLED
 	_weather.process_mode = Node.PROCESS_MODE_DISABLED
+
+
+func _apply_player_stats() -> void:
+	_player.apply_stats(player_stats)
+	_lighting.set_maintenance_time_multiplier(
+		player_stats.apply(StatModifier.Stat.MAINTENANCE_TIME, 1.0)
+	)
 
 
 func _on_storm_strength_changed(strength: float) -> void:

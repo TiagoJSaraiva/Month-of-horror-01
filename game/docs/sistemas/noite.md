@@ -17,7 +17,7 @@ Controlar o tempo de uma noite (23:00 às 06:00), gerar o pedido no início e en
 
 ## Regras
 - A noite dura 7 min reais (`duration_seconds` = 420 no `NightClock`), que valem as 7 horas do jogo. Para testar, reduza esse valor no inspetor.
-- `night_number` (`@export` na `Night`, 1 por padrão) define o tamanho do pedido. A `Run` preenche esse valor e o bilhete da mesa (`table_note_text`, `table_note_pin`) antes de a noite entrar na árvore.
+- `night_number` (`@export` na `Night`, 1 por padrão) define o tamanho do pedido. A `Run` preenche esse valor, o bilhete da mesa (`table_note_text`, `table_note_pin`) e os bônus das cartas (`player_stats`, ver `docs/sistemas/cartas.md`) antes de a noite entrar na árvore.
 - `fish_species` (`@export` na `Night`) lista as espécies sorteáveis no pedido.
 - Amanhecer: `Actors` e a `Lighting` do barco passam a `PROCESS_MODE_DISABLED`, então o jogador para de andar e de olhar. Mar, céu e balanço continuam.
 - Morte do jogador: o mesmo congelamento, e o `NightClock` também para. Só o primeiro fim vale: depois da morte não há amanhecer, e vice-versa.

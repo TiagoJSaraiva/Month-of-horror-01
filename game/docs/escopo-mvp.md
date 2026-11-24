@@ -52,24 +52,7 @@ A run é infinita e a dificuldade sobe a cada noite (M7).
 - Regras de vidas, passe livre e bilhete: implementadas em `docs/sistemas/run.md`.
 
 ### Cartas
-- Seleção no início da run e ao fim de cada noite (exceto quando a run acaba). São 3 cartas, e a raridade de cada uma é sorteada de forma independente: 60% comum, 30% rara, 10% lendária.
-- 3 rerolls por run, cada um sorteia a seleção inteira de novo. 3 slots de boost.
-- Com os slots cheios, a carta nova pode substituir uma equipada ou ser recusada.
-- Toda carta do MVP sai do pool ao ser escolhida. Carta substituída não volta ao pool.
-- Nenhuma carta se repete na mesma seleção. Se a raridade sorteada não tiver cartas, vale a próxima disponível. Com o pool vazio, a seleção é pulada.
-- Bônus percentuais de cartas e upgrades somam: +20% e +10% dão +30%.
-
-| Raridade | Efeito |
-|---|---|
-| Comum | +20% de vida máxima |
-| Comum | +15% de poder de pesca |
-| Comum | +15% de dano da arma |
-| Rara | +50% de capacidade da bateria da lanterna |
-| Rara | +50% de munição no tambor |
-| Rara | +20% de velocidade de movimento |
-| Lendária | 50% de chance de o peixe capturado vir em dobro |
-| Lendária | -50% no tempo de trocar lâmpada, consertar e reabastecer o gerador |
-| Lendária | -20% no tempo de recarga e +20% na cadência de tiro |
+- Seleção, raridades, rerolls, slots e os efeitos das 9 cartas: implementados; regras em `docs/sistemas/cartas.md`.
 
 ### Dificuldade
 - Sobe a cada noite: tamanho do pedido, frequência e força dos inimigos, falhas de manutenção, duração da bateria (cai), chance e duração da tempestade. A curva fica em Resource.

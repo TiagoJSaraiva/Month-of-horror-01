@@ -38,9 +38,20 @@ Dar ao jogador boosts escolhidos ao longo da run, que mudam atributos do jogador
 - 3 rerolls por run, cada um sorteia a seleção inteira de novo.
 - Quando aparece: antes da noite 1 e entre as noites (depois do amanhecer, com a tela preta), menos quando a run acaba. Com o pool vazio, a seleção é pulada. Enquanto ela está aberta, o mouse fica solto (`Run.menu_opened` e `menu_closed` → `Main`).
 
+## Aplicação
+- A `Run` passa `state.player_stats()` para a `Night` (`player_stats`) antes de ela entrar na árvore. No `_ready`, a `Night` chama `Player.apply_stats()` e `BoatLighting.set_maintenance_time_multiplier()`. Os bônus valem a partir da noite seguinte à escolha, sobre os valores do inspetor (o jogador é recriado a cada noite).
+- `Player.apply_stats` repassa:
+  - velocidade: `walk_speed`;
+  - vida máxima: `Health.set_max_health` (começa a noite cheia);
+  - poder de pesca e chance de dobro: `FishingRod.fishing_power` e `double_catch_chance`. Ao pescar com dobro, vão 2 peixes da espécie para as mãos;
+  - dano, tambor (arredondado), cadência e recarga: `Revolver.configure`. A cadência é tiros por segundo, então +20% divide o intervalo entre tiros por 1,2;
+  - bateria: `Flashlight.set_battery_seconds`.
+- Tempo de manutenção: `hold_multiplier` do `Generator` (reabastecer e consertar) e de cada `Bulb` (trocar). Trocar pilhas não muda.
+
 ## Testes
 - `test/unit/card_rules_test.gd`: raridade pelas chances, 3 cartas diferentes, raridade sem cartas cai para a próxima, ordem da troca de raridade, pool pequeno ou vazio, soma dos percentuais e o pool do MVP com 3 cartas de cada raridade.
 - `test/unit/player_stats_test.gd`: sem cartas fica o valor base, cartas somam, percentual negativo encurta um tempo, valor nunca negativo, chance em fração.
 - `test/unit/run_cards_test.gd`: escolher equipa e tira do pool, 3 slots no máximo, recusar só com os slots cheios, a substituída não volta, substituir exige carta equipada e carta do pool, 3 rerolls, o pool da run é uma cópia.
 - `test/scenes/card_selection_test.gd`: a run começa na seleção, sem noite, com 3 cartas; escolher a primeira equipa, tira do pool, fecha a tela e começa a noite 1.
+- `test/scenes/night_stats_test.gd`: uma noite criada com Tough Skin, Extended Cylinder e Quick Fix começa com 120 de vida, 9 balas no tambor e conserto e troca de lâmpada pela metade do tempo.
 - Conferidas com captura de tela: a seleção e a troca com os slots cheios.

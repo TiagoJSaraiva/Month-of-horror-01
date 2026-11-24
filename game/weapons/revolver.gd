@@ -41,6 +41,23 @@ func _ready() -> void:
 	_announce_ammo()
 
 
+## Troca dano, tambor, cadência e recarga e recarrega o tambor (bônus da run, depois do
+## _ready).
+func configure(
+	new_damage: float, new_capacity: int, new_interval: float, new_reload: float
+) -> void:
+	damage = new_damage
+	capacity = new_capacity
+	fire_interval = new_interval
+	reload_seconds = new_reload
+	if state != null and state.changed.is_connected(_announce_ammo):
+		state.changed.disconnect(_announce_ammo)
+	state = RevolverState.new(capacity, fire_interval, reload_seconds)
+	if hud_events != null:
+		state.changed.connect(_announce_ammo)
+		_announce_ammo()
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	if not hands.state.is_tool_ready(HandsState.Tool.REVOLVER):
 		return
