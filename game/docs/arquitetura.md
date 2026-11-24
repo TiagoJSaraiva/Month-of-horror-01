@@ -23,7 +23,7 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
 ```
 
 ## Cenas principais
-_Nenhuma ainda. Formato: cena → nó raiz (tipo) → filhos relevantes e propósito._
+- `player/player.tscn` → `Player` (`CharacterBody3D`) → `Head` (`MouseLook`) → `Camera3D`. Jogador em primeira pessoa (ver `docs/sistemas/movimento.md`).
 
 ## Autoloads
 _Nenhum._
@@ -32,7 +32,11 @@ _Nenhum._
 _Nenhum. Formato: `emissor.sinal` → `receptor._handler` — propósito._
 
 ## Input map
-_Nenhuma ação ainda. Usar nomes semânticos: `move_left`, `move_right`, `jump`..._
+| Ação | Teclas | Uso |
+|---|---|---|
+| `move_forward`, `move_back`, `move_left`, `move_right` | WASD (tecla física) e setas | Movimento do jogador |
+| `pause` | Esc | Solta o mouse (o menu de pausa assume no M8) |
 
 ## Camadas de colisão
-_Nenhuma nomeada ainda. Formato: número — nome — quem está nela / quem detecta._
+- 1 — `world` — barco e cenário / detectada pelo jogador.
+- 2 — `player` — jogador / ninguém detecta ainda.
