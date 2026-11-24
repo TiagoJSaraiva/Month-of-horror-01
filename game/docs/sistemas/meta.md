@@ -8,6 +8,8 @@ Dar ao jogador progresso entre as runs: pontos ganhos no fim de cada run compram
 - `meta/meta_rules.gd`: `MetaRules`, regras puras dos pontos da run e do custo dos upgrades.
 - `meta/meta_state.gd`: `MetaState` (`RefCounted`), pontos e níveis, com compra, percentual por atributo e save em `ConfigFile`.
 
+- `autoload/meta_progress.gd`: autoload `MetaProgress` (decisão 0015). Carrega o save no início, grava a cada mudança e expõe os upgrades do MVP. `use_save_path(path)` troca o arquivo (usado pelos testes).
+
 ## Regras
 - Pontos da run: 10 por noite cumprida e 1 por peixe entregue.
 - Upgrades: vida, dano e poder da vara. Cada nível dá +10% no atributo, até o nível 5. O nível N custa 20 × N (20, 40, 60, 80, 100; 300 para completar um).
