@@ -42,7 +42,7 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
   - `Camera3D` → `Interactor` (RayCast de interação).
 
   Jogador em primeira pessoa (ver `docs/sistemas/movimento.md`). Mãos em `docs/sistemas/maos.md`, diário em `docs/sistemas/pedido.md` e vara em `docs/sistemas/pesca.md`.
-- `boat/boat.tscn` → `Boat` (`Node3D`) → `Hull` e `Cabin` (`CSGCombiner3D` com colisão, camada `world`). Barco greybox de 14×5 m com o convés em y = 1. A cabine fica na proa, com a porta voltada para a popa. Dentro dela ficam a mesa (caixa CSG; decisão 0011) e o `Freezer` (cena `boat/freezer.tscn`, `Interactable`).
+- `boat/boat.tscn` → `Boat` (`Node3D`) → `Hull` e `Cabin` (`CSGCombiner3D` com colisão, camada `world`). Barco greybox de 14×5 m com o convés em y = 1. A cabine fica na proa, com a porta voltada para a popa. Dentro dela ficam a mesa (caixa CSG; decisão 0011), o `Freezer` (cena `boat/freezer.tscn`, `Interactable`) e, dos dois lados da porta, as caixas `FuelCans` e `SpareBulbs` (`SupplyCrate`). O `Hull` tem 4 postes nas amuradas para as lâmpadas. O filho `Lighting` (`lighting/boat_lighting.tscn`) tem o gerador na popa, as 6 lâmpadas, as luzes de emergência e o sorteio de falhas (ver `docs/sistemas/iluminacao.md`).
 - `night/night.tscn` → `Night` (`Node3D`, gera o pedido e encerra a noite; ver `docs/sistemas/noite.md`):
   - `NightClock`, o tempo da noite;
   - `WorldEnvironment` (`SkyCycle`) com `night/night_environment.tres` (céu procedural e neblina), que clareia no amanhecer;
@@ -51,20 +51,22 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
   - `TableNote`, o bilhete dos clientes na mesa (ver `docs/sistemas/run.md`);
   - `Actors`, com tudo o que congela no amanhecer. Por enquanto só o `Player`, que começa na cabine olhando para a porta;
   - `Items`, itens largados no convés (`DroppedItem`);
-  - `TempLights`, luzes provisórias até o M4;
   - `OutsideWorld` (`BoatSway`), com `Sea` (plano escuro provisório), `Water` (`WaterSurface`, a física da superfície) e `Moon` (`DirectionalLight3D` com `MoonArc`). Tudo o que fica fora do barco entra aqui (decisão 0008; ver `docs/sistemas/balanco.md`).
 
 ## Autoloads
 _Nenhum._
 
 ## Sinais entre sistemas
-- `NightClock.dawn_reached` → `Night._on_night_clock_dawn_reached` — congela `Actors` e encerra a noite.
+- `NightClock.dawn_reached` → `Night._on_night_clock_dawn_reached` — congela `Actors` e a `Lighting` do barco e encerra a noite.
 - `Night.night_finished(order)` → `Run._on_night_night_finished` — amanhecer, avaliação do pedido e próxima noite ou fim de run.
 - `Run.run_over` → `Main._on_run_run_over` — solta o mouse para a tela de fim de run.
 - `RunOverScreen.new_run_requested` → `Run.new_run_requested` → `Main._on_run_new_run_requested` — troca a `Run` por uma nova.
 - `NightOrder.changed` → `Journal._refresh` — o diário reescreve o texto a cada entrega. A ligação é feita em `Journal.display()`, que a `Night` chama via `Player.journal`.
 - `Freezer.fish_stored(fish, amount)` → `Night._on_freezer_fish_stored` — entrega o peixe ao pedido.
 - `Hands.item_dropped(item, amount, at)` → `Night._on_hands_item_dropped` — cria o item no convés, em `Items`.
+- `Generator.running_changed(running)` → `BoatLighting._on_generator_running_changed` — energia das lâmpadas, luz de emergência e nível de luz.
+- `Bulb.changed` → `BoatLighting._refresh_light_level` — lâmpada queimou ou foi trocada.
+- `BoatLighting.light_level_changed(level)` — ainda sem ouvinte; os inimigos do escuro (M5) vão usar.
 - `Hands.changed` → `FishingRod._on_hands_changed` — a vara só aparece no modo `TOOL`.
 - `FishingAttempt.state_changed(state)` → `FishingRod._on_attempt_state_changed` — boia, mensagens, minijogo e peixe para as mãos.
 

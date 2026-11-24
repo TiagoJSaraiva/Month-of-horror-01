@@ -23,6 +23,7 @@ var _rng := RandomNumberGenerator.new()
 @onready var _actors: Node3D = $Actors
 @onready var _player: Player = $Actors/Player
 @onready var _freezer: Freezer = $Boat/Freezer
+@onready var _lighting: BoatLighting = $Boat/Lighting
 @onready var _items: Node3D = $Items
 @onready var _table_note: TableNote = $TableNote
 
@@ -38,8 +39,10 @@ func _ready() -> void:
 
 
 func _on_night_clock_dawn_reached() -> void:
-	# Só os personagens param: mar, céu e balanço continuam, como pede o amanhecer.
+	# Só os personagens e a manutenção param: mar, céu e balanço continuam, como pede o
+	# amanhecer. Sem isso, o gerador ainda poderia quebrar na tela do amanhecer.
 	_actors.process_mode = Node.PROCESS_MODE_DISABLED
+	_lighting.process_mode = Node.PROCESS_MODE_DISABLED
 	night_finished.emit(order)
 
 

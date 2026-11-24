@@ -35,9 +35,8 @@ A run é infinita e a dificuldade sobe a cada noite (M7).
 - Implementada; regras em `docs/sistemas/pesca.md`.
 
 ### Iluminação
-- 6 lâmpadas ao alcance da mão. Nível de luz = lâmpadas boas ÷ total, com o gerador funcionando. Gerador vazio ou quebrado deixa só a luz de emergência, fraca.
-- O combustível dura de 2 a 3 min. O gerador quebra e as lâmpadas queimam por sorteio, com mais frequência a cada noite e na tempestade.
-- Galão e lâmpadas de reposição são infinitos e ficam na cabine. Trocar lâmpada, consertar e reabastecer o gerador é segurar a interação por N segundos.
+- Gerador, lâmpadas, luz de emergência, suprimentos, reparos e sorteio de falhas: implementados; regras em `docs/sistemas/iluminacao.md`.
+- Falta: falhas mais frequentes a cada noite (M7) e na tempestade (M6).
 - A lanterna não aumenta o nível de luz: serve para enxergar e atordoar. A bateria só recarrega com pilhas pegas na cabine, sem recarga gradual no MVP. A bateria dura menos a cada noite. O modo exato de troca das pilhas é definido no plano do marco de iluminação.
 
 ### Inimigos

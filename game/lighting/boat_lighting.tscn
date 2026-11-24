@@ -1,0 +1,54 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://lighting/boat_lighting.gd" id="1_boat_lighting"]
+[ext_resource type="PackedScene" path="res://lighting/generator.tscn" id="2_generator"]
+[ext_resource type="PackedScene" path="res://lighting/bulb.tscn" id="3_bulb"]
+[ext_resource type="Script" path="res://lighting/maintenance_failures.gd" id="4_maintenance_failures"]
+
+[node name="Lighting" type="Node3D"]
+script = ExtResource("1_boat_lighting")
+
+[node name="Generator" parent="." instance=ExtResource("2_generator")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 6.2)
+
+[node name="Bulbs" type="Node3D" parent="."]
+
+[node name="CabinBulb" parent="Bulbs" instance=ExtResource("3_bulb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.28, -4.2)
+light_range = 4.5
+light_energy = 1.0
+
+[node name="DoorBulb" parent="Bulbs" instance=ExtResource("3_bulb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.25, -2.1)
+
+[node name="PortMidBulb" parent="Bulbs" instance=ExtResource("3_bulb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.425, 2.97, 0.5)
+
+[node name="StarboardMidBulb" parent="Bulbs" instance=ExtResource("3_bulb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.425, 2.97, 0.5)
+
+[node name="PortAftBulb" parent="Bulbs" instance=ExtResource("3_bulb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.425, 2.97, 4.5)
+
+[node name="StarboardAftBulb" parent="Bulbs" instance=ExtResource("3_bulb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.425, 2.97, 4.5)
+
+[node name="EmergencyLights" type="Node3D" parent="."]
+visible = false
+
+[node name="CabinEmergency" type="OmniLight3D" parent="EmergencyLights"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 3.2, -5.6)
+light_color = Color(1, 0.15, 0.1, 1)
+light_energy = 0.5
+shadow_enabled = true
+omni_range = 5.0
+
+[node name="DeckEmergency" type="OmniLight3D" parent="EmergencyLights"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 2.5)
+light_color = Color(1, 0.15, 0.1, 1)
+light_energy = 0.4
+shadow_enabled = true
+omni_range = 7.0
+
+[node name="MaintenanceFailures" type="Node" parent="."]
+script = ExtResource("4_maintenance_failures")

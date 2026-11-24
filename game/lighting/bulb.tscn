@@ -1,0 +1,30 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://lighting/bulb.gd" id="1_bulb"]
+[ext_resource type="Resource" path="res://items/data/spare_bulb.tres" id="2_spare_bulb"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_interaction"]
+radius = 0.2
+
+[sub_resource type="SphereMesh" id="SphereMesh_glass"]
+radius = 0.07
+height = 0.14
+radial_segments = 12
+rings = 6
+
+[node name="Bulb" type="Area3D"]
+collision_layer = 4
+collision_mask = 0
+monitoring = false
+script = ExtResource("1_bulb")
+spare_bulb = ExtResource("2_spare_bulb")
+
+[node name="InteractionShape" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_interaction")
+
+[node name="Glass" type="MeshInstance3D" parent="."]
+cast_shadow = 0
+mesh = SubResource("SphereMesh_glass")
+
+[node name="Light" type="OmniLight3D" parent="."]
+shadow_enabled = true

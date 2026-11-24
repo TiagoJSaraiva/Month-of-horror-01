@@ -1,12 +1,19 @@
 [gd_scene format=3]
 
 [ext_resource type="PackedScene" path="res://boat/freezer.tscn" id="1_freezer"]
+[ext_resource type="PackedScene" path="res://lighting/boat_lighting.tscn" id="2_boat_lighting"]
+[ext_resource type="PackedScene" path="res://items/supply_crate.tscn" id="3_supply_crate"]
+[ext_resource type="Resource" path="res://items/data/fuel_can.tres" id="4_fuel_can"]
+[ext_resource type="Resource" path="res://items/data/spare_bulb.tres" id="5_spare_bulb"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hull"]
 albedo_color = Color(0.24, 0.26, 0.28, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bulwark"]
 albedo_color = Color(0.55, 0.56, 0.55, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_post"]
+albedo_color = Color(0.2, 0.2, 0.2, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cabin"]
 albedo_color = Color(0.72, 0.72, 0.68, 1)
@@ -42,6 +49,34 @@ material = SubResource("StandardMaterial3D_bulwark")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 6.925)
 size = Vector3(5, 1.1, 0.15)
 material = SubResource("StandardMaterial3D_bulwark")
+
+[node name="PortMidPost" type="CSGCylinder3D" parent="Hull"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.425, 2.5, 0.5)
+radius = 0.04
+height = 0.8
+sides = 6
+material = SubResource("StandardMaterial3D_post")
+
+[node name="StarboardMidPost" type="CSGCylinder3D" parent="Hull"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.425, 2.5, 0.5)
+radius = 0.04
+height = 0.8
+sides = 6
+material = SubResource("StandardMaterial3D_post")
+
+[node name="PortAftPost" type="CSGCylinder3D" parent="Hull"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.425, 2.5, 4.5)
+radius = 0.04
+height = 0.8
+sides = 6
+material = SubResource("StandardMaterial3D_post")
+
+[node name="StarboardAftPost" type="CSGCylinder3D" parent="Hull"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.425, 2.5, 4.5)
+radius = 0.04
+height = 0.8
+sides = 6
+material = SubResource("StandardMaterial3D_post")
 
 [node name="Cabin" type="CSGCombiner3D" parent="."]
 use_collision = true
@@ -88,3 +123,13 @@ material = SubResource("StandardMaterial3D_table")
 
 [node name="Freezer" parent="." instance=ExtResource("1_freezer")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1, 1.45, -4.8)
+
+[node name="FuelCans" parent="." instance=ExtResource("3_supply_crate")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -1, 1, -2.75)
+item = ExtResource("4_fuel_can")
+
+[node name="SpareBulbs" parent="." instance=ExtResource("3_supply_crate")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 1, 1, -2.75)
+item = ExtResource("5_spare_bulb")
+
+[node name="Lighting" parent="." instance=ExtResource("2_boat_lighting")]

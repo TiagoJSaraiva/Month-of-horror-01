@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://items/item_data.gd" id="1_item_data"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_can"]
+albedo_color = Color(0.7, 0.12, 0.08, 1)
+roughness = 0.6
+
+[sub_resource type="BoxMesh" id="BoxMesh_can"]
+material = SubResource("StandardMaterial3D_can")
+size = Vector3(0.22, 0.32, 0.14)
+
+[resource]
+script = ExtResource("1_item_data")
+id = &"fuel_can"
+display_name = "Fuel can"
+held_mesh = SubResource("BoxMesh_can")

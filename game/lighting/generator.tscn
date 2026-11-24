@@ -1,0 +1,78 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://lighting/generator.gd" id="1_generator"]
+[ext_resource type="Resource" path="res://items/data/fuel_can.tres" id="2_fuel_can"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_interaction"]
+size = Vector3(1.1, 0.9, 0.7)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_body"]
+size = Vector3(1, 0.8, 0.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_generator"]
+albedo_color = Color(0.3, 0.33, 0.25, 1)
+roughness = 0.7
+
+[sub_resource type="BoxMesh" id="BoxMesh_generator"]
+material = SubResource("StandardMaterial3D_generator")
+size = Vector3(1, 0.8, 0.6)
+
+[sub_resource type="SphereMesh" id="SphereMesh_status"]
+radius = 0.04
+height = 0.08
+radial_segments = 8
+rings = 4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gauge"]
+albedo_color = Color(0.05, 0.05, 0.05, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_gauge"]
+material = SubResource("StandardMaterial3D_gauge")
+size = Vector3(0.5, 0.06, 0.01)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fuel"]
+shading_mode = 0
+albedo_color = Color(1, 0.75, 0.1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_fuel"]
+material = SubResource("StandardMaterial3D_fuel")
+size = Vector3(0.5, 0.05, 0.01)
+
+[node name="Generator" type="Area3D"]
+collision_layer = 4
+collision_mask = 0
+monitoring = false
+script = ExtResource("1_generator")
+fuel_can = ExtResource("2_fuel_can")
+
+[node name="InteractionShape" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+shape = SubResource("BoxShape3D_interaction")
+
+[node name="Body" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+shape = SubResource("BoxShape3D_body")
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+mesh = SubResource("BoxMesh_generator")
+
+[node name="StatusLamp" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.38, 0.62, -0.31)
+cast_shadow = 0
+mesh = SubResource("SphereMesh_status")
+
+[node name="FuelGauge" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0.62, -0.305)
+cast_shadow = 0
+mesh = SubResource("BoxMesh_gauge")
+
+[node name="Fill" type="Node3D" parent="FuelGauge"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 0, -0.006)
+
+[node name="FillMesh" type="MeshInstance3D" parent="FuelGauge/Fill"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0, 0)
+cast_shadow = 0
+mesh = SubResource("BoxMesh_fuel")

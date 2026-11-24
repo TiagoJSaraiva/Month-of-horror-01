@@ -22,6 +22,7 @@ Garantir que o jogador faça uma coisa por vez com as mãos: usar a ferramenta (
 - `player/interaction_hold.gd`: `InteractionHold` (`RefCounted`), regra pura do progresso de segurar.
 - `boat/freezer.tscn` / `freezer.gd`: `Freezer` (`Interactable`), com um `StaticBody3D` que bloqueia o jogador. A área é 5 cm maior que o corpo para a mira achá-la primeiro. Só oferece ação carregando um peixe ("Store X"); outros itens não entram.
 - `items/dropped_item.tscn` / `dropped_item.gd`: `DroppedItem` (`Interactable`), item no convés, criado pela `Night` em `Items`, com a base da malha apoiada no chão. Só oferece ação com as mãos livres ("Pick up X").
+- `items/supply_crate.tscn` / `supply_crate.gd`: `SupplyCrate` (`Interactable`), caixa com estoque infinito de um item (`@export var item`). Com as mãos livres, oferece "Take X". Mostra o nome do item na frente e um exemplar em cima. Usada para galões e lâmpadas de reposição (ver `docs/sistemas/iluminacao.md`).
 
 ## Regras
 - Modos: `TOOL` (ferramenta pronta), `JOURNAL` (diário aberto) e `CARRYING` (item nas duas mãos).
