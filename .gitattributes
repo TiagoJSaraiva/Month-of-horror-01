@@ -1,8 +1,9 @@
-# O repositório guarda texto com LF, qualquer que seja o sistema de quem comita; cada
-# máquina recebe o final de linha do próprio sistema na pasta de trabalho.
-* text=auto
+# Texto com LF no repositório e em todas as máquinas, inclusive no Windows: o Godot grava
+# .tscn, .tres, .import e project.godot sempre com LF, e uma cópia de trabalho em CRLF faria o
+# git status acusar mudanças sem diferença de conteúdo depois de cada import. É o padrão que o
+# próprio Godot gera para projetos novos.
+* text=auto eol=lf
 
-# Executores do gdUnit4: o .sh quebra com CRLF no Linux, e o .cmd espera CRLF no Windows.
-*.sh text eol=lf
+# Executores do Windows esperam CRLF.
 *.cmd text eol=crlf
 *.bat text eol=crlf
