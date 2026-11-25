@@ -1,0 +1,6 @@
+description = "Dono: integrar um pull request ou branch na main"
+prompt = """
+Siga o procedimento em `.agents/fluxos/integrar.md`.
+
+{{args}}
+"""

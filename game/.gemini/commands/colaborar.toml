@@ -1,0 +1,6 @@
+description = "Colaborador: nova contribuição em branch com missão"
+prompt = """
+Siga o procedimento em `.agents/fluxos/colaborar.md`.
+
+{{args}}
+"""

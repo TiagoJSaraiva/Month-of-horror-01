@@ -1,0 +1,6 @@
+description = "Configurar esta máquina: pré-requisitos, .env e papel (dono ou colaborador)"
+prompt = """
+Siga o procedimento em `.agents/fluxos/configurar.md`.
+
+{{args}}
+"""

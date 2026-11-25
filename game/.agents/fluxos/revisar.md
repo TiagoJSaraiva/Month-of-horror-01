@@ -3,6 +3,7 @@
 1. Revise o diff atual (`git diff` e `git diff --staged`), os commits ainda não enviados (`git diff origin/main...HEAD`) ou os arquivos indicados.
 2. Compare com `docs/convencoes-gdscript.md` e com as decisões em `docs/decisoes/`.
 3. Reporte separado nestas categorias, omitindo as vazias:
+   - **Missão** (só em branch de colaborador ou no `/integrar`: commit ou arquivo que não cabe na missão de `docs/branches/<branch>/missao.md`)
    - **Bugs reais**
    - **Edge cases** não tratados
    - **Performance**

@@ -10,7 +10,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PROJECT_DIR}/scripts/check-godot-version.mjs\""
+            "command": "node \"${CLAUDE_PROJECT_DIR}/scripts/inicio-sessao.mjs\""
           }
         ]
       }

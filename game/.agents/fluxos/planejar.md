@@ -2,6 +2,7 @@
 
 1. Se o pedido for ambíguo, faça até 3 perguntas objetivas antes de planejar.
 2. Leia `docs/arquitetura.md`, as notas de `docs/sistemas/` envolvidas e as decisões relevantes em `docs/decisoes/`.
+   - **Colaborador**: leia a missão da branch (`docs/branches/<branch>/missao.md`). Pedido que não cabe nela: não planeje; alerte e proponha outra branch (`/colaborar`).
 3. Apresente o plano:
    - **Objetivo**: o que muda para quem joga.
    - **Arquivos**: criar / alterar, com uma linha de propósito cada.

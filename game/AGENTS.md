@@ -11,8 +11,8 @@ Instruções para qualquer agente de IA (Claude Code, Codex, Gemini CLI e outros
 
 ## Comece aqui
 
-1. Confirme a versão do Godot: `node scripts/check-godot-version.mjs`. No Claude Code, um hook já faz isso ao abrir a sessão; nos demais agentes (Codex, Gemini CLI), rode você. Se der ERRO, pare e avise antes de ler ou editar qualquer arquivo do projeto.
-2. Leia `docs/status.md`: onde paramos, próximo passo, bloqueios.
+1. Confirme a versão do Godot e o papel desta máquina: `node scripts/inicio-sessao.mjs`. No Claude Code, um hook já faz isso ao abrir a sessão; nos demais agentes (Codex, Gemini CLI), rode você. Se der ERRO, pare e avise antes de ler ou editar qualquer arquivo do projeto. Papel não configurado: proponha `/configurar`. Modo colaborador: siga também a seção **Colaboração**.
+2. Leia `docs/status.md`: onde paramos, próximo passo, bloqueios. Colaborador: leia também a missão da branch.
 3. Antes de mexer em um sistema, leia `docs/arquitetura.md` e a nota do sistema em `docs/sistemas/`.
 4. Antes de escrever GDScript, leia `docs/convencoes-gdscript.md`.
 5. Antes de propor mudança estrutural, consulte `docs/decisoes/`.
@@ -27,6 +27,9 @@ Procedimentos detalhados em `.agents/fluxos/` (também expostos como comandos no
 | `planejar.md` | Qualquer tarefa que crie sistema, cena ou mais de ~3 arquivos |
 | `revisar.md` | Revisão de diff, a pedido |
 | `fim.md` | Fim de sessão ou de tarefa: check, memória, revisão dos commits e push |
+| `configurar.md` | Uma vez por máquina: pré-requisitos, `.env` e papel (dono ou colaborador) |
+| `colaborar.md` | Colaborador: nova contribuição (branch com missão a partir do repositório original) |
+| `integrar.md` | Dono: integrar um pull request ou branch na `main` |
 
 Regras gerais:
 - Tarefa não trivial: **plano primeiro, código só após aprovação**.
@@ -69,9 +72,23 @@ node scripts/check.mjs                # check completo
 - Arquivos `<alvo>_test.gd`, funções `test_<comportamento>`.
 - Game feel não é testável: descreva no resumo o que o desenvolvedor deve validar jogando.
 
+## Colaboração
+
+Decisão `0021`. O projeto aceita colaboradores por fork e pull request. O papel de cada máquina fica fora do repositório (`git config projeto.papel`), definido no `/configurar`; o início de sessão mostra o papel, a branch e a missão.
+
+- **Dono**: segue a seção **Git** abaixo e integra contribuições só pelo `/integrar`, nunca pelo botão de merge do GitHub.
+- **Colaborador**: trabalha no próprio fork (`origin`), com o repositório original como `upstream`.
+  - Nunca altera nem envia a `main`. Cada contribuição é uma branch criada pelo `/colaborar` a partir de `upstream/main`, com nome `<tipo>/<descrição-em-kebab-case>` (tipos dos commits; minúsculas sem acento, números e hífen; até 50 caracteres).
+  - **Uma branch, um propósito.** A missão fica em `docs/branches/<branch>/missao.md`. Antes de cada tarefa, compare o pedido com a missão; se não couber, alerte e proponha outra branch em vez de fazer.
+  - Commits só dos tipos que a branch aceita: `feat/` aceita feat, test, docs e assets; `fix/` aceita fix, test e docs; `refactor/` e `perf/`, o próprio tipo, test e docs; `test/`, test e docs; `docs/`, só docs; `assets/`, assets e docs; `chore/`, chore e docs.
+  - Não altera a memória e as instruções compartilhadas nem as ferramentas: `docs/status.md`, `docs/decisoes/`, a pasta de outras branches em `docs/branches/`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.agents/`, `.claude/`, `.gemini/`, `.mcp.json`, `scripts/`, `addons/`, `requirements.txt`, `.gitignore`, `.editorconfig` e os arquivos fora de `game/` (exceto `notes/`). Se a missão exigir um deles, ele vai para "Arquivos protegidos autorizados" na missão, e quem integra revê.
+  - Estado e decisões ficam na pasta da branch: o estado em `missao.md`; cada decisão proposta em `decisoes/<titulo>.md`, sem número (o número é dado no `/integrar`). `docs/arquitetura.md` e `docs/sistemas/` são atualizados junto com o código, como sempre.
+  - Push só da própria branch para o fork, no `/fim`; nunca para `upstream`. `main` original avançou: `git merge upstream/main` na branch, nunca rebase de commit já enviado.
+  - O check reprova: branch na `main`, nome fora do padrão, missão ausente, arquivo protegido alterado sem autorização e commit de tipo que a branch não aceita. Arquivo fora das pastas da missão gera aviso.
+
 ## Git
 
-Decisão `0019`. O repositório fica na pasta acima de `game/` (cobre `game/` e `notes/`).
+Regras do dono (o colaborador segue a seção **Colaboração**). Decisão `0019`. O repositório fica na pasta acima de `game/` (cobre `game/` e `notes/`).
 
 - **Todo trabalho acontece direto na `main`.** Crie branch só a pedido explícito do desenvolvedor (ex.: testar uma feature à parte). Nela valem as mesmas regras de commit; merge na `main`, rebase e exclusão da branch também só a pedido.
 - **Commit ao fim de cada módulo.** Módulo é uma unidade coerente e verificável: um componente com seus testes, uma cena com seu script, uma correção, uma configuração. Tarefa com várias partes independentes vira vários commits; não acumule a tarefa inteira num commit só, nem faça commit de passo quebrado.
@@ -90,7 +107,7 @@ Decisão `0019`. O repositório fica na pasta acima de `game/` (cobre `game/` e 
 <corpo opcional>
 ```
 
-- **tipo**: `feat` (mecânica, cena ou conteúdo novo), `fix` (correção de bug), `refactor` (estrutura muda, comportamento não), `perf`, `test` (só testes), `docs` (só `docs/` ou instruções de agente), `assets` (arte, som, fontes), `chore` (configuração, scripts, `project.godot`, ferramentas).
+- **tipo**: `feat` (mecânica, cena ou conteúdo novo), `fix` (correção de bug), `refactor` (estrutura muda, comportamento não), `perf`, `test` (só testes), `docs` (só `docs/` ou instruções de agente), `assets` (arte, som, fontes), `chore` (configuração, scripts, `project.godot`, ferramentas), `merge` (integração de uma contribuição pelo `/integrar`).
 - **escopo**: sistema ou área afetada, em minúsculas (`player`, `combate`, `hud`, `input`, `status`). Omita se a mudança for transversal: `chore: atualiza gdUnit4`.
 - **resumo**: em português, verbo no presente (`adiciona`, `corrige`, `remove`), minúsculo, sem ponto final, até 72 caracteres.
 - **corpo**: só quando o porquê não é óbvio (motivo, efeito para quem joga, limitação conhecida). Linhas de até 72 caracteres, separado do resumo por uma linha em branco.

@@ -1,5 +1,5 @@
-// Pipeline de verificação: versão do Godot, gdtoolkit, formatação, lint, documentação, parse e
-// testes. Para na primeira etapa que falhar e sai com código 1.
+// Pipeline de verificação: versão do Godot, regras de colaboração, gdtoolkit, formatação, lint,
+// documentação, parse e testes. Para na primeira etapa que falhar e sai com código 1.
 //
 // Uso (a partir da raiz do projeto, em Windows ou Linux):
 //   node scripts/check.mjs               completo: antes de concluir uma tarefa
@@ -7,6 +7,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { chunks, isWindows, listGdFiles, loadEnv, paint, projectRoot as root, run } from "./lib/common.mjs";
+import { checkCollaboration } from "./lib/collab.mjs";
 import { checkDocReview, checkDocs } from "./lib/docs.mjs";
 import { checkGodotVersion } from "./lib/godot-version.mjs";
 
@@ -48,6 +49,14 @@ const config = JSON.parse(readFileSync(join(root, "scripts", "check.config.json"
 step("Versão do Godot", () => {
     const { ok, message } = checkGodotVersion(root);
     console.log(message);
+    return ok;
+});
+
+// 1b. Regras de colaboração: na máquina de um colaborador, a branch respeita a missão
+//     (docs/decisoes/*-colaboracao-por-fork.md). Na do dono, só informa o papel.
+step("Colaboração (branch e missão)", () => {
+    const { ok, lines } = checkCollaboration(root);
+    lines.forEach((line) => console.log(line));
     return ok;
 });
 
