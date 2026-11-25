@@ -10,7 +10,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"${CLAUDE_PROJECT_DIR}/scripts/check-godot-version.ps1\""
+            "command": "node \"${CLAUDE_PROJECT_DIR}/scripts/check-godot-version.mjs\""
           }
         ]
       }

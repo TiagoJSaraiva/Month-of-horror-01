@@ -5,13 +5,13 @@ Instruções para qualquer agente de IA (Claude Code, Codex, Gemini CLI e outros
 ## Projeto
 
 - Jogo em **Godot 4.7** com **GDScript 2.0**. MVP em desenvolvimento.
-- Ambiente: Windows, PowerShell. O executável do Godot está em `$env:GODOT_PATH`.
+- Ambiente: Windows ou Linux. As ferramentas do projeto são scripts Node (`node scripts/...`), iguais nos dois sistemas; rode-os a partir da raiz do projeto. O caminho do Godot está em `GODOT_PATH`, lido do `.env` local (modelo em `.env.example`) ou de uma variável de ambiente. Nunca escreva caminhos de uma máquina em arquivos versionados (decisão 0020).
 - O desenvolvedor lê e revisa todo o código. Legibilidade vale mais que esperteza.
 - Idioma: responda e documente em **português**. Identificadores, nomes de arquivo e nomes de nós em **inglês**.
 
 ## Comece aqui
 
-1. Confirme a versão do Godot: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-godot-version.ps1`. No Claude Code, um hook já faz isso ao abrir a sessão; nos demais agentes (Codex, Gemini CLI), rode você. Se der ERRO, pare e avise antes de ler ou editar qualquer arquivo do projeto.
+1. Confirme a versão do Godot: `node scripts/check-godot-version.mjs`. No Claude Code, um hook já faz isso ao abrir a sessão; nos demais agentes (Codex, Gemini CLI), rode você. Se der ERRO, pare e avise antes de ler ou editar qualquer arquivo do projeto.
 2. Leia `docs/status.md`: onde paramos, próximo passo, bloqueios.
 3. Antes de mexer em um sistema, leia `docs/arquitetura.md` e a nota do sistema em `docs/sistemas/`.
 4. Antes de escrever GDScript, leia `docs/convencoes-gdscript.md`.
@@ -50,13 +50,13 @@ Detalhes e exemplos em `docs/convencoes-gdscript.md`. O mínimo inegociável:
 
 Comandos (rodar a partir da raiz do projeto):
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check.ps1 -Fix -Fast   # formata + check rápido
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check.ps1              # check completo
+```sh
+node scripts/check.mjs --fix --fast   # formata + check rápido
+node scripts/check.mjs                # check completo
 ```
 
-- `-Fix` aplica `gdformat` nos scripts do projeto (nunca em `addons/`).
-- Durante a implementação: `-Fast` após cada passo relevante.
+- `--fix` aplica `gdformat` nos scripts do projeto (nunca em `addons/`).
+- Durante a implementação: `--fast` após cada passo relevante.
 - **Antes de declarar uma tarefa concluída: check completo passando.**
 - Nunca apague, pule ou enfraqueça um teste para o check passar. Se a falha não for sua ou não tiver solução clara, reporte.
 - Linhas `ERROR: Remote Debugger ... port` na saída dos testes são ruído conhecido, não falha.
@@ -75,7 +75,7 @@ Decisão `0019`. O repositório fica na pasta acima de `game/` (cobre `game/` e 
 
 - **Todo trabalho acontece direto na `main`.** Crie branch só a pedido explícito do desenvolvedor (ex.: testar uma feature à parte). Nela valem as mesmas regras de commit; merge na `main`, rebase e exclusão da branch também só a pedido.
 - **Commit ao fim de cada módulo.** Módulo é uma unidade coerente e verificável: um componente com seus testes, uma cena com seu script, uma correção, uma configuração. Tarefa com várias partes independentes vira vários commits; não acumule a tarefa inteira num commit só, nem faça commit de passo quebrado.
-- Antes de cada commit: `check.ps1 -Fix -Fast` passando (check completo se o módulo mexe em cena ou em teste de cena). Nunca faça commit com check falhando.
+- Antes de cada commit: `node scripts/check.mjs --fix --fast` passando (check completo se o módulo mexe em cena ou em teste de cena). Nunca faça commit com check falhando.
 - Adicione os arquivos do módulo pelo nome (`git add <arquivos>`) e confira `git status` e `git diff --staged` antes do commit. Mudanças que não são suas ficam fora; cite-as no resumo.
 - Script novo: inclua no mesmo commit o `.uid` que o check gerou para ele (ex.: `player.gd` e `player.gd.uid`). Sem ele, outro clone gera um UID diferente e as cenas que apontam para o script passam a dar aviso.
 - Notas de `docs/` (sistemas, arquitetura, decisões) entram no mesmo commit do código que as motivou. `docs/status.md` é atualizado no `fim`.

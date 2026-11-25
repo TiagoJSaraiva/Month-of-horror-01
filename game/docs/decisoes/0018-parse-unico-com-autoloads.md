@@ -1,7 +1,7 @@
 # 0018 — Pipeline de verificação com parse numa única execução, com autoloads
 
 - **Data**: 2026-11
-- **Status**: aceita (substitui 0005)
+- **Status**: aceita (substitui 0005); ferramentas atualizadas pela 0020
 
 ## Contexto
 A 0005 fazia o parse com `godot --headless --import`. Uma sabotagem mostrou que o `--import` só atualiza cache e `.uid`: ele não compila scripts que nenhuma cena usa. Um erro de tipo (`var x: int = "texto"`) ou uma declaração sem tipo num script ainda não usado passava pelo check completo.

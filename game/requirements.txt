@@ -1,0 +1,3 @@
+# Ferramentas Python do check. Versão exata: versões diferentes do gdformat podem formatar
+# diferente. Instale com: pip install -r requirements.txt
+gdtoolkit==4.5.0

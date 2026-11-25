@@ -1,7 +1,7 @@
 # Fluxo: início de sessão
 
 1. Confirme a versão do Godot:
-   `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-godot-version.ps1`
+   `node scripts/check-godot-version.mjs`
    (no Claude Code, um hook já roda isso ao abrir a sessão). Se der ERRO, pare e avise.
 2. Confira o git: `git status -sb`. Avise se a branch não for `main`, se houver mudanças sem commit ou commits não enviados.
 3. Leia `docs/status.md` e as notas que ele citar.

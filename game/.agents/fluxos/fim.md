@@ -5,7 +5,7 @@
    - Mudanças desta sessão ainda sem commit: faça o commit do módulo correspondente (modelo na seção **Git** de `AGENTS.md`).
    - Mudanças que não são suas: não inclua; cite no resumo.
 2. Rode o check completo:
-   `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check.ps1`
+   `node scripts/check.mjs`
    Se falhar, corrija em um commit próprio ou reporte. **Com check falhando não há push.**
 3. Atualize a memória em `docs/`:
    - `status.md`: onde paramos, próximo passo, bloqueios.

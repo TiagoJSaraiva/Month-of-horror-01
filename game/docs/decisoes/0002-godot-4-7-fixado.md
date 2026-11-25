@@ -1,7 +1,7 @@
 # 0002 — Godot 4.7 fixado
 
 - **Data**: 2026-10
-- **Status**: aceita
+- **Status**: aceita; ferramentas atualizadas pela 0020
 
 ## Contexto
 Mudanças de versão alteram formato de cena, avisos e comportamento, quebrando testes sem mudança de código.
