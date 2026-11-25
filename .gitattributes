@@ -1,0 +1,8 @@
+# O repositório guarda texto com LF, qualquer que seja o sistema de quem comita; cada
+# máquina recebe o final de linha do próprio sistema na pasta de trabalho.
+* text=auto
+
+# Executores do gdUnit4: o .sh quebra com CRLF no Linux, e o .cmd espera CRLF no Windows.
+*.sh text eol=lf
+*.cmd text eol=crlf
+*.bat text eol=crlf
