@@ -136,11 +136,37 @@ if (!existsSync(join(root, testDir))) {
 step(`Testes gdUnit4 (${testDir})`, () => {
     const env = { ...process.env, GODOT_BIN: process.env.GODOT_PATH };
     const testArgs = ["-a", `res://${testDir}`];
-    const { status } = isWindows
-        ? run("addons\\gdUnit4\\runtest.cmd", testArgs, { env, shell: true, inherit: true })
-        : run("bash", ["addons/gdUnit4/runtest.sh", ...testArgs], { env, inherit: true });
-    return status === 0;
+    if (isWindows) {
+        return run("addons\\gdUnit4\\runtest.cmd", testArgs, { env, shell: true, inherit: true }).status === 0;
+    }
+    // O executor abre o Godot com janela: sem --headless, porque sem tela o Godot não entrega
+    // eventos de input e os testes de cena com interação falham. Sem tela (CI, SSH), usa uma
+    // tela virtual (Xvfb).
+    const runner = ["bash", "addons/gdUnit4/runtest.sh", ...testArgs];
+    if (hasLinuxDisplay()) {
+        return run(runner[0], runner.slice(1), { env, inherit: true }).status === 0;
+    }
+    if (run("sh", ["-c", "command -v xvfb-run"]).status === 0) {
+        console.log(paint("gray", "(sem tela: testes numa tela virtual, via xvfb-run)"));
+        return run("xvfb-run", ["-a", ...runner], { env, inherit: true }).status === 0;
+    }
+    console.log(paint("yellow", "Sem tela gráfica para os testes do gdUnit4. Rode numa sessão gráfica ou instale o Xvfb (Debian/Ubuntu: sudo apt install xvfb)."));
+    return false;
 });
+
+/** Diz se há uma tela X11 ou Wayland utilizável (a variável sozinha não basta: o socket pode ter sumido). */
+function hasLinuxDisplay() {
+    const display = process.env.DISPLAY?.match(/^[^:]*:(\d+)/)?.[1];
+    if (display !== undefined && (existsSync(`/tmp/.X11-unix/X${display}`) || !process.env.DISPLAY.startsWith(":"))) {
+        return true;
+    }
+    const wayland = process.env.WAYLAND_DISPLAY;
+    if (wayland) {
+        const socket = wayland.startsWith("/") ? wayland : join(process.env.XDG_RUNTIME_DIR ?? "", wayland);
+        return existsSync(socket);
+    }
+    return false;
+}
 
 console.log(paint("green", "\nCHECK OK"));
 process.exit(0);
