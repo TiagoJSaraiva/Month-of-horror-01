@@ -11,10 +11,11 @@ Instruções para qualquer agente de IA (Claude Code, Codex, Gemini CLI e outros
 
 ## Comece aqui
 
-1. Leia `docs/status.md`: onde paramos, próximo passo, bloqueios.
-2. Antes de mexer em um sistema, leia `docs/arquitetura.md` e a nota do sistema em `docs/sistemas/`.
-3. Antes de escrever GDScript, leia `docs/convencoes-gdscript.md`.
-4. Antes de propor mudança estrutural, consulte `docs/decisoes/`.
+1. Confirme a versão do Godot: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-godot-version.ps1`. No Claude Code, um hook já faz isso ao abrir a sessão; nos demais agentes (Codex, Gemini CLI), rode você. Se der ERRO, pare e avise antes de ler ou editar qualquer arquivo do projeto.
+2. Leia `docs/status.md`: onde paramos, próximo passo, bloqueios.
+3. Antes de mexer em um sistema, leia `docs/arquitetura.md` e a nota do sistema em `docs/sistemas/`.
+4. Antes de escrever GDScript, leia `docs/convencoes-gdscript.md`.
+5. Antes de propor mudança estrutural, consulte `docs/decisoes/`.
 
 ## Fluxo de trabalho
 
@@ -76,6 +77,7 @@ Decisão `0019`. O repositório fica na pasta acima de `game/` (cobre `game/` e 
 - **Commit ao fim de cada módulo.** Módulo é uma unidade coerente e verificável: um componente com seus testes, uma cena com seu script, uma correção, uma configuração. Tarefa com várias partes independentes vira vários commits; não acumule a tarefa inteira num commit só, nem faça commit de passo quebrado.
 - Antes de cada commit: `check.ps1 -Fix -Fast` passando (check completo se o módulo mexe em cena ou em teste de cena). Nunca faça commit com check falhando.
 - Adicione os arquivos do módulo pelo nome (`git add <arquivos>`) e confira `git status` e `git diff --staged` antes do commit. Mudanças que não são suas ficam fora; cite-as no resumo.
+- Script novo: inclua no mesmo commit o `.uid` que o check gerou para ele (ex.: `player.gd` e `player.gd.uid`). Sem ele, outro clone gera um UID diferente e as cenas que apontam para o script passam a dar aviso.
 - Notas de `docs/` (sistemas, arquitetura, decisões) entram no mesmo commit do código que as motivou. `docs/status.md` é atualizado no `fim`.
 - **Push só no fluxo `fim`**, e só da `main`: `git push origin main`.
 - Proibido: `push --force`, alterar commits já enviados (`commit --amend`, `rebase`, `reset` sobre eles), `--no-verify`, enviar outras branches ao remoto.
