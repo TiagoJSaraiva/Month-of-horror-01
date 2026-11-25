@@ -1,0 +1,56 @@
+# Roda o check do projeto em Linux a cada pull request e a cada push na main.
+# Em pull request, aplica as regras de colaborador (branch, missão, arquivos protegidos e tipos
+# de commit): o PR é validado aqui, numa máquina do GitHub, antes de qualquer código dele rodar
+# na máquina de quem integra. Decisão: game/docs/decisoes/*-colaboracao-por-fork.md.
+name: check
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: game
+    env:
+      # Versão exata do Godot no CI. Ao migrar de versão (decisão 0002), atualize aqui também.
+      GODOT_VERSION: 4.7.2-stable
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Histórico completo: a regra de colaboração compara a branch com a main.
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: gdtoolkit
+        run: pip install -r requirements.txt
+
+      - name: Tela virtual e drivers gráficos por software (o servidor não tem tela)
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq xvfb xauth libgl1-mesa-dri mesa-vulkan-drivers libfontconfig1
+
+      - name: Godot ${{ env.GODOT_VERSION }}
+        run: |
+          curl -sSLfo /tmp/godot.zip "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}/Godot_v${GODOT_VERSION}_linux.x86_64.zip"
+          unzip -q /tmp/godot.zip -d "$HOME/godot"
+          echo "GODOT_PATH=$HOME/godot/Godot_v${GODOT_VERSION}_linux.x86_64" > .env
+
+      - name: Check
+        env:
+          PROJETO_PAPEL: ${{ github.event_name == 'pull_request' && 'colaborador' || 'dono' }}
+          PROJETO_BRANCH: ${{ github.head_ref }}
+          PROJETO_BASE: origin/${{ github.base_ref || 'main' }}
+        run: node scripts/check.mjs
