@@ -103,6 +103,7 @@ func is_alive() -> bool:
 
 ## Comentários
 
-- `##` para documentar classes e métodos públicos (aparece na ajuda do editor).
-- `#` comum só para explicar **por quê**: uma regra de design, um contorno de bug, um valor não óbvio.
+- `##` em **toda função do jogo** (pública, privada, virtual ou handler de sinal), na linha logo acima dela, e na classe (decisão 0022). Uma linha com o contrato: o que faz ou garante, no presente, sem repetir o nome. Mais linhas só para regra não óbvia, efeito colateral ou caso de borda. Vale fora de `test/` e `addons/`.
+- Função alterada precisa do `##` atualizado ou confirmado: o check compara com o `HEAD` (`node scripts/check-doc-review.mjs --reviewed "arquivo::funcao"` confirma um `##` que continua correto).
+- `#` comum só para explicar **por quê**: uma regra de design, um contorno de bug, um valor não óbvio. Fica dentro do corpo, nunca no lugar do `##`.
 - Nada de comentário que repete o código.
