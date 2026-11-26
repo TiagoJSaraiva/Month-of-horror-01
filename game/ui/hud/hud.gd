@@ -4,7 +4,7 @@ extends CanvasLayer
 ## vida, bateria da lanterna, munição, clarão de dano, minijogo de pesca e bilhete da mesa.
 ## Recebe tudo pelo HudEvents (decisão 0012).
 
-const INTERACT_KEY_LABEL := "[E]"
+const INTERACT_KEY_LABEL: String = "[E]"
 
 @export var hud_events: HudEvents
 

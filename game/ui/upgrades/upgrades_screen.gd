@@ -39,9 +39,9 @@ func _refresh() -> void:
 		_rows.remove_child(row)
 		row.queue_free()
 	for upgrade: UpgradeData in MetaProgress.UPGRADES:
-		var row := HBoxContainer.new()
+		var row: HBoxContainer = HBoxContainer.new()
 		row.add_theme_constant_override("separation", 16)
-		var label := Label.new()
+		var label: Label = Label.new()
 		label.custom_minimum_size = Vector2(320, 0)
 		label.add_theme_font_size_override("font_size", 20)
 		var level: int = meta.level(upgrade)
@@ -54,7 +54,7 @@ func _refresh() -> void:
 				roundi(level * upgrade.percent_per_level)
 			]
 		)
-		var button := Button.new()
+		var button: Button = Button.new()
 		button.custom_minimum_size = Vector2(160, 40)
 		if level >= upgrade.max_level:
 			button.text = "Max"

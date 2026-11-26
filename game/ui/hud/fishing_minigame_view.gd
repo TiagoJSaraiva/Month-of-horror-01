@@ -3,15 +3,15 @@ extends Control
 ## Desenha o minijogo de pesca: trilho com a barra e o peixe e, ao lado, a captura.
 ## Só lê o modelo; as regras ficam em FishingMinigame.
 
-const TRACK_COLOR := Color(0.08, 0.12, 0.16, 0.85)
-const BAR_COLOR := Color(0.3, 0.85, 0.4, 0.7)
-const FISH_COLOR := Color(0.95, 0.75, 0.2, 1.0)
-const PROGRESS_BACK_COLOR := Color(0.12, 0.12, 0.12, 0.85)
-const PROGRESS_COLOR := Color(0.95, 0.85, 0.3, 1.0)
+const TRACK_COLOR: Color = Color(0.08, 0.12, 0.16, 0.85)
+const BAR_COLOR: Color = Color(0.3, 0.85, 0.4, 0.7)
+const FISH_COLOR: Color = Color(0.95, 0.75, 0.2, 1.0)
+const PROGRESS_BACK_COLOR: Color = Color(0.12, 0.12, 0.12, 0.85)
+const PROGRESS_COLOR: Color = Color(0.95, 0.85, 0.3, 1.0)
 ## Medidas em pixels.
-const FISH_HEIGHT := 14.0
-const PROGRESS_WIDTH := 12.0
-const GAP := 8.0
+const FISH_HEIGHT: float = 14.0
+const PROGRESS_WIDTH: float = 12.0
+const GAP: float = 8.0
 
 var _minigame: FishingMinigame
 

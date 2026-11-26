@@ -14,10 +14,10 @@ const RARITY_NAMES: Dictionary[CardData.Rarity, String] = {
 	CardData.Rarity.RARE: "Rare",
 	CardData.Rarity.LEGENDARY: "Legendary",
 }
-const CHOOSE_TITLE := "Choose a card"
-const FULL_TITLE := "Your slots are full: swap a card or refuse"
-const REPLACE_TITLE := "Replace which card with %s?"
-const CARD_BUTTON_SIZE := Vector2(260, 170)
+const CHOOSE_TITLE: String = "Choose a card"
+const FULL_TITLE: String = "Your slots are full: swap a card or refuse"
+const REPLACE_TITLE: String = "Replace which card with %s?"
+const CARD_BUTTON_SIZE: Vector2 = Vector2(260, 170)
 
 var _slots_full: bool = false
 var _equipped: Array[CardData] = []
@@ -47,7 +47,7 @@ func show_selection(
 	_title.text = FULL_TITLE if slots_full else CHOOSE_TITLE
 	_clear(_cards)
 	for card: CardData in selection:
-		var button := Button.new()
+		var button: Button = Button.new()
 		button.custom_minimum_size = CARD_BUTTON_SIZE
 		button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		button.text = (
@@ -89,7 +89,7 @@ func _on_card_pressed(card: CardData) -> void:
 	_title.text = REPLACE_TITLE % card.display_name
 	_clear(_replace_row)
 	for old_card: CardData in _equipped:
-		var slot_button := Button.new()
+		var slot_button: Button = Button.new()
 		slot_button.text = old_card.display_name
 		slot_button.pressed.connect(card_replaced.emit.bind(old_card, card))
 		_replace_row.add_child(slot_button)

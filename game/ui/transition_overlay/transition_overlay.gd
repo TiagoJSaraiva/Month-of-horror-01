@@ -4,7 +4,7 @@ extends CanvasLayer
 ## da noite que começa. Cada transição pode ser aguardada com await; começar uma nova
 ## interrompe a anterior, para duas não disputarem a mesma sombra.
 
-const DAWN_TEXT := "6:00 AM\nThe night is over."
+const DAWN_TEXT: String = "6:00 AM\nThe night is over."
 
 ## Opacidade da sombra no amanhecer: a cena congelada continua visível por baixo.
 @export var dawn_shade_alpha: float = 0.85
