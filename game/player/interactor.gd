@@ -19,6 +19,7 @@ var _hold := InteractionHold.new()
 var _hold_target: Interactable
 
 
+## Desliga a mira quando falta Hands ou HudEvents.
 func _ready() -> void:
 	if hands == null or hud_events == null:
 		push_warning("Interactor sem Hands ou HudEvents: a interação não funciona.")
@@ -26,6 +27,7 @@ func _ready() -> void:
 		set_process_unhandled_input(false)
 
 
+## Acha o Interactable na mira, avisa o que perdeu o foco e atualiza a dica no HUD.
 func _physics_process(delta: float) -> void:
 	var target := get_collider() as Interactable
 	if target != _target:
@@ -41,6 +43,7 @@ func _physics_process(delta: float) -> void:
 	_update_hold(delta)
 
 
+## E executa a ação do alvo na hora ou, se ela exige segurar, começa a contar.
 func _unhandled_input(event: InputEvent) -> void:
 	if not event.is_action_pressed(&"interact") or _focused == null:
 		return
@@ -53,6 +56,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	get_viewport().set_input_as_handled()
 
 
+## Texto da dica no HUD, com "(hold)" quando a ação exige segurar.
 func _prompt_text() -> String:
 	if _focused == null:
 		return ""
@@ -61,6 +65,7 @@ func _prompt_text() -> String:
 	return _prompt
 
 
+## Avança a ação segurada, cancelando se E foi solto ou o alvo mudou, e executa ao completar.
 func _update_hold(delta: float) -> void:
 	if not _hold.is_active():
 		return

@@ -26,6 +26,7 @@ var _recoil_tween: Tween
 @onready var _muzzle_flash: OmniLight3D = $Model/MuzzleFlash
 
 
+## Cria o RevolverState e liga os sinais. Sem Hands ou HudEvents, esconde o revólver e avisa.
 func _ready() -> void:
 	state = RevolverState.new(capacity, fire_interval, reload_seconds)
 	_rest_rotation = _model.rotation
@@ -58,6 +59,7 @@ func configure(
 		_announce_ammo()
 
 
+## Com o revólver na mão, o botão primário atira e R recarrega.
 func _unhandled_input(event: InputEvent) -> void:
 	if not hands.state.is_tool_ready(HandsState.Tool.REVOLVER):
 		return
@@ -70,10 +72,12 @@ func _unhandled_input(event: InputEvent) -> void:
 	get_viewport().set_input_as_handled()
 
 
+## Passa o tempo para a cadência e a recarga.
 func _process(delta: float) -> void:
 	state.update(delta)
 
 
+## Atira pela mira, causando dano no Hurtbox acertado. Com o tambor vazio, recarrega.
 func _try_fire() -> void:
 	if state.loaded == 0:
 		state.start_reload()
@@ -88,11 +92,13 @@ func _try_fire() -> void:
 		hurtbox.take_hit(damage)
 
 
+## Acende a luz do disparo por muzzle_flash_seconds.
 func _show_muzzle_flash() -> void:
 	_muzzle_flash.visible = true
 	get_tree().create_timer(muzzle_flash_seconds).timeout.connect(_muzzle_flash.hide)
 
 
+## Empina o revólver e o devolve à posição de repouso, como coice.
 func _kick() -> void:
 	if _recoil_tween != null:
 		_recoil_tween.kill()
@@ -101,10 +107,12 @@ func _kick() -> void:
 	_recoil_tween.tween_property(_model, "rotation", _rest_rotation, recoil_seconds)
 
 
+## Avisa o HUD da munição no tambor e se está recarregando.
 func _announce_ammo() -> void:
 	hud_events.ammo_changed.emit(state.loaded, state.capacity, state.is_reloading())
 
 
+## Mostra o revólver só quando ele é a ferramenta na mão; ao guardá-lo, cancela a recarga.
 func _on_hands_changed() -> void:
 	var in_hand: bool = hands.state.is_tool_ready(HandsState.Tool.REVOLVER)
 	_model.visible = in_hand

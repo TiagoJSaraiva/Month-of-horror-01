@@ -7,10 +7,12 @@ extends ShapeCast3D
 @export var stun_range: float = 8.0
 
 
+## Aponta o alcance do facho para a frente, com stun_range metros.
 func _ready() -> void:
 	target_position = Vector3(0.0, 0.0, -stun_range)
 
 
+## Com o facho ligado, expõe à luz cada LightSensor alcançado e sem parede no caminho.
 func _physics_process(_delta: float) -> void:
 	if not enabled:
 		return
@@ -21,6 +23,7 @@ func _physics_process(_delta: float) -> void:
 			sensor.expose_to_light()
 
 
+## Não há parede entre o facho e o ponto.
 func _can_see(point: Vector3) -> bool:
 	var query := PhysicsRayQueryParameters3D.create(global_position, point, PhysicsLayers.WORLD)
 	return get_world_3d().direct_space_state.intersect_ray(query).is_empty()

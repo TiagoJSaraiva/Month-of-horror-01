@@ -23,6 +23,7 @@ var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var _revolver: Revolver = %Revolver
 
 
+## Anda na direção do olhar com aceleração e freio, e aplica a gravidade fora do chão.
 func _physics_process(delta: float) -> void:
 	var input: Vector2 = Input.get_vector(
 		&"move_left", &"move_right", &"move_forward", &"move_back"

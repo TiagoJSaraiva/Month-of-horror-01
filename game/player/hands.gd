@@ -21,6 +21,7 @@ var state := HandsState.new()
 @onready var _carried_item_model: MeshInstance3D = $CarriedItemModel
 
 
+## Avisa se falta o Journal e sincroniza o diário e o item carregado com o estado.
 func _ready() -> void:
 	if journal == null:
 		push_warning("Hands sem Journal: o Tab não abre o diário.")
@@ -28,6 +29,7 @@ func _ready() -> void:
 	_on_state_changed()
 
 
+## Tab abre ou fecha o diário, 1 e 2 trocam a ferramenta e a tecla de largar solta o item carregado.
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(&"toggle_journal"):
 		state.toggle_journal()
@@ -48,6 +50,7 @@ func carry_item(item: ItemData, amount: int = 1) -> bool:
 	return state.start_carrying(item, amount)
 
 
+## Esvazia as mãos e avisa pelo sinal item_dropped onde o item cai.
 func _drop_carried_item() -> void:
 	var item: ItemData = state.carried_item
 	var amount: int = state.carried_amount
@@ -55,7 +58,7 @@ func _drop_carried_item() -> void:
 	item_dropped.emit(item, amount, _drop_point())
 
 
-# Procura o convés à frente; se ali não houver convés (além da amurada), larga aos pés.
+## Ponto onde o item cai: o convés à frente ou, além da amurada, aos pés.
 func _drop_point() -> Vector3:
 	var forward: Vector3 = -global_basis.z
 	forward.y = 0.0
@@ -68,6 +71,7 @@ func _drop_point() -> Vector3:
 	return deck_below if deck_below != null else global_position
 
 
+## Ponto do convés logo abaixo de from, ou null se não houver convés dentro de drop_probe_depth.
 func _deck_below(from: Vector3) -> Variant:
 	var query := PhysicsRayQueryParameters3D.create(
 		from, from + Vector3.DOWN * drop_probe_depth, PhysicsLayers.WORLD
@@ -78,6 +82,7 @@ func _deck_below(from: Vector3) -> Variant:
 	return hit["position"]
 
 
+## Abre ou fecha o diário, mostra o item carregado e repassa o aviso de mudança.
 func _on_state_changed() -> void:
 	if journal != null:
 		if state.mode == HandsState.Mode.JOURNAL:

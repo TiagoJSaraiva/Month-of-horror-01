@@ -16,6 +16,7 @@ var _reloading: bool = false
 var _reload_elapsed: float = 0.0
 
 
+## Cria o revólver com o tambor cheio. Valores negativos viram zero.
 func _init(cylinder_size: int, interval: float, reload_time: float) -> void:
 	capacity = maxi(cylinder_size, 0)
 	loaded = capacity
@@ -23,10 +24,12 @@ func _init(cylinder_size: int, interval: float, reload_time: float) -> void:
 	reload_seconds = maxf(reload_time, 0.0)
 
 
+## Está recarregando.
 func is_reloading() -> bool:
 	return _reloading
 
 
+## Há bala, a cadência permite e não está recarregando.
 func can_fire() -> bool:
 	return loaded > 0 and _cooldown <= 0.0 and not _reloading
 
@@ -59,6 +62,7 @@ func cancel_reload() -> void:
 	changed.emit()
 
 
+## Passa o tempo: conta a espera entre tiros e termina a recarga, enchendo o tambor.
 func update(delta: float) -> void:
 	_cooldown = maxf(_cooldown - delta, 0.0)
 	if not _reloading:

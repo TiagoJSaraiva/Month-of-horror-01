@@ -21,6 +21,7 @@ var _shown_percent: int = -1
 @onready var _light_stun: LightStun = $LightStun
 
 
+## Cria a bateria com a capacidade do inspetor, apaga o facho e avisa o HUD.
 func _ready() -> void:
 	if hud_events == null:
 		push_warning("Flashlight sem HudEvents: a bateria não aparece na tela.")
@@ -29,6 +30,7 @@ func _ready() -> void:
 	_announce_battery()
 
 
+## F liga ou desliga o facho. Com a bateria vazia, mostra o aviso em vez de ligar.
 func _unhandled_input(event: InputEvent) -> void:
 	if not event.is_action_pressed(&"toggle_flashlight"):
 		return
@@ -41,6 +43,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	get_viewport().set_input_as_handled()
 
 
+## Gasta a bateria com o facho aceso e apaga a lanterna quando a carga acaba.
 func _process(delta: float) -> void:
 	if is_on() and battery.drain(delta):
 		_set_on(false)
@@ -48,6 +51,7 @@ func _process(delta: float) -> void:
 	_announce_battery()
 
 
+## O facho está aceso.
 func is_on() -> bool:
 	return _beam.visible
 
@@ -66,11 +70,13 @@ func recharge() -> void:
 	_announce_battery()
 
 
+## Liga ou desliga o facho e, junto com ele, o atordoamento do LightStun.
 func _set_on(on: bool) -> void:
 	_beam.visible = on
 	_light_stun.enabled = on
 
 
+## Avisa o HUD da carga, só quando o percentual inteiro mudou.
 func _announce_battery() -> void:
 	if hud_events == null:
 		return
@@ -80,6 +86,7 @@ func _announce_battery() -> void:
 		hud_events.battery_changed.emit(battery.ratio())
 
 
+## Mostra um aviso curto na tela, se houver HUD.
 func _hint(text: String) -> void:
 	if hud_events != null:
 		hud_events.hint_requested.emit(text, empty_hint_seconds)

@@ -9,17 +9,20 @@ var elapsed: float = 0.0
 var _active: bool = false
 
 
+## Começa a contar uma ação que dura seconds, do zero.
 func start(seconds: float) -> void:
 	duration = maxf(seconds, 0.0)
 	elapsed = 0.0
 	_active = true
 
 
+## Cancela a ação e zera o progresso.
 func cancel() -> void:
 	_active = false
 	elapsed = 0.0
 
 
+## Há uma ação sendo segurada.
 func is_active() -> bool:
 	return _active
 

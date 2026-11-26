@@ -18,10 +18,12 @@ var carried_item: ItemData
 var carried_amount: int = 0
 
 
+## A ferramenta da mão direita pode ser usada: as mãos estão no modo TOOL.
 func can_use_tool() -> bool:
 	return mode == Mode.TOOL
 
 
+## A ferramenta pedida é a que está na mão e pode ser usada.
 func is_tool_ready(which: Tool) -> bool:
 	return mode == Mode.TOOL and tool == which
 
@@ -41,10 +43,12 @@ func can_take_item() -> bool:
 	return mode == Mode.TOOL and not tool_busy
 
 
+## As mãos carregam um item.
 func is_carrying() -> bool:
 	return mode == Mode.CARRYING
 
 
+## As mãos carregam exatamente este item.
 func is_carrying_item(item: ItemData) -> bool:
 	return is_carrying() and item != null and carried_item == item
 
@@ -79,6 +83,7 @@ func stop_carrying() -> void:
 	_set_mode(Mode.TOOL)
 
 
+## Troca o modo das mãos e avisa pelo sinal changed.
 func _set_mode(new_mode: Mode) -> void:
 	mode = new_mode
 	changed.emit()
