@@ -15,8 +15,8 @@ static func next_horizontal_velocity(
 	deceleration: float,
 	delta: float,
 ) -> Vector3:
-	var flat_current := Vector3(current.x, 0.0, current.z)
-	var flat_wish := Vector3(wish_direction.x, 0.0, wish_direction.z)
+	var flat_current: Vector3 = Vector3(current.x, 0.0, current.z)
+	var flat_wish: Vector3 = Vector3(wish_direction.x, 0.0, wish_direction.z)
 	var target: Vector3 = flat_wish.limit_length(1.0) * max_speed
 	var rate: float = acceleration if flat_wish.length_squared() > 0.0 else deceleration
 	return flat_current.move_toward(target, rate * delta)

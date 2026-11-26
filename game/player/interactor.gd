@@ -4,7 +4,7 @@ extends RayCast3D
 ## HUD e a executa com E. Ações demoradas exigem segurar E sem tirar a mira do alvo; o
 ## progresso vai para o HUD. Avisa o objeto quando a mira sai dele.
 
-const HOLD_PROMPT_FORMAT := "%s (hold)"
+const HOLD_PROMPT_FORMAT: String = "%s (hold)"
 
 @export var hands: Hands
 @export var hud_events: HudEvents
@@ -14,7 +14,7 @@ var _target: Interactable
 ## Interactable na mira com ação disponível.
 var _focused: Interactable
 var _prompt: String = ""
-var _hold := InteractionHold.new()
+var _hold: InteractionHold = InteractionHold.new()
 ## Alvo da ação sendo segurada. Outro alvo com o mesmo texto (outra lâmpada) não continua.
 var _hold_target: Interactable
 
@@ -30,7 +30,7 @@ func _ready() -> void:
 ## Acha o Interactable na mira, avisa o alvo anterior que perdeu o foco, atualiza a dica no HUD e
 ## avança a ação segurada.
 func _physics_process(delta: float) -> void:
-	var target := get_collider() as Interactable
+	var target: Interactable = get_collider() as Interactable
 	if target != _target:
 		# O alvo anterior pode ter sido liberado (um peixe pego do convés, por exemplo).
 		if is_instance_valid(_target):

@@ -15,7 +15,7 @@ extends Node3D
 func _unhandled_input(event: InputEvent) -> void:
 	if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
 		return
-	var motion := event as InputEventMouseMotion
+	var motion: InputEventMouseMotion = event as InputEventMouseMotion
 	if motion == null:
 		return
 	# screen_relative não depende da escala do SubViewport de baixa resolução (decisão 0009).

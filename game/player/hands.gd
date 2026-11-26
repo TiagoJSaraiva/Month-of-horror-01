@@ -16,7 +16,7 @@ signal item_dropped(item: ItemData, amount: int, at: Vector3)
 ## Até quantos metros abaixo das mãos procurar o convés.
 @export var drop_probe_depth: float = 3.0
 
-var state := HandsState.new()
+var state: HandsState = HandsState.new()
 
 @onready var _carried_item_model: MeshInstance3D = $CarriedItemModel
 
@@ -75,7 +75,7 @@ func _drop_point() -> Vector3:
 ## Devolve o ponto do convés logo abaixo de from, ou null se não houver convés dentro de
 ## drop_probe_depth.
 func _deck_below(from: Vector3) -> Variant:
-	var query := PhysicsRayQueryParameters3D.create(
+	var query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(
 		from, from + Vector3.DOWN * drop_probe_depth, PhysicsLayers.WORLD
 	)
 	var hit: Dictionary = get_world_3d().direct_space_state.intersect_ray(query)
