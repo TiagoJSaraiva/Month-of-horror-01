@@ -18,7 +18,7 @@ var _lighting: BoatLighting
 var _flyers: Array[Flyer] = []
 var _active: bool = false
 var _until_spawn: float = 0.0
-var _rng := RandomNumberGenerator.new()
+var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 # Dificuldade da noite (set_difficulty): 1 não muda nada.
 var _interval_multiplier: float = 1.0
 var _health_multiplier: float = 1.0
@@ -61,7 +61,7 @@ func start(storm: Storm, lighting: BoatLighting, player: Node3D, player_health: 
 ## Faz um voador chegar de um ponto sorteado sobre o mar. Público para os testes.
 func spawn() -> Flyer:
 	var angle: float = _rng.randf_range(0.0, TAU)
-	var flyer := flyer_scene.instantiate() as Flyer
+	var flyer: Flyer = flyer_scene.instantiate() as Flyer
 	add_child(flyer)
 	flyer.global_position = Vector3(
 		cos(angle) * spawn_distance, spawn_height, sin(angle) * spawn_distance

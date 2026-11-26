@@ -8,7 +8,7 @@ extends CharacterBody3D
 signal removed
 
 ## Distância horizontal, em metros, para considerar que chegou ao ponto de fuga.
-const ARRIVAL_DISTANCE := 0.4
+const ARRIVAL_DISTANCE: float = 0.4
 
 @export var move_speed: float = 2.6
 @export var flee_speed: float = 3.5
@@ -25,7 +25,7 @@ const ARRIVAL_DISTANCE := 0.4
 ## Quanto o corpo inclina para trás na preparação do golpe, em graus.
 @export var windup_lean_degrees: float = 20.0
 
-var brain := FishmanBrain.new()
+var brain: FishmanBrain = FishmanBrain.new()
 
 var _target: Node3D
 var _target_health: Health
@@ -189,7 +189,7 @@ func _remove() -> void:
 
 ## Gira na horizontal para o ponto.
 func _face(point: Vector3) -> void:
-	var flat_target := Vector3(point.x, global_position.y, point.z)
+	var flat_target: Vector3 = Vector3(point.x, global_position.y, point.z)
 	if flat_target.distance_to(global_position) > 0.01:
 		look_at(flat_target, Vector3.UP)
 

@@ -8,9 +8,9 @@ extends CharacterBody3D
 signal removed
 
 ## Distância, em metros, para considerar que chegou a um ponto do voo.
-const ARRIVAL_DISTANCE := 0.5
+const ARRIVAL_DISTANCE: float = 0.5
 ## Altura dos olhos do jogador acima dos pés: o mergulho mira a cabeça.
-const PLAYER_HEAD_HEIGHT := 1.6
+const PLAYER_HEAD_HEIGHT: float = 1.6
 
 @export var cruise_speed: float = 5.0
 @export var dive_speed: float = 9.0
@@ -35,18 +35,18 @@ const PLAYER_HEAD_HEIGHT := 1.6
 ## Escala dos olhos durante o aviso.
 @export var warning_eye_scale: float = 2.0
 
-var brain := FlyerBrain.new()
+var brain: FlyerBrain = FlyerBrain.new()
 
 var _player: Node3D
 var _player_health: Health
 var _bulbs: Array[Bulb] = []
 var _orbit_angle: float = 0.0
-var _dive_point := Vector3.ZERO
+var _dive_point: Vector3 = Vector3.ZERO
 var _dive_bulb: Bulb
 var _dive_seconds: float = 0.0
 var _flap_time: float = 0.0
 var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
-var _rng := RandomNumberGenerator.new()
+var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
 @onready var _collision: CollisionShape3D = $CollisionShape3D
 @onready var _left_wing: Node3D = $Model/LeftWing
@@ -205,7 +205,9 @@ func _visible_bulbs() -> Array[Bulb]:
 
 ## Devolve true se não há parede entre o voador e o ponto.
 func _can_see(point: Vector3) -> bool:
-	var query := PhysicsRayQueryParameters3D.create(global_position, point, PhysicsLayers.WORLD)
+	var query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(
+		global_position, point, PhysicsLayers.WORLD
+	)
 	return get_world_3d().direct_space_state.intersect_ray(query).is_empty()
 
 

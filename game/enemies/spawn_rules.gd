@@ -3,7 +3,7 @@ extends RefCounted
 ## Regras puras do surgimento dos inimigos do escuro.
 
 ## Intervalo devolvido quando a luz está no limiar ou acima: ninguém sobe a bordo.
-const NO_SPAWN := -1.0
+const NO_SPAWN: float = -1.0
 
 
 ## Escuridão de 0 (luz no limiar ou acima) a 1 (sem luz nenhuma).

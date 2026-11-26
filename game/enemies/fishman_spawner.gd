@@ -22,7 +22,7 @@ var _target_health: Health
 var _climb_points: Array[Marker3D] = []
 var _fishmen: Array[Fishman] = []
 var _elapsed: float = 0.0
-var _rng := RandomNumberGenerator.new()
+var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 # Dificuldade da noite (set_difficulty): 1 não muda nada.
 var _interval_multiplier: float = 1.0
 var _health_multiplier: float = 1.0
@@ -35,7 +35,7 @@ var _damage_multiplier: float = 1.0
 func _ready() -> void:
 	_rng.randomize()
 	for child: Node in _climb_points_root.get_children():
-		var point := child as Marker3D
+		var point: Marker3D = child as Marker3D
 		if point != null:
 			_climb_points.append(point)
 
@@ -83,7 +83,7 @@ func set_difficulty(
 
 ## Faz um peixe-homem subir no ponto dado. Público para os testes escolherem o ponto.
 func spawn(point: Marker3D) -> Fishman:
-	var fishman := fishman_scene.instantiate() as Fishman
+	var fishman: Fishman = fishman_scene.instantiate() as Fishman
 	add_child(fishman)
 	fishman.removed.connect(_on_fishman_removed.bind(fishman))
 	fishman.strengthen(_health_multiplier, _damage_multiplier)
