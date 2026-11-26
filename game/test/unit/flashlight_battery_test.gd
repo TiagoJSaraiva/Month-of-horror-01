@@ -2,7 +2,7 @@ extends GdUnitTestSuite
 ## Bateria da lanterna: gasta com a luz acesa, avisa uma vez quando acaba e só volta cheia
 ## com pilhas novas.
 
-const CAPACITY := 90.0
+const CAPACITY: float = 90.0
 
 var _battery: FlashlightBattery
 
@@ -43,7 +43,7 @@ func test_new_batteries_fill_the_charge() -> void:
 
 
 func test_zero_capacity_is_always_empty() -> void:
-	var empty := FlashlightBattery.new(0.0)
+	var empty: FlashlightBattery = FlashlightBattery.new(0.0)
 
 	assert_bool(empty.is_empty()).is_true()
 	assert_float(empty.ratio()).is_equal(0.0)

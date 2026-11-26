@@ -2,8 +2,8 @@ extends GdUnitTestSuite
 ## Cartas: raridade pelas chances, seleção sem repetir, raridade sem cartas cai para a próxima,
 ## pool pequeno ou vazio e soma dos bônus.
 
-const COMMON_CHANCE := 0.6
-const RARE_CHANCE := 0.3
+const COMMON_CHANCE: float = 0.6
+const RARE_CHANCE: float = 0.3
 
 var _rng: RandomNumberGenerator
 
@@ -96,10 +96,10 @@ func _pool(commons: int, rares: int, legendaries: int) -> Array[CardData]:
 
 
 func _card(rarity: CardData.Rarity, stat: StatModifier.Stat, percent: float) -> CardData:
-	var modifier := StatModifier.new()
+	var modifier: StatModifier = StatModifier.new()
 	modifier.stat = stat
 	modifier.percent = percent
-	var card := CardData.new()
+	var card: CardData = CardData.new()
 	card.rarity = rarity
 	card.modifiers = [modifier]
 	return card

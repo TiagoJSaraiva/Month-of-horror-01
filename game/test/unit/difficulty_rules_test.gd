@@ -40,7 +40,7 @@ func test_mvp_curve_changes_nothing_on_the_first_night() -> void:
 
 
 func _scaling(first: float, per_night: float, limit: float) -> ScalingValue:
-	var scaling := ScalingValue.new()
+	var scaling: ScalingValue = ScalingValue.new()
 	scaling.first_night_value = first
 	scaling.per_night = per_night
 	scaling.limit = limit

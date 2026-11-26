@@ -2,8 +2,8 @@ extends GdUnitTestSuite
 ## Peixe-homem: sobe, persegue, prepara o golpe, acerta só se o alvo continua perto, fica
 ## atordoado com imunidade depois, foge quando a luz volta e morto ignora tudo.
 
-const FAR := 10.0
-const NEAR := 1.0
+const FAR: float = 10.0
+const NEAR: float = 1.0
 
 var _brain: FishmanBrain
 ## Golpes que acertaram. Array para a lambda alterar por referência.

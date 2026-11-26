@@ -2,9 +2,9 @@ extends GdUnitTestSuite
 ## Revólver: cada tiro gasta uma bala, a cadência separa os tiros e a recarga leva tempo e
 ## enche o tambor.
 
-const CAPACITY := 6
-const FIRE_INTERVAL := 0.35
-const RELOAD_SECONDS := 2.0
+const CAPACITY: int = 6
+const FIRE_INTERVAL: float = 0.35
+const RELOAD_SECONDS: float = 2.0
 
 var _revolver: RevolverState
 

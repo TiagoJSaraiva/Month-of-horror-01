@@ -1,11 +1,11 @@
 extends GdUnitTestSuite
 ## Regras do movimento horizontal do jogador.
 
-const MAX_SPEED := 3.5
-const ACCELERATION := 20.0
-const DECELERATION := 25.0
-const DELTA := 1.0 / 60.0
-const TOLERANCE := 0.001
+const MAX_SPEED: float = 3.5
+const ACCELERATION: float = 20.0
+const DECELERATION: float = 25.0
+const DELTA: float = 1.0 / 60.0
+const TOLERANCE: float = 0.001
 
 
 func test_accelerates_toward_wish_direction() -> void:
@@ -16,8 +16,8 @@ func test_accelerates_toward_wish_direction() -> void:
 
 
 func test_reaches_but_never_exceeds_max_speed() -> void:
-	var velocity := Vector3.ZERO
-	for _frame in 120:
+	var velocity: Vector3 = Vector3.ZERO
+	for _frame: int in 120:
 		velocity = _step(velocity, Vector3.FORWARD, DELTA)
 		assert_float(velocity.length()).is_less_equal(MAX_SPEED + TOLERANCE)
 
@@ -25,16 +25,16 @@ func test_reaches_but_never_exceeds_max_speed() -> void:
 
 
 func test_diagonal_input_is_not_faster() -> void:
-	var velocity := Vector3.ZERO
-	for _frame in 120:
+	var velocity: Vector3 = Vector3.ZERO
+	for _frame: int in 120:
 		velocity = _step(velocity, Vector3(1.0, 0.0, -1.0), DELTA)
 
 	assert_float(velocity.length()).is_less_equal(MAX_SPEED + TOLERANCE)
 
 
 func test_decelerates_to_stop_without_input() -> void:
-	var velocity := Vector3(0.0, 0.0, -MAX_SPEED)
-	for _frame in 60:
+	var velocity: Vector3 = Vector3(0.0, 0.0, -MAX_SPEED)
+	for _frame: int in 60:
 		velocity = _step(velocity, Vector3.ZERO, DELTA)
 
 	assert_float(velocity.length()).is_less(TOLERANCE)

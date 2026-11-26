@@ -1,7 +1,7 @@
 extends GdUnitTestSuite
 ## Regras de tempo da noite: progresso, hora do jogo e ponteiros.
 
-const TOLERANCE := 0.001
+const TOLERANCE: float = 0.001
 
 
 func test_progress_goes_from_zero_to_one() -> void:

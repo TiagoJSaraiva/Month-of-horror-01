@@ -53,9 +53,9 @@ func test_cards_and_upgrades_add_up() -> void:
 
 
 func _card(stat: StatModifier.Stat, percent: float) -> CardData:
-	var modifier := StatModifier.new()
+	var modifier: StatModifier = StatModifier.new()
 	modifier.stat = stat
 	modifier.percent = percent
-	var card := CardData.new()
+	var card: CardData = CardData.new()
 	card.modifiers = [modifier]
 	return card

@@ -65,7 +65,7 @@ func test_invalid_item_or_amount_is_not_carried() -> void:
 
 
 func test_is_carrying_item_compares_the_carried_item() -> void:
-	var fuel_can := ItemData.new()
+	var fuel_can: ItemData = ItemData.new()
 	assert_bool(_hands.is_carrying_item(_mackerel)).is_false()
 
 	_hands.start_carrying(_mackerel, 1)

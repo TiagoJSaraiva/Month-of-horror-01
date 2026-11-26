@@ -1,7 +1,7 @@
 extends GdUnitTestSuite
 ## Gerador: funciona com combustível e sem quebra, e só gasta combustível funcionando.
 
-const CAPACITY := 100.0
+const CAPACITY: float = 100.0
 
 var _generator: GeneratorState
 ## Cada aviso de running_changed, na ordem. Array para a lambda alterar por referência.
@@ -77,7 +77,7 @@ func test_repair_without_fuel_stays_stopped() -> void:
 
 
 func test_zero_capacity_never_runs() -> void:
-	var empty := GeneratorState.new(0.0)
+	var empty: GeneratorState = GeneratorState.new(0.0)
 
 	assert_bool(empty.is_running()).is_false()
 	assert_float(empty.fuel_ratio()).is_equal(0.0)

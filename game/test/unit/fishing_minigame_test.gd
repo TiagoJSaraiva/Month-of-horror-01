@@ -1,7 +1,7 @@
 extends GdUnitTestSuite
 ## Minijogo de pesca: barra, peixe e captura.
 
-const STEP := 1.0 / 60.0
+const STEP: float = 1.0 / 60.0
 
 var _still_fish: FishData
 
@@ -76,13 +76,13 @@ func test_nothing_changes_after_the_end() -> void:
 
 
 func _minigame_with_fish_at(position: float, fishing_power: float) -> FishingMinigame:
-	var rng := RandomNumberGenerator.new()
+	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 	rng.seed = 1
-	var minigame := FishingMinigame.new(_still_fish, fishing_power, rng)
+	var minigame: FishingMinigame = FishingMinigame.new(_still_fish, fishing_power, rng)
 	minigame.fish_position = position
 	return minigame
 
 
 func _run(minigame: FishingMinigame, seconds: float, reeling: bool) -> void:
-	for _step in roundi(seconds / STEP):
+	for _step: int in roundi(seconds / STEP):
 		minigame.update(STEP, reeling)

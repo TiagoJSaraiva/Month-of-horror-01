@@ -2,8 +2,8 @@ extends GdUnitTestSuite
 ## Tempestade: só a partir da noite permitida, na janela de início, com a duração no
 ## intervalo, sempre antes do amanhecer, e intensidade com rampa de subida e descida.
 
-const NIGHT_SECONDS := 420.0
-const ROLLS := 30
+const NIGHT_SECONDS: float = 420.0
+const ROLLS: int = 30
 
 var _settings: StormSettings
 var _rng: RandomNumberGenerator
@@ -47,7 +47,7 @@ func test_start_and_duration_stay_in_their_ranges() -> void:
 
 
 func test_short_night_shrinks_the_storm_to_fit() -> void:
-	var short_night := 40.0
+	var short_night: float = 40.0
 
 	var storm: StormPlan = StormRules.plan(2, short_night, _settings, _rng)
 
@@ -58,7 +58,7 @@ func test_short_night_shrinks_the_storm_to_fit() -> void:
 
 
 func test_strength_is_zero_outside_the_storm() -> void:
-	var storm := _storm(100.0, 60.0)
+	var storm: StormPlan = _storm(100.0, 60.0)
 
 	assert_float(StormRules.strength(50.0, storm, 8.0)).is_equal(0.0)
 	assert_float(StormRules.strength(170.0, storm, 8.0)).is_equal(0.0)
@@ -66,7 +66,7 @@ func test_strength_is_zero_outside_the_storm() -> void:
 
 
 func test_strength_ramps_up_holds_and_ramps_down() -> void:
-	var storm := _storm(100.0, 60.0)
+	var storm: StormPlan = _storm(100.0, 60.0)
 
 	var rising: float = StormRules.strength(104.0, storm, 8.0)
 	var peak: float = StormRules.strength(130.0, storm, 8.0)
@@ -78,14 +78,14 @@ func test_strength_ramps_up_holds_and_ramps_down() -> void:
 
 
 func test_strength_never_exceeds_one() -> void:
-	var storm := _storm(0.0, 10.0)
+	var storm: StormPlan = _storm(0.0, 10.0)
 
 	for step: int in 100:
 		assert_float(StormRules.strength(step * 0.1, storm, 8.0)).is_between(0.0, 1.0)
 
 
 func _storm(start: float, duration: float) -> StormPlan:
-	var storm := StormPlan.new()
+	var storm: StormPlan = StormPlan.new()
 	storm.has_storm = true
 	storm.start_seconds = start
 	storm.duration_seconds = duration

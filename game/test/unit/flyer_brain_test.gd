@@ -2,8 +2,8 @@ extends GdUnitTestSuite
 ## Voador: chega, circula, escolhe o alvo à vista, avisa, mergulha, volta e circula de novo;
 ## vai embora com o fim da tempestade e morto ignora tudo.
 
-const CIRCLE_SECONDS := 2.0
-const PLAYER_CHANCE := 0.5
+const CIRCLE_SECONDS: float = 2.0
+const PLAYER_CHANCE: float = 0.5
 
 var _brain: FlyerBrain
 

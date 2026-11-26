@@ -51,7 +51,7 @@ func test_second_failure_gets_a_red_warning() -> void:
 
 
 func test_note_lines_pick_the_text_for_each_kind() -> void:
-	var lines := NoteLines.new()
+	var lines: NoteLines = NoteLines.new()
 	lines.intro = "intro"
 	lines.last_warning = "last"
 

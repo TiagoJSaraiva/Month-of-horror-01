@@ -23,7 +23,7 @@ func test_fish_count_never_below_first_night() -> void:
 func test_generated_order_has_the_night_fish_count() -> void:
 	var order: Dictionary[FishData, int] = OrderRules.generate(4, _species(), _rng(7))
 
-	var total := 0
+	var total: int = 0
 	for fish: FishData in order:
 		total += order[fish]
 	assert_int(total).is_equal(OrderRules.fish_count(4))
@@ -56,13 +56,13 @@ func _species() -> Array[FishData]:
 
 
 func _rng(seed_value: int) -> RandomNumberGenerator:
-	var rng := RandomNumberGenerator.new()
+	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 	rng.seed = seed_value
 	return rng
 
 
 func _fish(id: StringName, display_name: String) -> FishData:
-	var fish := FishData.new()
+	var fish: FishData = FishData.new()
 	fish.id = id
 	fish.display_name = display_name
 	return fish

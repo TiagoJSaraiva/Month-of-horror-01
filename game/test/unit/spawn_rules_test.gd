@@ -1,9 +1,9 @@
 extends GdUnitTestSuite
 ## Surgimento no escuro: nada no limiar ou acima, e mais frequente quanto mais escuro.
 
-const THRESHOLD := 0.5
-const MIN_SECONDS := 6.0
-const MAX_SECONDS := 20.0
+const THRESHOLD: float = 0.5
+const MIN_SECONDS: float = 6.0
+const MAX_SECONDS: float = 20.0
 
 
 func test_no_spawn_at_or_above_the_threshold() -> void:

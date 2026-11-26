@@ -71,7 +71,7 @@ func test_species_lists_the_ordered_fish() -> void:
 
 
 func _fish(id: StringName, display_name: String) -> FishData:
-	var fish := FishData.new()
+	var fish: FishData = FishData.new()
 	fish.id = id
 	fish.display_name = display_name
 	return fish

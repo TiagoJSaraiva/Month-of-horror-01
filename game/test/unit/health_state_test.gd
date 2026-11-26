@@ -2,9 +2,9 @@ extends GdUnitTestSuite
 ## Vida: o dano baixa até zero, a morte acontece uma vez e a regeneração espera um tempo sem
 ## dano.
 
-const MAX := 100.0
-const REGEN_RATE := 5.0
-const REGEN_DELAY := 5.0
+const MAX: float = 100.0
+const REGEN_RATE: float = 5.0
+const REGEN_DELAY: float = 5.0
 
 var _health: HealthState
 
@@ -75,7 +75,7 @@ func test_new_damage_restarts_the_wait() -> void:
 
 
 func test_zero_rate_never_regenerates() -> void:
-	var enemy := HealthState.new(75.0)
+	var enemy: HealthState = HealthState.new(75.0)
 	enemy.damage(25.0)
 
 	enemy.update(60.0)

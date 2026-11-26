@@ -2,7 +2,7 @@ extends GdUnitTestSuite
 ## Estado salvo entre as runs: pontos, compra de níveis, percentual por atributo e save que
 ## sobrevive a recarregar e começa do zero quando o arquivo falta ou está estragado.
 
-const SAVE_PATH := "user://test_meta_state.cfg"
+const SAVE_PATH: String = "user://test_meta_state.cfg"
 
 var _health: UpgradeData
 var _meta: MetaState
@@ -68,7 +68,7 @@ func test_missing_file_starts_from_zero() -> void:
 
 
 func test_broken_file_starts_from_zero() -> void:
-	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
+	var file: FileAccess = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	file.store_string("this is [not a config ===")
 	file.close()
 
