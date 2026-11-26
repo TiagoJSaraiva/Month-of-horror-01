@@ -10,7 +10,7 @@ Base: guia de estilo oficial do Godot 4. Formatação é responsabilidade do `gd
 | `class_name`, nó | PascalCase | `class_name HealthComponent`, nó `HurtBox` |
 | Função, variável | snake_case | `apply_damage()`, `max_speed` |
 | Membro privado | prefixo `_` | `_velocity_buffer`, `_on_timer_timeout()` |
-| Constante, valor de enum | CONSTANT_CASE | `const MAX_JUMPS := 2`, `State.FALLING` |
+| Constante, valor de enum | CONSTANT_CASE | `const MAX_JUMPS: int = 2`, `State.FALLING` |
 | Enum | PascalCase | `enum State { IDLE, RUNNING }` |
 | Sinal | snake_case, passado | `health_changed`, `died` |
 | Handler de sinal | `_on_<emissor>_<sinal>` | `_on_hurt_box_area_entered` |
@@ -37,20 +37,24 @@ Base: guia de estilo oficial do Godot 4. Formatação é responsabilidade do `gd
 
 ```gdscript
 var speed: float = 200.0
-var jumps_left := MAX_JUMPS            # := só quando o tipo é óbvio pelo lado direito
+var jumps_left: int = MAX_JUMPS
+var timer: Timer = Timer.new()
 var targets: Array[Enemy] = []
 var scores: Dictionary[String, int] = {}
 
+## Tira `amount` da vida; `source` é quem causou o dano.
 func apply_damage(amount: int, source: Node2D) -> void:
 	pass
 
+## Devolve se a vida ainda está acima de zero.
 func is_alive() -> bool:
 	return _health > 0
 ```
 
-- Nunca `var x = ...` sem tipo.
-- `:=` é aceito apenas com literal ou construtor à direita (`:= 2`, `:= Vector2.ZERO`, `:= Timer.new()`).
-- Use `as` com verificação ao converter: `var enemy := body as Enemy` seguido de `if enemy == null: return`.
+- Tipo sempre escrito à esquerda: nunca `var x = ...` (sem tipo) nem `:=` (tipo inferido), inclusive em `test/`. Vale para variáveis, constantes, parâmetros com valor padrão e iteradores de `for`. O parse do check reprova os dois (decisão 0024).
+- Mesmo quando o lado direito já mostra o tipo: `var timer: Timer = Timer.new()`, `func shoot(spread: float = 0.0)`, `for enemy: Enemy in enemies:`.
+- Literal numérico com o tipo declarado: `var speed: float = 200.0`. Com `:=`, `200` viraria `int`, e uma atribuição posterior de `150.5` seria truncada para `150` sem erro.
+- Use `as` com verificação ao converter: `var enemy: Enemy = body as Enemy` seguido de `if enemy == null: return`.
 
 ## Godot 3 → Godot 4 (nunca usar a coluna da esquerda)
 

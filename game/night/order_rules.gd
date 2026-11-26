@@ -20,7 +20,7 @@ static func generate(
 	var order: Dictionary[FishData, int] = {}
 	if species.is_empty():
 		return order
-	for _fish in fish_count(night_number):
+	for _fish: int in fish_count(night_number):
 		var picked: FishData = species[rng.randi_range(0, species.size() - 1)]
 		var current: int = order.get(picked, 0)
 		order[picked] = current + 1

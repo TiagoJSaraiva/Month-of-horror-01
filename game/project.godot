@@ -20,6 +20,7 @@ MetaProgress="*res://autoload/meta_progress.gd"
 
 [debug]
 
+gdscript/warnings/inferred_declaration=2
 gdscript/warnings/untyped_declaration=2
 
 [display]
