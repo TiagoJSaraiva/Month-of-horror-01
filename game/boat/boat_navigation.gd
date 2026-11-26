@@ -7,6 +7,7 @@ extends NavigationRegion3D
 signal baked
 
 
+## Monta a malha de navegação depois que a colisão dos corpos do barco existe.
 func _ready() -> void:
 	bake_finished.connect(baked.emit)
 	# As formas CSG montam a colisão numa chamada adiada depois de entrar na árvore: espera um

@@ -58,6 +58,7 @@ static func total_percent(cards: Array[CardData], stat: StatModifier.Stat) -> fl
 	return total
 
 
+## Cartas da lista que têm a raridade pedida.
 static func _of_rarity(cards: Array[CardData], rarity: CardData.Rarity) -> Array[CardData]:
 	var matching: Array[CardData] = []
 	for card: CardData in cards:

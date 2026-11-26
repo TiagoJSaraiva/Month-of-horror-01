@@ -17,6 +17,7 @@ signal died
 var state: HealthState
 
 
+## Cria o HealthState com os valores do inspetor e repassa os sinais dele.
 func _ready() -> void:
 	state = HealthState.new(max_health, regen_per_second, regen_delay_seconds)
 	state.changed.connect(_on_state_changed)
@@ -24,6 +25,7 @@ func _ready() -> void:
 	_on_state_changed()
 
 
+## Passa o tempo para a regeneração do HealthState.
 func _process(delta: float) -> void:
 	state.update(delta)
 
@@ -34,10 +36,12 @@ func set_max_health(value: float) -> void:
 	state.reset_max(value)
 
 
+## Diz se a vida acabou.
 func is_dead() -> bool:
 	return state.is_dead()
 
 
+## Tira vida e anuncia o dano. Ignorado depois da morte ou com dano zero ou negativo.
 func damage(amount: float) -> void:
 	if state.is_dead() or amount <= 0.0:
 		return
@@ -47,6 +51,7 @@ func damage(amount: float) -> void:
 		hud_events.player_damaged.emit()
 
 
+## Repassa a vida atual para o sinal changed e, se houver, para o HUD.
 func _on_state_changed() -> void:
 	changed.emit(state.current, state.max_health)
 	if hud_events != null:

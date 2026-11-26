@@ -11,6 +11,7 @@ extends Interactable
 @onready var _label: Label3D = $Label
 
 
+## Mostra o nome e um exemplar do item em cima da caixa.
 func _ready() -> void:
 	if item == null:
 		push_warning("SupplyCrate sem item: a caixa fica vazia.")
@@ -21,11 +22,13 @@ func _ready() -> void:
 		_display.position.y = lid_height - item.held_mesh.get_aabb().position.y
 
 
+## Dica de interação: pegar um item da caixa. Vazia sem item ou sem mãos livres.
 func get_prompt(hands: Hands) -> String:
 	if item == null or not hands.state.can_take_item():
 		return ""
 	return "Take %s" % item.display_name
 
 
+## Coloca um exemplar do item nas mãos. O estoque nunca acaba.
 func interact(hands: Hands) -> void:
 	hands.carry_item(item)

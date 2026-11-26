@@ -17,6 +17,7 @@ var state: MetaState
 var _save_path: String = DEFAULT_SAVE_PATH
 
 
+## Carrega o save padrão ao entrar na árvore.
 func _ready() -> void:
 	use_save_path(DEFAULT_SAVE_PATH)
 
@@ -32,10 +33,13 @@ func use_save_path(path: String) -> void:
 	changed.emit()
 
 
+## Soma pontos ao saldo do jogador (valor zero ou negativo é ignorado) e salva.
 func add_points(amount: int) -> void:
 	state.add_points(amount)
 
 
+## Compra um nível do upgrade. Devolve false se não houver pontos ou se o upgrade já estiver no
+## máximo.
 func buy(upgrade: UpgradeData) -> bool:
 	return state.buy(upgrade)
 
@@ -45,6 +49,7 @@ func upgrade_percents() -> Dictionary[StatModifier.Stat, float]:
 	return state.percents(UPGRADES)
 
 
+## Salva a cada mudança do estado e avisa quem escuta.
 func _on_state_changed() -> void:
 	var error: Error = state.save(_save_path)
 	if error != OK:

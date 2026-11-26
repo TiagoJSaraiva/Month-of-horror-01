@@ -14,6 +14,7 @@ var regen_delay_seconds: float
 var _since_damage: float = 0.0
 
 
+## Cria a vida cheia. Valores negativos viram zero.
 func _init(maximum: float, regen_rate: float = 0.0, regen_delay: float = 0.0) -> void:
 	max_health = maxf(maximum, 0.0)
 	current = max_health
@@ -29,10 +30,12 @@ func reset_max(maximum: float) -> void:
 	changed.emit()
 
 
+## Diz se a vida chegou a zero.
 func is_dead() -> bool:
 	return current <= 0.0
 
 
+## Vida atual como fração do máximo, de 0 a 1. Zero se o máximo for zero.
 func ratio() -> float:
 	if max_health <= 0.0:
 		return 0.0

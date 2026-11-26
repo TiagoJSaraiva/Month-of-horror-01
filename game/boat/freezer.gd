@@ -5,6 +5,7 @@ extends Interactable
 signal fish_stored(fish: FishData, amount: int)
 
 
+## Dica de interação: guardar o peixe carregado. Vazia se as mãos não carregam um peixe.
 func get_prompt(hands: Hands) -> String:
 	var fish := hands.state.carried_item as FishData
 	if not hands.state.is_carrying() or fish == null:
@@ -12,6 +13,7 @@ func get_prompt(hands: Hands) -> String:
 	return "Store %s" % fish.display_name
 
 
+## Guarda tudo que as mãos carregam de um peixe e avisa pelo sinal fish_stored.
 func interact(hands: Hands) -> void:
 	var fish := hands.state.carried_item as FishData
 	if not hands.state.is_carrying() or fish == null:
