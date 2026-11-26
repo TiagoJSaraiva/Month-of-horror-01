@@ -27,7 +27,7 @@ func _ready() -> void:
 ## _input, e não _unhandled_input, porque o SubViewportContainer consome os cliques antes da fase
 ## "unhandled".
 func _input(event: InputEvent) -> void:
-	var click := event as InputEventMouseButton
+	var click: InputEventMouseButton = event as InputEventMouseButton
 	if _menu_open or click == null or not click.pressed:
 		return
 	if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:

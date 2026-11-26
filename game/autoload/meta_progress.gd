@@ -5,7 +5,7 @@ extends Node
 
 signal changed
 
-const DEFAULT_SAVE_PATH := "user://meta_progress.cfg"
+const DEFAULT_SAVE_PATH: String = "user://meta_progress.cfg"
 const UPGRADES: Array[UpgradeData] = [
 	preload("res://meta/upgrades/health.tres"),
 	preload("res://meta/upgrades/damage.tres"),

@@ -20,7 +20,7 @@ var _broken: bool = false
 var _powered: bool = false
 # Material próprio de cada lâmpada; a emissão fica sempre ligada para trocar só a cor, sem
 # recompilar o shader a cada mudança.
-var _glass_material := StandardMaterial3D.new()
+var _glass_material: StandardMaterial3D = StandardMaterial3D.new()
 
 @onready var _light: OmniLight3D = $Light
 @onready var _glass: MeshInstance3D = $Glass

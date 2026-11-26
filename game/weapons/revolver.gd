@@ -89,7 +89,7 @@ func _try_fire() -> void:
 	_show_muzzle_flash()
 	_kick()
 	_aim.force_raycast_update()
-	var hurtbox := _aim.get_collider() as Hurtbox
+	var hurtbox: Hurtbox = _aim.get_collider() as Hurtbox
 	if hurtbox != null:
 		hurtbox.take_hit(damage)
 

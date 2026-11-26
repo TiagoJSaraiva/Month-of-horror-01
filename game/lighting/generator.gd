@@ -20,7 +20,7 @@ var state: GeneratorState
 ## Multiplica os tempos de reabastecer e consertar (bônus da run: 0,5 é a metade).
 var hold_multiplier: float = 1.0
 
-var _status_material := StandardMaterial3D.new()
+var _status_material: StandardMaterial3D = StandardMaterial3D.new()
 
 @onready var _status_lamp: MeshInstance3D = $StatusLamp
 @onready var _fuel_fill: Node3D = $FuelGauge/Fill

@@ -21,7 +21,7 @@ var _bulbs: Array[Bulb] = []
 ## passa a sortear falhas) e aplica o estado atual do gerador.
 func _ready() -> void:
 	for child: Node in _bulbs_root.get_children():
-		var bulb := child as Bulb
+		var bulb: Bulb = child as Bulb
 		if bulb != null:
 			_bulbs.append(bulb)
 			bulb.changed.connect(_refresh_light_level)

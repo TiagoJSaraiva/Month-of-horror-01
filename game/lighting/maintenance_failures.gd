@@ -16,7 +16,7 @@ var _bulbs: Array[Bulb] = []
 var _storm_strength: float = 0.0
 # Dificuldade da noite: quantas vezes mais frequentes as falhas ficam (1 não muda nada).
 var _frequency_multiplier: float = 1.0
-var _rng := RandomNumberGenerator.new()
+var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
 
 ## Sorteia a semente do gerador de números aleatórios.
