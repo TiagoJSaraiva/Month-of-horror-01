@@ -2,8 +2,8 @@ class_name MetaRules
 extends RefCounted
 ## Regras puras da meta-progressão: pontos ganhos numa run e custo dos upgrades.
 
-const POINTS_PER_NIGHT := 10
-const POINTS_PER_FISH := 1
+const POINTS_PER_NIGHT: int = 10
+const POINTS_PER_FISH: int = 1
 
 
 ## Pontos pagos no fim de uma run: por noite cumprida e por peixe entregue.

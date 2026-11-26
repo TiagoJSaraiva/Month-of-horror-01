@@ -5,9 +5,9 @@ extends RefCounted
 ## Pertence à cena Run, que é recriada a cada run nova (decisão 0013).
 
 ## Falhas que encerram a run. Não precisam ser em noites seguidas.
-const MAX_FAILURES := 3
-const CARD_SLOTS := 3
-const REROLLS_PER_RUN := 3
+const MAX_FAILURES: int = 3
+const CARD_SLOTS: int = 3
+const REROLLS_PER_RUN: int = 3
 
 var night_number: int = 1
 var failures: int = 0

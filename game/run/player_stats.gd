@@ -16,7 +16,7 @@ static func from_cards(cards: Array[CardData]) -> PlayerStats:
 static func from_sources(
 	cards: Array[CardData], upgrade_percents: Dictionary[StatModifier.Stat, float]
 ) -> PlayerStats:
-	var stats := PlayerStats.new()
+	var stats: PlayerStats = PlayerStats.new()
 	for stat: StatModifier.Stat in StatModifier.Stat.values():
 		stats._percents[stat] = (
 			CardRules.total_percent(cards, stat) + upgrade_percents.get(stat, 0.0)

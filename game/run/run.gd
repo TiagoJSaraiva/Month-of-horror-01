@@ -13,8 +13,8 @@ signal quit_to_menu_requested
 signal menu_opened
 signal menu_closed
 
-const DEAL_BROKEN_TITLE := "THE DEAL IS OFF"
-const DEATH_TITLE := "YOU DIED"
+const DEAL_BROKEN_TITLE: String = "THE DEAL IS OFF"
+const DEATH_TITLE: String = "YOU DIED"
 
 @export var night_scene: PackedScene
 @export var note_lines: NoteLines
@@ -22,11 +22,11 @@ const DEATH_TITLE := "YOU DIED"
 ## Tempo parado na tela do amanhecer antes de seguir, em segundos.
 @export var dawn_hold_seconds: float = 3.0
 
-var state := RunState.new()
+var state: RunState = RunState.new()
 
 var _night: Night
 var _selection: Array[CardData] = []
-var _rng := RandomNumberGenerator.new()
+var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 ## Os pontos da run são pagos uma vez só, no fim (acordo quebrado, morte ou saída).
 var _points_paid: bool = false
 

@@ -5,9 +5,9 @@ extends RefCounted
 
 signal changed
 
-const SAVE_VERSION := 1
-const META_SECTION := "meta"
-const LEVELS_SECTION := "levels"
+const SAVE_VERSION: int = 1
+const META_SECTION: String = "meta"
+const LEVELS_SECTION: String = "levels"
 
 var points: int = 0
 
@@ -16,8 +16,8 @@ var _levels: Dictionary[StringName, int] = {}
 
 ## Lê o save no caminho dado. Arquivo ausente, de outra versão ou inválido devolve um estado zerado.
 static func load_from(path: String) -> MetaState:
-	var meta := MetaState.new()
-	var config := ConfigFile.new()
+	var meta: MetaState = MetaState.new()
+	var config: ConfigFile = ConfigFile.new()
 	if config.load(path) != OK:
 		return meta
 	if int(config.get_value(META_SECTION, "version", 0)) != SAVE_VERSION:
@@ -31,7 +31,7 @@ static func load_from(path: String) -> MetaState:
 
 ## Grava pontos e níveis no caminho e devolve o código de erro do ConfigFile.
 func save(path: String) -> Error:
-	var config := ConfigFile.new()
+	var config: ConfigFile = ConfigFile.new()
 	config.set_value(META_SECTION, "version", SAVE_VERSION)
 	config.set_value(META_SECTION, "points", points)
 	for id: StringName in _levels:
