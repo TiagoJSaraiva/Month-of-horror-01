@@ -16,3 +16,6 @@ dist/
 
 # Preparo da auditoria do /revisar (scripts/auditoria.mjs)
 .auditoria/
+
+# Confirmações da revisão do ## (scripts/check-doc-review.mjs)
+.doc-review
