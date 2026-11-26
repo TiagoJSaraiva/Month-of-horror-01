@@ -16,5 +16,6 @@ static func upgrade_cost(base_cost: int, current_level: int) -> int:
 	return base_cost * (current_level + 1)
 
 
+## Dá para comprar o próximo nível: o upgrade não está no máximo e os pontos cobrem o custo.
 static func can_buy(points: int, current_level: int, max_level: int, cost: int) -> bool:
 	return current_level < max_level and points >= cost

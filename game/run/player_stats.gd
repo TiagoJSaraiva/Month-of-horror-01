@@ -6,6 +6,7 @@ extends RefCounted
 var _percents: Dictionary[StatModifier.Stat, float] = {}
 
 
+## Bônus só das cartas, sem upgrades permanentes.
 static func from_cards(cards: Array[CardData]) -> PlayerStats:
 	return from_sources(cards, {})
 
@@ -23,6 +24,7 @@ static func from_sources(
 	return stats
 
 
+## Bônus total do atributo, em percentual. Zero se não há.
 func percent(stat: StatModifier.Stat) -> float:
 	return _percents.get(stat, 0.0)
 

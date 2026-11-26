@@ -28,6 +28,7 @@ func is_over() -> bool:
 	return failures >= MAX_FAILURES or died
 
 
+## Quantas falhas ainda cabem antes de a run acabar.
 func lives_left() -> int:
 	return maxi(MAX_FAILURES - failures, 0)
 
@@ -57,6 +58,7 @@ func start_card_pool(cards: Array[CardData]) -> void:
 	card_pool = cards.duplicate()
 
 
+## Os slots de carta estão todos ocupados.
 func slots_full() -> bool:
 	return equipped.size() >= CARD_SLOTS
 

@@ -14,6 +14,7 @@ var points: int = 0
 var _levels: Dictionary[StringName, int] = {}
 
 
+## Lê o save do caminho. Arquivo ausente, de outra versão ou inválido devolve um estado zerado.
 static func load_from(path: String) -> MetaState:
 	var meta := MetaState.new()
 	var config := ConfigFile.new()
@@ -28,6 +29,7 @@ static func load_from(path: String) -> MetaState:
 	return meta
 
 
+## Grava pontos e níveis no caminho e devolve o código de erro do ConfigFile.
 func save(path: String) -> Error:
 	var config := ConfigFile.new()
 	config.set_value(META_SECTION, "version", SAVE_VERSION)
@@ -37,6 +39,7 @@ func save(path: String) -> Error:
 	return config.save(path)
 
 
+## Soma pontos ao saldo. Valor zero ou negativo é ignorado.
 func add_points(amount: int) -> void:
 	if amount <= 0:
 		return
@@ -44,14 +47,17 @@ func add_points(amount: int) -> void:
 	changed.emit()
 
 
+## Nível atual do upgrade, limitado ao máximo dele.
 func level(upgrade: UpgradeData) -> int:
 	return mini(_levels.get(upgrade.id, 0), upgrade.max_level)
 
 
+## Custo do próximo nível do upgrade.
 func cost(upgrade: UpgradeData) -> int:
 	return MetaRules.upgrade_cost(upgrade.base_cost, level(upgrade))
 
 
+## Dá para comprar o próximo nível do upgrade com os pontos atuais.
 func can_buy(upgrade: UpgradeData) -> bool:
 	return MetaRules.can_buy(points, level(upgrade), upgrade.max_level, cost(upgrade))
 

@@ -13,6 +13,7 @@ var _menu_open: bool = false
 @onready var _upgrades_screen: UpgradesScreen = $UpgradesScreen
 
 
+## Liga os botões do menu principal e da tela de upgrades e abre o menu principal.
 func _ready() -> void:
 	_main_menu.new_run_requested.connect(_on_main_menu_new_run_requested)
 	_main_menu.upgrades_requested.connect(_on_main_menu_upgrades_requested)
@@ -21,9 +22,9 @@ func _ready() -> void:
 	_show_main_menu()
 
 
-# Recaptura o mouse com um clique fora dos menus (depois de trocar de janela, por exemplo). O
-# Esc fica com o menu de pausa da Run. Usa _input, e não _unhandled_input, porque o
-# SubViewportContainer consome os cliques antes que eles cheguem à fase "unhandled".
+## Recaptura o mouse com um clique fora dos menus (depois de trocar de janela, por exemplo). O
+## Esc fica com o menu de pausa da Run. Usa _input, e não _unhandled_input, porque o
+## SubViewportContainer consome os cliques antes que eles cheguem à fase "unhandled".
 func _input(event: InputEvent) -> void:
 	var click := event as InputEventMouseButton
 	if _menu_open or click == null or not click.pressed:
@@ -34,12 +35,14 @@ func _input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 
+## Mostra o menu principal, escondendo a tela de upgrades, e solta o mouse.
 func _show_main_menu() -> void:
 	_upgrades_screen.hide()
 	_main_menu.open()
 	_open_menu()
 
 
+## Cria a Run, liga os sinais dela e a coloca na árvore com o mouse capturado.
 func _start_run() -> void:
 	_main_menu.hide()
 	_run = run_scene.instantiate() as Run
@@ -54,36 +57,43 @@ func _start_run() -> void:
 	add_child(_run)
 
 
+## Libera a Run atual, se houver.
 func _end_run() -> void:
 	if _run != null:
 		_run.queue_free()
 		_run = null
 
 
+## Marca um menu como aberto e solta o mouse.
 func _open_menu() -> void:
 	_menu_open = true
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 
+## Marca os menus como fechados e captura o mouse.
 func _close_menu() -> void:
 	_menu_open = false
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 
+## Começa uma run nova a partir do menu principal.
 func _on_main_menu_new_run_requested() -> void:
 	_start_run()
 
 
+## Troca o menu principal pela tela de upgrades.
 func _on_main_menu_upgrades_requested() -> void:
 	_main_menu.hide()
 	_upgrades_screen.open()
 
 
+## Descarta a run atual e começa outra.
 func _on_run_new_run_requested() -> void:
 	_end_run()
 	_start_run()
 
 
+## Descarta a run atual e volta ao menu principal.
 func _on_run_main_menu_requested() -> void:
 	_end_run()
 	_show_main_menu()

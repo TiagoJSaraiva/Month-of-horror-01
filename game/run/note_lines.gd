@@ -13,6 +13,7 @@ extends Resource
 @export_multiline var death: String
 
 
+## Fala do bilhete para a situação. Qualquer outra situação usa a introdução.
 func text_for(kind: RunRules.NoteKind) -> String:
 	match kind:
 		RunRules.NoteKind.COMPLETED:

@@ -38,6 +38,8 @@ var _points_paid: bool = false
 @onready var _run_over_screen: RunOverScreen = $RunOverScreen
 
 
+## Sorteia a semente, monta o pool de cartas, liga os sinais das telas e abre a primeira seleção de
+## cartas.
 func _ready() -> void:
 	_rng.randomize()
 	state.start_card_pool(card_pool.cards)
@@ -65,18 +67,21 @@ func can_pause() -> bool:
 	return _night != null and not _night.is_ended() and not _card_screen.visible
 
 
+## Pausa o jogo e abre o menu de pausa.
 func _pause() -> void:
 	get_tree().paused = true
 	_pause_menu.open()
 	menu_opened.emit()
 
 
+## Retoma o jogo e fecha o menu de pausa.
 func _resume() -> void:
 	get_tree().paused = false
 	_pause_menu.close()
 	menu_closed.emit()
 
 
+## Esc: retoma se está pausado; senão pausa, se a pausa é permitida agora.
 func _on_pause_menu_toggle_requested() -> void:
 	if get_tree().paused:
 		_resume()
@@ -84,7 +89,7 @@ func _on_pause_menu_toggle_requested() -> void:
 		_pause()
 
 
-# Sair conta como derrota: os peixes já entregues valem, e os pontos são pagos.
+## Sair conta como derrota: os peixes já entregues valem, e os pontos são pagos.
 func _on_pause_menu_quit_requested() -> void:
 	get_tree().paused = false
 	_pause_menu.close()
@@ -93,7 +98,7 @@ func _on_pause_menu_quit_requested() -> void:
 	quit_to_menu_requested.emit()
 
 
-# Mostra a seleção de cartas; com o pool vazio, pula direto para a noite.
+## Mostra a seleção de cartas; com o pool vazio, pula direto para a noite.
 func _offer_cards() -> void:
 	_selection = CardRules.draw_selection(
 		state.card_pool,
@@ -109,12 +114,15 @@ func _offer_cards() -> void:
 	menu_opened.emit()
 
 
+## Fecha a seleção de cartas e começa a noite.
 func _close_cards() -> void:
 	_card_screen.close()
 	menu_closed.emit()
 	_start_night()
 
 
+## Cria a noite com o bilhete, os bônus e o número da run e a coloca na árvore, com a transição de
+## entrada.
 func _start_night() -> void:
 	var kind: RunRules.NoteKind = RunRules.note_kind(state.last_outcome, state.failures)
 	_night = night_scene.instantiate() as Night
@@ -129,16 +137,19 @@ func _start_night() -> void:
 	_transition.reveal("NIGHT %d" % state.night_number)
 
 
+## Equipa a carta escolhida e começa a noite.
 func _on_card_screen_card_chosen(card: CardData) -> void:
 	state.choose(card)
 	_close_cards()
 
 
+## Troca a carta equipada pela escolhida e começa a noite.
 func _on_card_screen_card_replaced(old_card: CardData, new_card: CardData) -> void:
 	state.replace(old_card, new_card)
 	_close_cards()
 
 
+## Gasta um reroll, se houver, e sorteia uma seleção nova.
 func _on_card_screen_reroll_requested() -> void:
 	if not state.use_reroll():
 		return
@@ -146,6 +157,8 @@ func _on_card_screen_reroll_requested() -> void:
 	_offer_cards()
 
 
+## No amanhecer, avalia o pedido: encerra a run na terceira falha; senão, cobre a tela e oferece as
+## cartas da próxima noite.
 func _on_night_night_finished(order: NightOrder) -> void:
 	_hud.hide()
 	await _transition.play_dawn()
@@ -162,6 +175,7 @@ func _on_night_night_finished(order: NightOrder) -> void:
 	_offer_cards()
 
 
+## Com a morte do jogador, registra os peixes entregues, encerra a run e mostra a tela de fim.
 func _on_night_player_died() -> void:
 	_hud.hide()
 	state.add_delivered_fish(_night.order.delivered_total())
@@ -170,13 +184,14 @@ func _on_night_player_died() -> void:
 	_show_run_over(DEATH_TITLE, note_lines.death)
 
 
+## Mostra a tela de fim de run com as noites vividas e os pontos pagos, e avisa pelo sinal run_over.
 func _show_run_over(title: String, message: String) -> void:
 	var nights: int = RunRules.nights_survived(state.night_number, state.died)
 	_run_over_screen.show_summary(title, message, nights, _pay_points())
 	run_over.emit()
 
 
-# Paga os pontos da run no MetaProgress, uma vez só. Devolve quanto foi pago.
+## Paga os pontos da run no MetaProgress, uma vez só. Devolve quanto foi pago.
 func _pay_points() -> int:
 	if _points_paid:
 		return 0
