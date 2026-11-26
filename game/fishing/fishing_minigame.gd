@@ -31,6 +31,7 @@ var _fish_target: float
 var _rng: RandomNumberGenerator
 
 
+## Cria o minijogo com o peixe fisgado em uma posição sorteada do trilho.
 func _init(hooked_fish: FishData, fishing_power: float, rng: RandomNumberGenerator) -> void:
 	fish = hooked_fish
 	_fishing_power = fishing_power
@@ -39,6 +40,7 @@ func _init(hooked_fish: FishData, fishing_power: float, rng: RandomNumberGenerat
 	_fish_target = fish_position
 
 
+## O peixe está dentro da barra.
 func is_fish_inside_bar() -> bool:
 	return fish_position >= bar_position and fish_position <= bar_position + BAR_SIZE
 
@@ -57,6 +59,7 @@ func update(delta: float, reeling: bool) -> void:
 		state = State.ESCAPED
 
 
+## Move a barra: acelera para cima segurando e para baixo soltando, parando nas pontas do trilho.
 func _move_bar(delta: float, reeling: bool) -> void:
 	var acceleration: float = REEL_ACCELERATION if reeling else -BAR_GRAVITY
 	bar_velocity += acceleration * delta
@@ -71,6 +74,7 @@ func _move_bar(delta: float, reeling: bool) -> void:
 		bar_velocity = minf(bar_velocity, 0.0)
 
 
+## Move o peixe em direção a um alvo no trilho, que ele troca de tempos em tempos.
 func _move_fish(delta: float) -> void:
 	if _rng.randf() < fish.direction_changes_per_second * delta:
 		_fish_target = _rng.randf()

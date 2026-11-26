@@ -20,6 +20,7 @@ var _rng: RandomNumberGenerator
 var _time_left: float
 
 
+## Cria a tentativa para o peixe da isca e sorteia a espera até a mordida.
 func _init(target_fish: FishData, fishing_power: float, rng: RandomNumberGenerator) -> void:
 	fish = target_fish
 	_fishing_power = fishing_power
@@ -27,6 +28,7 @@ func _init(target_fish: FishData, fishing_power: float, rng: RandomNumberGenerat
 	_time_left = _rng.randf_range(fish.bite_delay_min, fish.bite_delay_max)
 
 
+## A tentativa acabou: o peixe foi pescado, escapou ou o jogador desistiu.
 func is_finished() -> bool:
 	return state in [State.CAUGHT, State.ESCAPED, State.CANCELLED]
 
@@ -68,6 +70,7 @@ func cancel() -> void:
 		_set_state(State.CANCELLED)
 
 
+## Troca o estado e avisa pelo sinal state_changed.
 func _set_state(new_state: State) -> void:
 	state = new_state
 	state_changed.emit(state)

@@ -11,6 +11,7 @@ extends Node3D
 var _biting: bool = false
 
 
+## Acompanha a superfície da água sob a boia, afundada em bite_depth durante a mordida.
 func _physics_process(_delta: float) -> void:
 	var query := PhysicsRayQueryParameters3D.create(
 		global_position + Vector3.UP * probe_range,
@@ -24,16 +25,19 @@ func _physics_process(_delta: float) -> void:
 	global_position.y = surface.y - (bite_depth if _biting else 0.0)
 
 
+## Joga a boia no ponto e a mostra, sem mordida.
 func drop_at(point: Vector3) -> void:
 	global_position = point
 	_biting = false
 	show()
 
 
+## Liga ou desliga o afundamento da mordida.
 func set_biting(biting: bool) -> void:
 	_biting = biting
 
 
+## Recolhe a boia: encerra a mordida e a esconde.
 func pull_out() -> void:
 	_biting = false
 	hide()

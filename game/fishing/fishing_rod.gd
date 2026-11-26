@@ -22,6 +22,7 @@ var _rng := RandomNumberGenerator.new()
 @onready var _bobber: Bobber = $Bobber
 
 
+## Esconde a boia e liga os sinais. Sem Hands, HudEvents ou iscas, avisa e a vara não funciona.
 func _ready() -> void:
 	_rng.randomize()
 	_bobber.hide()
@@ -33,6 +34,8 @@ func _ready() -> void:
 	hud_events.bait_changed.emit(_current_bait().display_name)
 
 
+## Com a vara na mão, o botão primário lança ou fisga, o secundário desiste e a tecla de isca troca
+## de isca.
 func _unhandled_input(event: InputEvent) -> void:
 	if hands == null or baits.is_empty() or not hands.state.is_tool_ready(HandsState.Tool.ROD):
 		return
@@ -51,11 +54,13 @@ func _unhandled_input(event: InputEvent) -> void:
 	get_viewport().set_input_as_handled()
 
 
+## Avança a tentativa em andamento, com o botão primário como o de puxar no minijogo.
 func _process(delta: float) -> void:
 	if _attempt != null:
 		_attempt.update(delta, Input.is_action_pressed(&"primary_action"))
 
 
+## Lança a linha se a mira está na água. Senão, mostra um aviso.
 func _try_cast() -> void:
 	_aim.force_raycast_update()
 	if not _aim.get_collider() is WaterSurface:
@@ -68,10 +73,12 @@ func _try_cast() -> void:
 	hud_events.hint_requested.emit("Waiting for a bite...", 0.0)
 
 
+## Isca selecionada.
 func _current_bait() -> BaitData:
 	return baits[_bait_index]
 
 
+## Mostra no HUD e na boia o que cada estado da tentativa pede do jogador.
 func _on_attempt_state_changed(state: FishingAttempt.State) -> void:
 	match state:
 		FishingAttempt.State.BITING:
@@ -88,6 +95,8 @@ func _on_attempt_state_changed(state: FishingAttempt.State) -> void:
 			_finish("")
 
 
+## Encerra a tentativa: recolhe a boia, libera as mãos, mostra a mensagem e entrega o peixe pescado,
+## às vezes em dobro.
 func _finish(message: String) -> void:
 	var caught_fish: FishData = (
 		_attempt.fish if _attempt.state == FishingAttempt.State.CAUGHT else null
@@ -104,6 +113,8 @@ func _finish(message: String) -> void:
 		hands.carry_item(caught_fish, amount)
 
 
+## Mostra a vara só quando ela é a ferramenta na mão; guardá-la com a linha na água cancela a
+## tentativa.
 func _on_hands_changed() -> void:
 	_model.visible = hands.state.is_tool_ready(HandsState.Tool.ROD)
 	# Sacar o revólver com a linha na água recolhe a linha: o peixe em andamento se perde.
