@@ -3,8 +3,8 @@ extends RefCounted
 ## Regras puras do pedido de peixes de cada noite.
 
 ## Valores provisórios: a curva de dificuldade (M7) deve assumir o crescimento por noite.
-const BASE_FISH_COUNT := 3
-const FISH_PER_NIGHT := 1
+const BASE_FISH_COUNT: int = 3
+const FISH_PER_NIGHT: int = 1
 
 
 ## Quantos peixes o pedido exige: 3 na primeira noite e mais 1 a cada noite seguinte.

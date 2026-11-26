@@ -42,7 +42,7 @@ func deliver(fish: FishData, amount: int = 1) -> void:
 
 ## Total de peixes guardados no freezer, de qualquer espécie (contam para os pontos da run).
 func delivered_total() -> int:
-	var total := 0
+	var total: int = 0
 	for fish: FishData in _delivered:
 		total += _delivered[fish]
 	return total
@@ -50,7 +50,7 @@ func delivered_total() -> int:
 
 ## Total de peixes que ainda faltam, somando todas as espécies do pedido.
 func missing_total() -> int:
-	var missing := 0
+	var missing: int = 0
 	for fish: FishData in _required:
 		missing += maxi(required_count(fish) - delivered_count(fish), 0)
 	return missing

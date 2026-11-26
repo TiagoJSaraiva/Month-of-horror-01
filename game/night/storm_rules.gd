@@ -9,7 +9,7 @@ extends RefCounted
 static func plan(
 	night_number: int, night_seconds: float, settings: StormSettings, rng: RandomNumberGenerator
 ) -> StormPlan:
-	var storm := StormPlan.new()
+	var storm: StormPlan = StormPlan.new()
 	if night_number < settings.first_night or night_seconds <= 0.0:
 		return storm
 	if rng.randf() >= settings.chance:

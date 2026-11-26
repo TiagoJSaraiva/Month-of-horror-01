@@ -3,11 +3,11 @@ extends RefCounted
 ## Regras puras do tempo da noite: progresso, hora do jogo e ponteiros do relógio.
 
 ## A noite vai das 23:00 às 06:00.
-const START_MINUTES := 23 * 60
-const LENGTH_MINUTES := 7 * 60
-const MINUTES_PER_DAY := 24 * 60
-const MINUTES_PER_HALF_DAY := 12 * 60
-const MINUTES_PER_HOUR := 60
+const START_MINUTES: int = 23 * 60
+const LENGTH_MINUTES: int = 7 * 60
+const MINUTES_PER_DAY: int = 24 * 60
+const MINUTES_PER_HALF_DAY: int = 12 * 60
+const MINUTES_PER_HOUR: int = 60
 
 
 ## Fração da noite já passada, de 0 (23:00) a 1 (06:00). Duração não positiva já é amanhecer.

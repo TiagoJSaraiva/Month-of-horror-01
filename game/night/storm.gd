@@ -8,10 +8,10 @@ signal started
 signal ended
 signal strength_changed(strength: float)
 
-const START_HINT := "The wind is picking up..."
-const END_HINT := "The storm is passing."
+const START_HINT: String = "The wind is picking up..."
+const END_HINT: String = "The storm is passing."
 ## Menor mudança anunciada: cada anúncio refaz a iluminação do céu, então não vale a cada frame.
-const STRENGTH_STEP := 0.01
+const STRENGTH_STEP: float = 0.01
 
 @export var night_clock: NightClock
 @export var settings: StormSettings
@@ -20,7 +20,7 @@ const STRENGTH_STEP := 0.01
 @export var hint_seconds: float = 3.0
 
 ## Tempestade sorteada para esta noite. Sem sorteio, não há tempestade.
-var plan := StormPlan.new()
+var plan: StormPlan = StormPlan.new()
 var strength: float = 0.0
 
 var _active: bool = false

@@ -13,7 +13,7 @@ extends Node3D
 var _strength: float = 0.0
 var _until_lightning: float = 0.0
 var _flash: Tween
-var _rng := RandomNumberGenerator.new()
+var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
 @onready var _rain: GPUParticles3D = $Rain
 @onready var _lightning: DirectionalLight3D = $Lightning

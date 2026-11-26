@@ -35,7 +35,7 @@ func show_note(text: String, pin: RunRules.Pin) -> void:
 	_text = text
 	visible = not text.is_empty()
 	# Sem sombreamento, para o alfinete chamar atenção mesmo com pouca luz.
-	var material := StandardMaterial3D.new()
+	var material: StandardMaterial3D = StandardMaterial3D.new()
 	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	material.albedo_color = PIN_COLORS[pin]
 	_pin.material_override = material

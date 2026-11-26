@@ -22,9 +22,9 @@ var order: NightOrder
 var table_note_text: String = ""
 var table_note_pin: RunRules.Pin = RunRules.Pin.BLUE
 ## Bônus da run (cartas). A Run define antes de a noite entrar na árvore; sem isso, nenhum bônus.
-var player_stats := PlayerStats.new()
+var player_stats: PlayerStats = PlayerStats.new()
 
-var _rng := RandomNumberGenerator.new()
+var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 ## A noite já terminou, pelo amanhecer ou pela morte. Só o primeiro fim vale.
 var _ended: bool = false
 
@@ -129,7 +129,7 @@ func _apply_difficulty() -> void:
 		)
 	)
 	# Cópia dos ajustes da tempestade: o .tres é compartilhado entre as noites.
-	var storm_settings := _storm.settings.duplicate() as StormSettings
+	var storm_settings: StormSettings = _storm.settings.duplicate() as StormSettings
 	storm_settings.chance = DifficultyRules.value(difficulty.storm_chance, night_number)
 	var duration: float = DifficultyRules.value(difficulty.storm_duration, night_number)
 	storm_settings.min_duration_seconds *= duration
@@ -152,7 +152,7 @@ func _on_freezer_fish_stored(fish: FishData, amount: int) -> void:
 
 ## Cria no convés o item que o jogador largou.
 func _on_hands_item_dropped(item: ItemData, amount: int, at: Vector3) -> void:
-	var dropped := dropped_item_scene.instantiate() as DroppedItem
+	var dropped: DroppedItem = dropped_item_scene.instantiate() as DroppedItem
 	dropped.item = item
 	dropped.amount = amount
 	_items.add_child(dropped)
