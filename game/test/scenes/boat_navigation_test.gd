@@ -2,21 +2,21 @@ extends GdUnitTestSuite
 ## Comportamento principal da navegação: depois de montada a malha, existe caminho do convés
 ## aberto até dentro da cabine, passando pela porta.
 
-const NIGHT_SCENE := "res://night/night.tscn"
-const ON_DECK := Vector3(0.0, 1.0, 3.0)
-const INSIDE_CABIN := Vector3(0.0, 1.0, -4.5)
+const NIGHT_SCENE: String = "res://night/night.tscn"
+const ON_DECK: Vector3 = Vector3(0.0, 1.0, 3.0)
+const INSIDE_CABIN: Vector3 = Vector3(0.0, 1.0, -4.5)
 ## Plano da porta da cabine (parede de trás, em z = -2.275) e meia largura do vão.
-const DOOR_Z := -2.275
-const DOOR_HALF_WIDTH := 0.5
-const ARRIVAL_TOLERANCE := 0.5
-const POLL_MILLIS := 50
-const TIMEOUT_MILLIS := 3000
+const DOOR_Z: float = -2.275
+const DOOR_HALF_WIDTH: float = 0.5
+const ARRIVAL_TOLERANCE: float = 0.5
+const POLL_MILLIS: int = 50
+const TIMEOUT_MILLIS: int = 3000
 
 
 func test_path_goes_from_the_deck_into_the_cabin() -> void:
 	var runner: GdUnitSceneRunner = scene_runner(NIGHT_SCENE)
-	var navigation := runner.find_child("Navigation") as BoatNavigation
-	var waited := 0
+	var navigation: BoatNavigation = runner.find_child("Navigation") as BoatNavigation
+	var waited: int = 0
 	while navigation.navigation_mesh.get_polygon_count() == 0 and waited < TIMEOUT_MILLIS:
 		await await_millis(POLL_MILLIS)
 		waited += POLL_MILLIS

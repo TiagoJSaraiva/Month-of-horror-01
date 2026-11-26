@@ -2,17 +2,17 @@ extends GdUnitTestSuite
 ## Comportamento principal da tempestade: no pico, o balanço fica mais forte e o céu fecha (mais
 ## nuvens, lua apagada); no fim, tudo volta ao normal.
 
-const NIGHT_SCENE := "res://night/night.tscn"
-const STORM_SECONDS := 1.0
-const RAMP_SECONDS := 0.2
+const NIGHT_SCENE: String = "res://night/night.tscn"
+const STORM_SECONDS: float = 1.0
+const RAMP_SECONDS: float = 0.2
 
 
 func test_storm_peaks_and_then_everything_calms_down() -> void:
 	var runner: GdUnitSceneRunner = scene_runner(NIGHT_SCENE)
-	var storm := runner.find_child("Storm") as Storm
-	var sway := runner.find_child("OutsideWorld") as BoatSway
-	var sky_driver := runner.find_child("SkyDriver") as SkyDriver
-	var sky := runner.find_child("Sky3D") as Sky3D
+	var storm: Storm = runner.find_child("Storm") as Storm
+	var sway: BoatSway = runner.find_child("OutsideWorld") as BoatSway
+	var sky_driver: SkyDriver = runner.find_child("SkyDriver") as SkyDriver
+	var sky: Sky3D = runner.find_child("Sky3D") as Sky3D
 	await await_millis(50)
 	var clear_coverage: float = sky.sky.cumulus_coverage
 	storm.settings = _immediate_storm()
@@ -36,7 +36,7 @@ func test_storm_peaks_and_then_everything_calms_down() -> void:
 
 # Tempestade certa, começando já e durando STORM_SECONDS, com rampas curtas.
 func _immediate_storm() -> StormSettings:
-	var settings := StormSettings.new()
+	var settings: StormSettings = StormSettings.new()
 	settings.first_night = 1
 	settings.chance = 1.0
 	settings.start_window_min = 0.0

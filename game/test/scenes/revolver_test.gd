@@ -2,22 +2,22 @@ extends GdUnitTestSuite
 ## Comportamento principal do revólver: com ele na mão, cada clique acerta o alvo na mira, e
 ## três tiros matam um alvo de 75 de vida.
 
-const NIGHT_SCENE := "res://night/night.tscn"
-const PLAYER_ON_DECK := Vector3(0.0, 1.0, 1.0)
-const TARGET_POSITION := Vector3(0.0, 2.2, 4.0)
-const TARGET_HEALTH := 75.0
-const SHOTS_TO_KILL := 3
+const NIGHT_SCENE: String = "res://night/night.tscn"
+const PLAYER_ON_DECK: Vector3 = Vector3(0.0, 1.0, 1.0)
+const TARGET_POSITION: Vector3 = Vector3(0.0, 2.2, 4.0)
+const TARGET_HEALTH: float = 75.0
+const SHOTS_TO_KILL: int = 3
 ## Um pouco mais que a cadência do revólver (0,35 s).
-const MILLIS_BETWEEN_SHOTS := 450
+const MILLIS_BETWEEN_SHOTS: int = 450
 
 
 func test_three_shots_kill_a_target_in_the_aim() -> void:
 	var runner: GdUnitSceneRunner = scene_runner(NIGHT_SCENE)
-	var night := runner.scene() as Night
-	var player := runner.find_child("Player") as Player
-	var camera := runner.find_child("Camera3D") as Camera3D
-	var revolver := runner.find_child("Revolver") as Revolver
-	var target_health := _add_target(night)
+	var night: Night = runner.scene() as Night
+	var player: Player = runner.find_child("Player") as Player
+	var camera: Camera3D = runner.find_child("Camera3D") as Camera3D
+	var revolver: Revolver = runner.find_child("Revolver") as Revolver
+	var target_health: Health = _add_target(night)
 	player.global_position = PLAYER_ON_DECK
 	player.hands.state.select_tool(HandsState.Tool.REVOLVER)
 	await await_millis(100)
@@ -35,15 +35,15 @@ func test_three_shots_kill_a_target_in_the_aim() -> void:
 
 # Alvo de teste: uma Hurtbox de 1×2×1 m ligada a um Health, na frente do jogador.
 func _add_target(night: Night) -> Health:
-	var health := Health.new()
+	var health: Health = Health.new()
 	health.max_health = TARGET_HEALTH
-	var hurtbox := Hurtbox.new()
+	var hurtbox: Hurtbox = Hurtbox.new()
 	hurtbox.health = health
 	hurtbox.collision_layer = PhysicsLayers.HURTBOX
 	hurtbox.collision_mask = 0
 	hurtbox.monitoring = false
-	var shape := CollisionShape3D.new()
-	var box := BoxShape3D.new()
+	var shape: CollisionShape3D = CollisionShape3D.new()
+	var box: BoxShape3D = BoxShape3D.new()
 	box.size = Vector3(1.0, 2.0, 1.0)
 	shape.shape = box
 	hurtbox.add_child(shape)

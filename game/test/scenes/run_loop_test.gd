@@ -2,24 +2,24 @@ extends GdUnitTestSuite
 ## Comportamento principal da run: um pedido não cumprido custa uma vida e, depois da seleção
 ## de cartas, a próxima noite começa com o pedido maior e o bilhete de aviso na mesa.
 
-const RUN_SCENE := "res://run/run.tscn"
-const SHORT_NIGHT_SECONDS := 0.3
-const SHORT_TRANSITION_SECONDS := 0.05
-const POLL_MILLIS := 50
-const TIMEOUT_MILLIS := 4000
+const RUN_SCENE: String = "res://run/run.tscn"
+const SHORT_NIGHT_SECONDS: float = 0.3
+const SHORT_TRANSITION_SECONDS: float = 0.05
+const POLL_MILLIS: int = 50
+const TIMEOUT_MILLIS: int = 4000
 
 
 func test_unfinished_order_costs_a_life_and_starts_the_next_night() -> void:
 	var runner: GdUnitSceneRunner = scene_runner(RUN_SCENE)
-	var run := runner.scene() as Run
+	var run: Run = runner.scene() as Run
 	_shorten_transitions(runner, run)
-	var cards := runner.find_child("CardSelectionScreen") as CardSelectionScreen
+	var cards: CardSelectionScreen = runner.find_child("CardSelectionScreen") as CardSelectionScreen
 	cards.card_buttons()[0].pressed.emit()
-	var clock := run.current_night().find_child("NightClock") as NightClock
+	var clock: NightClock = run.current_night().find_child("NightClock") as NightClock
 	clock.duration_seconds = SHORT_NIGHT_SECONDS
 
 	# Entre as noites há outra seleção: escolhe a primeira carta e espera a noite 2.
-	var waited := 0
+	var waited: int = 0
 	while (
 		(run.current_night() == null or run.current_night().night_number < 2)
 		and waited < TIMEOUT_MILLIS
@@ -38,7 +38,7 @@ func test_unfinished_order_costs_a_life_and_starts_the_next_night() -> void:
 
 func _shorten_transitions(runner: GdUnitSceneRunner, run: Run) -> void:
 	run.dawn_hold_seconds = SHORT_TRANSITION_SECONDS
-	var overlay := runner.find_child("TransitionOverlay") as TransitionOverlay
+	var overlay: TransitionOverlay = runner.find_child("TransitionOverlay") as TransitionOverlay
 	overlay.dawn_fade_seconds = SHORT_TRANSITION_SECONDS
 	overlay.message_fade_seconds = SHORT_TRANSITION_SECONDS
 	overlay.cover_seconds = SHORT_TRANSITION_SECONDS

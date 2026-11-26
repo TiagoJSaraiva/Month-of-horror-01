@@ -2,8 +2,8 @@ extends GdUnitTestSuite
 ## Comportamento principal da tela de upgrades: com pontos suficientes, comprar sobe o nível e
 ## desconta os pontos (num save de teste, sem mexer no progresso do jogador).
 
-const SCREEN_SCENE := "res://ui/upgrades/upgrades_screen.tscn"
-const TEST_SAVE_PATH := "user://test_upgrade_purchase_meta.cfg"
+const SCREEN_SCENE: String = "res://ui/upgrades/upgrades_screen.tscn"
+const TEST_SAVE_PATH: String = "user://test_upgrade_purchase_meta.cfg"
 
 
 func before_test() -> void:
@@ -19,7 +19,7 @@ func after_test() -> void:
 func test_buying_raises_the_level_and_spends_points() -> void:
 	MetaProgress.add_points(50)
 	var runner: GdUnitSceneRunner = scene_runner(SCREEN_SCENE)
-	var screen := runner.scene() as UpgradesScreen
+	var screen: UpgradesScreen = runner.scene() as UpgradesScreen
 	screen.open()
 	var health: UpgradeData = MetaProgress.UPGRADES[0]
 

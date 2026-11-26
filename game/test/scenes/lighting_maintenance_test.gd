@@ -2,22 +2,24 @@ extends GdUnitTestSuite
 ## Comportamento principal da iluminação: sem combustível, o barco fica só com a luz de
 ## emergência; segurando E no gerador com o galão nas mãos, a luz volta.
 
-const NIGHT_SCENE := "res://night/night.tscn"
+const NIGHT_SCENE: String = "res://night/night.tscn"
 const FUEL_CAN: ItemData = preload("res://items/data/fuel_can.tres")
 ## Um passo à frente do gerador, na popa.
-const IN_FRONT_OF_GENERATOR := Vector3(0.0, 1.0, 5.0)
-const SHORT_REFUEL_SECONDS := 0.2
+const IN_FRONT_OF_GENERATOR: Vector3 = Vector3(0.0, 1.0, 5.0)
+const SHORT_REFUEL_SECONDS: float = 0.2
 
 
 func test_refueling_the_empty_generator_brings_the_light_back() -> void:
 	var runner: GdUnitSceneRunner = scene_runner(NIGHT_SCENE)
-	var player := runner.find_child("Player") as Player
-	var camera := runner.find_child("Camera3D") as Camera3D
-	var lighting := runner.find_child("Lighting") as BoatLighting
-	var generator := runner.find_child("Generator") as Generator
-	var emergency_lights := runner.find_child("EmergencyLights") as Node3D
+	var player: Player = runner.find_child("Player") as Player
+	var camera: Camera3D = runner.find_child("Camera3D") as Camera3D
+	var lighting: BoatLighting = runner.find_child("Lighting") as BoatLighting
+	var generator: Generator = runner.find_child("Generator") as Generator
+	var emergency_lights: Node3D = runner.find_child("EmergencyLights") as Node3D
 	# Sem sorteio de falhas, para nada quebrar no meio do teste.
-	var failures := runner.find_child("MaintenanceFailures") as MaintenanceFailures
+	var failures: MaintenanceFailures = (
+		runner.find_child("MaintenanceFailures") as MaintenanceFailures
+	)
 	failures.process_mode = Node.PROCESS_MODE_DISABLED
 	generator.refuel_seconds = SHORT_REFUEL_SECONDS
 

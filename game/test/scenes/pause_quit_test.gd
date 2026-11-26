@@ -2,10 +2,10 @@ extends GdUnitTestSuite
 ## Comportamento principal da pausa: na noite, o Esc pausa o jogo e abre o menu; sair para o
 ## menu despausa, paga os pontos da run (os peixes entregues) e pede a volta ao menu principal.
 
-const RUN_SCENE := "res://run/run.tscn"
-const TEST_SAVE_PATH := "user://test_pause_quit_meta.cfg"
+const RUN_SCENE: String = "res://run/run.tscn"
+const TEST_SAVE_PATH: String = "user://test_pause_quit_meta.cfg"
 const MACKEREL: FishData = preload("res://fish/data/mackerel.tres")
-const DELIVERED_FISH := 2
+const DELIVERED_FISH: int = 2
 
 
 func before_test() -> void:
@@ -22,19 +22,19 @@ func after_test() -> void:
 
 func test_pausing_and_quitting_pays_the_points() -> void:
 	var runner: GdUnitSceneRunner = scene_runner(RUN_SCENE)
-	var run := runner.scene() as Run
-	var pause_menu := runner.find_child("PauseMenu") as PauseMenu
+	var run: Run = runner.scene() as Run
+	var pause_menu: PauseMenu = runner.find_child("PauseMenu") as PauseMenu
 	# Array para a lambda alterar o contador por referência.
 	var quit_count: Array[int] = [0]
 	run.quit_to_menu_requested.connect(func() -> void: quit_count[0] += 1)
-	var cards := runner.find_child("CardSelectionScreen") as CardSelectionScreen
+	var cards: CardSelectionScreen = runner.find_child("CardSelectionScreen") as CardSelectionScreen
 	cards.card_buttons()[0].pressed.emit()
 	await await_millis(100)
 	run.current_night().order.deliver(MACKEREL, DELIVERED_FISH)
 
 	# Com a árvore pausada, os timers do gdUnit4 param: o Esc vai direto para o Input e a espera
 	# é por frames, que continuam com o jogo pausado.
-	var escape := InputEventAction.new()
+	var escape: InputEventAction = InputEventAction.new()
 	escape.action = &"pause"
 	escape.pressed = true
 	Input.parse_input_event(escape)
