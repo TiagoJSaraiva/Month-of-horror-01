@@ -16,21 +16,25 @@ const GAP := 8.0
 var _minigame: FishingMinigame
 
 
+## Redesenha enquanto há um minijogo para mostrar.
 func _process(_delta: float) -> void:
 	if _minigame != null:
 		queue_redraw()
 
 
+## Passa a desenhar o minijogo e se mostra.
 func show_minigame(minigame: FishingMinigame) -> void:
 	_minigame = minigame
 	show()
 
 
+## Larga o minijogo e se esconde.
 func hide_minigame() -> void:
 	_minigame = null
 	hide()
 
 
+## Desenha o trilho com a barra e o peixe e, ao lado, a barra de captura.
 func _draw() -> void:
 	if _minigame == null:
 		return

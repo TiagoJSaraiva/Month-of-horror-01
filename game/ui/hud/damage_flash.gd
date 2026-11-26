@@ -9,10 +9,12 @@ extends ColorRect
 var _tween: Tween
 
 
+## Começa transparente.
 func _ready() -> void:
 	color.a = 0.0
 
 
+## Acende o clarão no pico e o apaga aos poucos.
 func flash() -> void:
 	if _tween != null:
 		_tween.kill()
@@ -21,6 +23,7 @@ func flash() -> void:
 	_tween.tween_property(self, "color:a", 0.0, fade_seconds)
 
 
+## Apaga o clarão na hora.
 func clear() -> void:
 	if _tween != null:
 		_tween.kill()

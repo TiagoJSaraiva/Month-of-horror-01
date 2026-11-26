@@ -14,6 +14,7 @@ signal quit_requested
 @onready var _quit_button: Button = %QuitButton
 
 
+## Escreve o nome do projeto no título e liga os botões aos sinais.
 func _ready() -> void:
 	_title.text = str(ProjectSettings.get_setting("application/config/name"))
 	_new_run_button.pressed.connect(new_run_requested.emit)

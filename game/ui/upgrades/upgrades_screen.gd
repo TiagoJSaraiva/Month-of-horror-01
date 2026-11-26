@@ -10,11 +10,13 @@ signal back_requested
 @onready var _back_button: Button = %BackButton
 
 
+## Começa escondida e liga o botão de voltar ao sinal.
 func _ready() -> void:
 	hide()
 	_back_button.pressed.connect(back_requested.emit)
 
 
+## Atualiza as linhas, mostra a tela e dá o foco ao botão de voltar.
 func open() -> void:
 	_refresh()
 	show()
@@ -29,6 +31,7 @@ func buy_buttons() -> Array[Button]:
 	return buttons
 
 
+## Reconstrói os pontos e uma linha por upgrade, com nível, bônus e botão de compra.
 func _refresh() -> void:
 	var meta: MetaState = MetaProgress.state
 	_points.text = "Points: %d" % meta.points
@@ -65,6 +68,7 @@ func _refresh() -> void:
 		_rows.add_child(row)
 
 
+## Compra o upgrade e atualiza a tela.
 func _on_buy_pressed(upgrade: UpgradeData) -> void:
 	MetaProgress.buy(upgrade)
 	_refresh()

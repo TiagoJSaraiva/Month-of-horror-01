@@ -15,12 +15,14 @@ signal main_menu_requested
 @onready var _main_menu_button: Button = %MainMenuButton
 
 
+## Começa escondida e liga os botões aos sinais.
 func _ready() -> void:
 	hide()
 	_new_run_button.pressed.connect(new_run_requested.emit)
 	_main_menu_button.pressed.connect(main_menu_requested.emit)
 
 
+## Mostra o motivo do fim, a fala final, as noites vividas e os pontos ganhos.
 func show_summary(title: String, message: String, nights_survived: int, points: int) -> void:
 	_title.text = title
 	_message.text = message
@@ -30,6 +32,7 @@ func show_summary(title: String, message: String, nights_survived: int, points: 
 	_new_run_button.grab_focus()
 
 
+## Frase com quantas noites o jogador sobreviveu.
 func _nights_text(nights_survived: int) -> String:
 	if nights_survived <= 0:
 		return "You didn't survive a single night."

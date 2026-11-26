@@ -30,12 +30,15 @@ var _equipped: Array[CardData] = []
 @onready var _refuse_button: Button = %RefuseButton
 
 
+## Começa escondida e liga os botões de reroll e de recusa aos sinais.
 func _ready() -> void:
 	hide()
 	_reroll_button.pressed.connect(reroll_requested.emit)
 	_refuse_button.pressed.connect(refused.emit)
 
 
+## Mostra as cartas sorteadas, as equipadas e os rerolls restantes. Com os slots cheios, o título
+## pede trocar ou recusar.
 func show_selection(
 	selection: Array[CardData], equipped: Array[CardData], rerolls_left: int, slots_full: bool
 ) -> void:
@@ -62,6 +65,7 @@ func show_selection(
 		(_cards.get_child(0) as Button).grab_focus()
 
 
+## Esconde a tela, inclusive a linha de troca.
 func close() -> void:
 	_replace_row.hide()
 	hide()
@@ -75,6 +79,8 @@ func card_buttons() -> Array[Button]:
 	return buttons
 
 
+## Com slot livre, escolhe a carta. Com os slots cheios, mostra as equipadas para o jogador escolher
+## qual trocar.
 func _on_card_pressed(card: CardData) -> void:
 	if not _slots_full:
 		card_chosen.emit(card)
@@ -90,6 +96,7 @@ func _on_card_pressed(card: CardData) -> void:
 	_replace_row.show()
 
 
+## Nomes das cartas, separados por vírgula.
 func _names(cards: Array[CardData]) -> String:
 	var names: PackedStringArray = []
 	for card: CardData in cards:
@@ -97,6 +104,7 @@ func _names(cards: Array[CardData]) -> String:
 	return ", ".join(names)
 
 
+## Remove e libera todos os filhos do contêiner.
 func _clear(container: Node) -> void:
 	for child: Node in container.get_children():
 		container.remove_child(child)

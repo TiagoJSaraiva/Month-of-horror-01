@@ -49,6 +49,7 @@ func reveal(title: String) -> void:
 	await tween.finished
 
 
+## Cancela a transição em andamento e devolve um novo Tween.
 func _restart_tween() -> Tween:
 	if _tween != null:
 		_tween.kill()

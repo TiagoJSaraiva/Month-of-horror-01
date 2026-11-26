@@ -22,6 +22,7 @@ const INTERACT_KEY_LABEL := "[E]"
 @onready var _note_text: Label = $NotePanel/NoteText
 
 
+## Zera o HUD e liga os sinais do HudEvents. Sem ele, avisa e nada aparece.
 func _ready() -> void:
 	_bait.text = ""
 	reset()
@@ -56,15 +57,18 @@ func reset() -> void:
 	show()
 
 
+## Mostra a dica da ação disponível com a tecla de interação, ou a apaga se o texto é vazio.
 func _on_hud_events_prompt_changed(text: String) -> void:
 	_prompt.text = "" if text.is_empty() else "%s %s" % [INTERACT_KEY_LABEL, text]
 
 
+## Preenche a barra de segurar E, escondida quando o progresso é zero.
 func _on_hud_events_hold_progress_changed(ratio: float) -> void:
 	_hold_bar.value = ratio
 	_hold_bar.visible = ratio > 0.0
 
 
+## Mostra a dica na tela pelo tempo pedido. Tempo zero deixa a dica até a próxima.
 func _on_hud_events_hint_requested(text: String, seconds: float) -> void:
 	_hint.text = text
 	if seconds > 0.0:
@@ -73,26 +77,32 @@ func _on_hud_events_hint_requested(text: String, seconds: float) -> void:
 		_hint_timer.stop()
 
 
+## Mostra o nome da isca atual.
 func _on_hud_events_bait_changed(bait_name: String) -> void:
 	_bait.text = "Bait: %s" % bait_name
 
 
+## Atualiza a barra da bateria da lanterna.
 func _on_hud_events_battery_changed(ratio: float) -> void:
 	_battery_bar.value = ratio
 
 
+## Atualiza a barra de vida.
 func _on_hud_events_health_changed(current: float, maximum: float) -> void:
 	_health_bar.value = current / maximum if maximum > 0.0 else 0.0
 
 
+## Mostra a munição no tambor ou o aviso de recarga.
 func _on_hud_events_ammo_changed(loaded: int, capacity: int, reloading: bool) -> void:
 	_ammo.text = "Reloading..." if reloading else "Ammo: %d/%d" % [loaded, capacity]
 
 
+## Mostra o painel com o texto do bilhete.
 func _on_hud_events_note_opened(text: String) -> void:
 	_note_text.text = text
 	_note_panel.show()
 
 
+## Apaga a dica quando o tempo dela acaba.
 func _on_hint_timer_timeout() -> void:
 	_hint.text = ""
