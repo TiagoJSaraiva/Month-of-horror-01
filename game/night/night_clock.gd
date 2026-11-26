@@ -15,6 +15,7 @@ var _elapsed: float = 0.0
 var _finished: bool = false
 
 
+## Passa o tempo da noite e avisa pelo sinal dawn_reached, uma só vez, no amanhecer.
 func _process(delta: float) -> void:
 	if _finished:
 		return

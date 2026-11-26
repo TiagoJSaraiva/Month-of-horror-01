@@ -19,6 +19,7 @@ var _rng := RandomNumberGenerator.new()
 @onready var _lightning: DirectionalLight3D = $Lightning
 
 
+## Sorteia a semente, apaga o relâmpago e começa sem chuva.
 func _ready() -> void:
 	_rng.randomize()
 	_lightning.visible = false
@@ -26,6 +27,7 @@ func _ready() -> void:
 	_schedule_lightning()
 
 
+## Perto do pico da tempestade, conta o intervalo e faz cair um relâmpago.
 func _process(delta: float) -> void:
 	if _strength < lightning_min_strength:
 		return
@@ -42,11 +44,12 @@ func set_strength(strength: float) -> void:
 	_rain.emitting = _strength > 0.0
 
 
+## Sorteia quanto falta para o próximo relâmpago.
 func _schedule_lightning() -> void:
 	_until_lightning = _rng.randf_range(lightning_min_seconds, lightning_max_seconds)
 
 
-# Clarão duplo, como um relâmpago de verdade, e depois apaga para não custar sombra à toa.
+## Clarão duplo, como um relâmpago de verdade, e depois apaga para não custar sombra à toa.
 func _strike() -> void:
 	if _flash != null:
 		_flash.kill()

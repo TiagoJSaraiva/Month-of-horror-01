@@ -27,6 +27,7 @@ var _clear_moon_energy: float = 0.0
 var _clear_skydome_energy: float = 0.0
 
 
+## Desliga o relógio próprio do Sky3D, fixa data e lugar e aplica o céu limpo e a hora atual.
 func _ready() -> void:
 	if sky_3d == null or night_clock == null:
 		push_warning("SkyDriver sem Sky3D ou NightClock: o céu não acompanha a noite.")
@@ -47,6 +48,7 @@ func _ready() -> void:
 	_apply_time()
 
 
+## Atualiza a hora do céu a cada frame.
 func _process(_delta: float) -> void:
 	_apply_time()
 
@@ -66,6 +68,6 @@ func set_storm_strength(strength: float) -> void:
 	sky_3d.skydome_energy = _clear_skydome_energy * lerpf(1.0, storm_sky_brightness, storm_strength)
 
 
-# O NightClock dá a hora do jogo em minutos desde a meia-noite (23:00 = 1380); o Sky3D quer horas.
+## Passa a hora do NightClock (minutos desde a meia-noite; 23:00 = 1380) ao Sky3D, que pede horas.
 func _apply_time() -> void:
 	sky_3d.current_time = night_clock.clock_minutes() / 60.0

@@ -26,12 +26,15 @@ var strength: float = 0.0
 var _active: bool = false
 
 
+## Sem NightClock ou StormSettings, avisa e desliga a tempestade.
 func _ready() -> void:
 	if night_clock == null or settings == null:
 		push_warning("Storm sem NightClock ou StormSettings: não há tempestade.")
 		set_process(false)
 
 
+## Acompanha o relógio da noite, avisa quando a tempestade começa e termina e anuncia a intensidade
+## quando ela muda o bastante.
 func _process(_delta: float) -> void:
 	if not plan.has_storm:
 		return
@@ -53,10 +56,12 @@ func roll(night_number: int, rng: RandomNumberGenerator) -> void:
 	plan = StormRules.plan(night_number, night_clock.duration_seconds, settings, rng)
 
 
+## A tempestade está acontecendo agora.
 func is_active() -> bool:
 	return _active
 
 
+## Detecta o começo e o fim da tempestade, emitindo os sinais e as dicas.
 func _update_active(elapsed: float) -> void:
 	var active: bool = elapsed >= plan.start_seconds and elapsed < plan.end_seconds()
 	if active == _active:
@@ -70,6 +75,7 @@ func _update_active(elapsed: float) -> void:
 		_hint(END_HINT)
 
 
+## Mostra uma dica na tela, se houver HUD.
 func _hint(text: String) -> void:
 	if hud_events != null:
 		hud_events.hint_requested.emit(text, hint_seconds)

@@ -9,6 +9,7 @@ var _required: Dictionary[FishData, int] = {}
 var _delivered: Dictionary[FishData, int] = {}
 
 
+## Cria o pedido com as quantidades exigidas de cada espécie.
 func _init(required: Dictionary[FishData, int]) -> void:
 	_required.assign(required)
 
@@ -20,10 +21,12 @@ func species() -> Array[FishData]:
 	return result
 
 
+## Quantos peixes da espécie o pedido exige.
 func required_count(fish: FishData) -> int:
 	return _required.get(fish, 0)
 
 
+## Quantos peixes da espécie já foram guardados.
 func delivered_count(fish: FishData) -> int:
 	return _delivered.get(fish, 0)
 
@@ -53,5 +56,6 @@ func missing_total() -> int:
 	return missing
 
 
+## Não falta nenhum peixe do pedido.
 func is_complete() -> bool:
 	return missing_total() == 0

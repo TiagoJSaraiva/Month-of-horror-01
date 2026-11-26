@@ -8,5 +8,6 @@ var start_seconds: float = 0.0
 var duration_seconds: float = 0.0
 
 
+## Segundo da noite em que a tempestade termina.
 func end_seconds() -> float:
 	return start_seconds + duration_seconds

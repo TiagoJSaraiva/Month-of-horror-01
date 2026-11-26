@@ -8,11 +8,13 @@ extends Node3D
 @onready var _minute_hand: Node3D = $MinuteHand
 
 
+## Avisa se falta o NightClock, sem o qual os ponteiros ficam parados.
 func _ready() -> void:
 	if night_clock == null:
 		push_warning("WallClock sem NightClock: os ponteiros ficam parados.")
 
 
+## Gira os ponteiros conforme a hora do jogo.
 func _process(_delta: float) -> void:
 	if night_clock == null:
 		return

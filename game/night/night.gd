@@ -43,6 +43,8 @@ var _ended: bool = false
 @onready var _table_note: TableNote = $TableNote
 
 
+## Gera o pedido e o entrega ao diário e à mesa, liga os sinais, aplica os bônus e a dificuldade e
+## sorteia a tempestade.
 func _ready() -> void:
 	_rng.randomize()
 	order = NightOrder.new(OrderRules.generate(night_number, fish_species, _rng))
@@ -67,6 +69,7 @@ func is_ended() -> bool:
 	return _ended
 
 
+## Encerra a noite no amanhecer e avisa pelo sinal night_finished.
 func _on_night_clock_dawn_reached() -> void:
 	if _ended:
 		return
@@ -74,6 +77,7 @@ func _on_night_clock_dawn_reached() -> void:
 	night_finished.emit(order)
 
 
+## Encerra a noite com a morte do jogador, para o relógio e avisa pelo sinal player_died.
 func _on_player_health_died() -> void:
 	if _ended:
 		return
@@ -83,8 +87,8 @@ func _on_player_health_died() -> void:
 	player_died.emit()
 
 
-# Só os personagens, a manutenção e a tempestade param: mar, céu e balanço continuam como
-# estão. Sem isso, o gerador ainda poderia quebrar na tela do amanhecer.
+## Só os personagens, a manutenção e a tempestade param: mar, céu e balanço continuam como
+## estão. Sem isso, o gerador ainda poderia quebrar na tela do amanhecer.
 func _end() -> void:
 	_ended = true
 	_actors.process_mode = Node.PROCESS_MODE_DISABLED
@@ -93,6 +97,7 @@ func _end() -> void:
 	_weather.process_mode = Node.PROCESS_MODE_DISABLED
 
 
+## Aplica ao jogador e ao tempo de manutenção os bônus da run.
 func _apply_player_stats() -> void:
 	_player.apply_stats(player_stats)
 	_lighting.set_maintenance_time_multiplier(
@@ -100,6 +105,8 @@ func _apply_player_stats() -> void:
 	)
 
 
+## Aplica a dificuldade desta noite aos inimigos, à manutenção, à bateria e à tempestade. Sem curva,
+## não muda nada.
 func _apply_difficulty() -> void:
 	if difficulty == null:
 		return
@@ -129,6 +136,7 @@ func _apply_difficulty() -> void:
 	_storm.settings = storm_settings
 
 
+## Repassa a intensidade da tempestade ao céu, ao balanço, ao clima e às falhas de manutenção.
 func _on_storm_strength_changed(strength: float) -> void:
 	_sky_driver.set_storm_strength(strength)
 	_sway.set_storm_strength(strength)
@@ -136,10 +144,12 @@ func _on_storm_strength_changed(strength: float) -> void:
 	_lighting.set_storm_strength(strength)
 
 
+## Registra no pedido os peixes guardados no freezer.
 func _on_freezer_fish_stored(fish: FishData, amount: int) -> void:
 	order.deliver(fish, amount)
 
 
+## Cria no convés o item que o jogador largou.
 func _on_hands_item_dropped(item: ItemData, amount: int, at: Vector3) -> void:
 	var dropped := dropped_item_scene.instantiate() as DroppedItem
 	dropped.item = item

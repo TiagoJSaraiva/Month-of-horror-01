@@ -23,6 +23,7 @@ var _reading: bool = false
 @onready var _mark: Label3D = $Mark
 
 
+## Avisa se falta HudEvents e começa sem bilhete na mesa.
 func _ready() -> void:
 	if hud_events == null:
 		push_warning("TableNote sem HudEvents: o bilhete não pode ser lido.")
@@ -42,12 +43,14 @@ func show_note(text: String, pin: RunRules.Pin) -> void:
 	_mark.modulate = PIN_COLORS[pin]
 
 
+## Dica de interação: ler ou largar o bilhete. Vazia sem bilhete.
 func get_prompt(_hands: Hands) -> String:
 	if _text.is_empty() or hud_events == null:
 		return ""
 	return "Put down note" if _reading else "Read note"
 
 
+## Abre a leitura do bilhete no HUD ou, se já está aberta, a fecha.
 func interact(_hands: Hands) -> void:
 	if _reading:
 		_close()
@@ -56,11 +59,13 @@ func interact(_hands: Hands) -> void:
 		hud_events.note_opened.emit(_text)
 
 
+## Fecha a leitura quando a mira sai do bilhete.
 func focus_exited() -> void:
 	if _reading:
 		_close()
 
 
+## Fecha a leitura do bilhete no HUD.
 func _close() -> void:
 	_reading = false
 	hud_events.note_closed.emit()
