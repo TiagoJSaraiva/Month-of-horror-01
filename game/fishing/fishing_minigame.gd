@@ -7,15 +7,15 @@ extends RefCounted
 enum State { RUNNING, CAUGHT, ESCAPED }
 
 ## Altura da barra, em fração do trilho.
-const BAR_SIZE := 0.25
+const BAR_SIZE: float = 0.25
 ## Aceleração da barra, em trilhos/s²: para cima segurando, para baixo soltando.
-const REEL_ACCELERATION := 3.0
-const BAR_GRAVITY := 2.5
+const REEL_ACCELERATION: float = 3.0
+const BAR_GRAVITY: float = 2.5
 ## A captura começa acima de zero para o peixe não escapar no primeiro instante.
-const START_PROGRESS := 0.3
+const START_PROGRESS: float = 0.3
 ## Enchimento por segundo com poder de pesca 1, e esvaziamento por segundo.
-const FILL_RATE := 0.3
-const DRAIN_RATE := 0.2
+const FILL_RATE: float = 0.3
+const DRAIN_RATE: float = 0.2
 
 var state: State = State.RUNNING
 var fish: FishData

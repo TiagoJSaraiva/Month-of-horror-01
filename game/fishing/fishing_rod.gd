@@ -15,7 +15,7 @@ extends Node3D
 
 var _bait_index: int = 0
 var _attempt: FishingAttempt
-var _rng := RandomNumberGenerator.new()
+var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
 @onready var _model: Node3D = $Model
 @onready var _aim: RayCast3D = $Aim

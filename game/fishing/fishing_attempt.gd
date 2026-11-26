@@ -8,7 +8,7 @@ signal state_changed(state: State)
 enum State { WAITING, BITING, REELING, CAUGHT, ESCAPED, CANCELLED }
 
 ## Tempo para fisgar depois da mordida, em segundos.
-const HOOK_WINDOW_SECONDS := 1.2
+const HOOK_WINDOW_SECONDS: float = 1.2
 
 var state: State = State.WAITING
 var fish: FishData
