@@ -17,6 +17,7 @@ var _bulbs: Array[Bulb] = []
 @onready var _failures: MaintenanceFailures = $MaintenanceFailures
 
 
+## Reúne as lâmpadas da cena, liga os sinais e aplica o estado atual do gerador.
 func _ready() -> void:
 	for child: Node in _bulbs_root.get_children():
 		var bulb := child as Bulb
@@ -50,6 +51,7 @@ func set_storm_strength(strength: float) -> void:
 	_failures.set_storm_strength(strength)
 
 
+## Liga ou corta a energia das lâmpadas e acende a luz de emergência quando o gerador para.
 func _on_generator_running_changed(running: bool) -> void:
 	for bulb: Bulb in _bulbs:
 		bulb.set_powered(running)
@@ -57,6 +59,7 @@ func _on_generator_running_changed(running: bool) -> void:
 	_refresh_light_level()
 
 
+## Recalcula o nível de luz e avisa pelo sinal light_level_changed quando ele muda.
 func _refresh_light_level() -> void:
 	var good_bulbs: int = 0
 	for bulb: Bulb in _bulbs:

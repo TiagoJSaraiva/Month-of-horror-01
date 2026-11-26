@@ -19,10 +19,12 @@ var _frequency_multiplier: float = 1.0
 var _rng := RandomNumberGenerator.new()
 
 
+## Sorteia a semente do gerador de números aleatórios.
 func _ready() -> void:
 	_rng.randomize()
 
 
+## A cada passo sorteia a quebra do gerador, se ele funciona, e a queima de cada lâmpada acesa.
 func _process(delta: float) -> void:
 	if _generator == null:
 		return

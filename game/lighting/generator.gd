@@ -26,6 +26,7 @@ var _status_material := StandardMaterial3D.new()
 @onready var _fuel_fill: Node3D = $FuelGauge/Fill
 
 
+## Cria o GeneratorState com a capacidade do inspetor e prepara a luz de status.
 func _ready() -> void:
 	if fuel_can == null:
 		push_warning("Generator sem fuel_can: o gerador não pode ser reabastecido.")
@@ -37,6 +38,7 @@ func _ready() -> void:
 	_refresh_status()
 
 
+## Gasta combustível e ajusta a barra do medidor, escondida com o tanque vazio.
 func _process(delta: float) -> void:
 	state.consume(delta)
 	var fuel: float = state.fuel_ratio()
@@ -46,15 +48,19 @@ func _process(delta: float) -> void:
 		_fuel_fill.scale.x = fuel
 
 
+## O gerador está funcionando: tem combustível e não está quebrado.
 func is_running() -> bool:
 	return state.is_running()
 
 
+## Quebra o gerador e atualiza a luz de status.
 func break_down() -> void:
 	state.break_down()
 	_refresh_status()
 
 
+## Dica de interação: reabastecer com o galão nas mãos, ou consertar com as mãos livres. Vazia nos
+## outros casos.
 func get_prompt(hands: Hands) -> String:
 	if hands.state.is_carrying_item(fuel_can):
 		return "Refuel generator" if state.needs_fuel() else ""
@@ -63,6 +69,7 @@ func get_prompt(hands: Hands) -> String:
 	return ""
 
 
+## Tempo, em segundos, que o jogador segura E para reabastecer ou consertar.
 func get_hold_seconds(hands: Hands) -> float:
 	var seconds: float = (
 		refuel_seconds if hands.state.is_carrying_item(fuel_can) else repair_seconds
@@ -70,6 +77,7 @@ func get_hold_seconds(hands: Hands) -> float:
 	return seconds * hold_multiplier
 
 
+## Reabastece (o galão volta vazio e as mãos ficam livres) ou conserta o gerador.
 func interact(hands: Hands) -> void:
 	if hands.state.is_carrying_item(fuel_can):
 		if not state.needs_fuel():
@@ -82,6 +90,7 @@ func interact(hands: Hands) -> void:
 	_refresh_status()
 
 
+## Pinta a luz de status: verde funcionando, vermelha quebrado, apagada sem combustível.
 func _refresh_status() -> void:
 	if state.is_running():
 		_status_material.albedo_color = running_color
@@ -91,6 +100,7 @@ func _refresh_status() -> void:
 		_status_material.albedo_color = out_of_fuel_color
 
 
+## Atualiza a luz de status e repassa a mudança pelo sinal running_changed.
 func _on_state_running_changed(running: bool) -> void:
 	_refresh_status()
 	running_changed.emit(running)

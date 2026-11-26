@@ -26,6 +26,7 @@ var _glass_material := StandardMaterial3D.new()
 @onready var _glass: MeshInstance3D = $Glass
 
 
+## Aplica o alcance, a energia e a cor do inspetor na luz e prepara o material do vidro.
 func _ready() -> void:
 	if spare_bulb == null:
 		push_warning("Bulb sem spare_bulb: a lâmpada não pode ser trocada.")
@@ -37,10 +38,12 @@ func _ready() -> void:
 	_refresh()
 
 
+## A lâmpada está queimada.
 func is_broken() -> bool:
 	return _broken
 
 
+## A lâmpada está acesa: tem energia e não está queimada.
 func is_lit() -> bool:
 	return _powered and not _broken
 
@@ -51,6 +54,7 @@ func set_powered(powered: bool) -> void:
 	_refresh()
 
 
+## Queima a lâmpada e avisa pelo sinal changed. Ignorado se já está queimada.
 func burn_out() -> void:
 	if _broken:
 		return
@@ -59,16 +63,20 @@ func burn_out() -> void:
 	changed.emit()
 
 
+## Dica de interação: trocar a lâmpada. Vazia se ela não está queimada ou as mãos não têm a
+## reposição.
 func get_prompt(hands: Hands) -> String:
 	if not _can_replace(hands):
 		return ""
 	return "Replace bulb"
 
 
+## Tempo, em segundos, que o jogador segura E para trocar a lâmpada.
 func get_hold_seconds(_hands: Hands) -> float:
 	return replace_seconds * hold_multiplier
 
 
+## Gasta a lâmpada de reposição das mãos e conserta a lâmpada.
 func interact(hands: Hands) -> void:
 	if not _can_replace(hands):
 		return
@@ -78,10 +86,12 @@ func interact(hands: Hands) -> void:
 	changed.emit()
 
 
+## A lâmpada está queimada e as mãos carregam a lâmpada de reposição.
 func _can_replace(hands: Hands) -> bool:
 	return _broken and hands.state.is_carrying_item(spare_bulb)
 
 
+## Atualiza a luz e a cor do vidro conforme a lâmpada esteja queimada ou acesa.
 func _refresh() -> void:
 	_light.visible = is_lit()
 	_glass_material.albedo_color = burnt_glass_color if _broken else glass_color
