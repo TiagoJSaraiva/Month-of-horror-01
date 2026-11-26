@@ -25,10 +25,12 @@ var _health_multiplier: float = 1.0
 var _damage_multiplier: float = 1.0
 
 
+## Sorteia a semente.
 func _ready() -> void:
 	_rng.randomize()
 
 
+## Durante a tempestade, conta o intervalo e traz um voador novo se há vaga.
 func _process(delta: float) -> void:
 	if not _active:
 		return
@@ -71,16 +73,19 @@ func spawn() -> Flyer:
 	return flyer
 
 
+## Ativa o surgimento, com a espera do primeiro voador.
 func _on_storm_started() -> void:
 	_active = true
 	_until_spawn = first_spawn_seconds
 
 
+## Desativa o surgimento e manda os voadores embora.
 func _on_storm_ended() -> void:
 	_active = false
 	for flyer: Flyer in _flyers:
 		flyer.leave()
 
 
+## Tira da lista o voador que saiu.
 func _on_flyer_removed(flyer: Flyer) -> void:
 	_flyers.erase(flyer)

@@ -31,6 +31,7 @@ var _damage_multiplier: float = 1.0
 @onready var _climb_points_root: Node3D = $ClimbPoints
 
 
+## Sorteia a semente e reúne os pontos de subida filhos de ClimbPoints.
 func _ready() -> void:
 	_rng.randomize()
 	for child: Node in _climb_points_root.get_children():
@@ -39,6 +40,8 @@ func _ready() -> void:
 			_climb_points.append(point)
 
 
+## Com o barco abaixo do limiar de luz, conta o intervalo e faz um peixe-homem subir num ponto
+## sorteado.
 func _process(delta: float) -> void:
 	if _lighting == null:
 		return
@@ -88,10 +91,12 @@ func spawn(point: Marker3D) -> Fishman:
 	return fishman
 
 
+## Pontos de subida do barco.
 func climb_points() -> Array[Marker3D]:
 	return _climb_points
 
 
+## Sorteia um ponto de subida longe do jogador, ou null se todos estão perto.
 func _pick_climb_point() -> Marker3D:
 	var candidates: Array[Marker3D] = []
 	for point: Marker3D in _climb_points:
@@ -102,12 +107,14 @@ func _pick_climb_point() -> Marker3D:
 	return candidates[_rng.randi_range(0, candidates.size() - 1)]
 
 
+## O ponto está a pelo menos min_distance_to_player do jogador.
 func _is_far_from_target(point: Marker3D) -> bool:
 	if _target == null:
 		return true
 	return point.global_position.distance_to(_target.global_position) >= min_distance_to_player
 
 
+## Manda todos os peixes-homens fugirem quando a luz volta ao limiar.
 func _on_lighting_light_level_changed(level: float) -> void:
 	if level < light_threshold:
 		return
@@ -115,5 +122,6 @@ func _on_lighting_light_level_changed(level: float) -> void:
 		fishman.flee()
 
 
+## Tira da lista o peixe-homem que saiu.
 func _on_fishman_removed(fishman: Fishman) -> void:
 	_fishmen.erase(fishman)

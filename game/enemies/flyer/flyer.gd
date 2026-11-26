@@ -56,6 +56,7 @@ var _rng := RandomNumberGenerator.new()
 @onready var _hurtbox: Hurtbox = $Hurtbox
 
 
+## Sorteia a semente, passa o tempo de aviso ao FlyerBrain e liga os sinais de estado e de morte.
 func _ready() -> void:
 	_rng.randomize()
 	brain.warning_seconds = warning_seconds
@@ -63,6 +64,8 @@ func _ready() -> void:
 	_health.died.connect(brain.kill)
 
 
+## Bate as asas e, conforme o estado do cérebro, chega, circula, avisa, mergulha, volta, vai embora
+## ou cai.
 func _physics_process(delta: float) -> void:
 	if _player == null:
 		return
@@ -115,7 +118,7 @@ func leave() -> void:
 	brain.leave()
 
 
-# Voa até o ponto. Devolve true quando chegou.
+## Voa até o ponto. Devolve true quando chegou.
 func _fly_toward(point: Vector3, speed: float) -> bool:
 	var to_point: Vector3 = point - global_position
 	if to_point.length() <= ARRIVAL_DISTANCE:
@@ -127,6 +130,8 @@ func _fly_toward(point: Vector3, speed: float) -> bool:
 	return false
 
 
+## Voa até o ponto mirado e, ao chegar ou estourar max_dive_seconds, acerta o jogador ou queima a
+## lâmpada.
 func _dive(delta: float) -> void:
 	_dive_seconds += delta
 	var arrived: bool = _fly_toward(_dive_point, dive_speed)
@@ -140,6 +145,7 @@ func _dive(delta: float) -> void:
 	brain.dive_finished()
 
 
+## Afasta-se do barco subindo e some ao passar de leave_distance.
 func _leave() -> void:
 	var outward: Vector3 = Vector3(global_position.x, 0.0, global_position.z).normalized()
 	if outward == Vector3.ZERO:
@@ -151,6 +157,7 @@ func _leave() -> void:
 		_remove()
 
 
+## Cai com a gravidade, sem deslizar na horizontal.
 func _fall(delta: float) -> void:
 	velocity.x = 0.0
 	velocity.z = 0.0
@@ -158,6 +165,7 @@ func _fall(delta: float) -> void:
 	global_position += velocity * delta
 
 
+## Bate as asas em sentidos opostos.
 func _flap(delta: float) -> void:
 	_flap_time += delta * wing_flap_speed
 	var angle: float = deg_to_rad(wing_flap_degrees) * sin(_flap_time)
@@ -165,22 +173,26 @@ func _flap(delta: float) -> void:
 	_right_wing.rotation.z = -angle
 
 
+## Ponto do círculo sobre o barco no ângulo atual.
 func _orbit_point() -> Vector3:
 	return Vector3(
 		cos(_orbit_angle) * circle_radius, circle_height, sin(_orbit_angle) * circle_radius
 	)
 
 
+## Posição da cabeça do jogador, o ponto mirado no mergulho.
 func _player_head() -> Vector3:
 	return _player.global_position + Vector3.UP * PLAYER_HEAD_HEIGHT
 
 
+## Ponto do alvo do mergulho: a lâmpada sorteada ou a cabeça do jogador.
 func _target_point() -> Vector3:
 	if brain.target == FlyerBrain.Target.BULB and is_instance_valid(_dive_bulb):
 		return _dive_bulb.global_position
 	return _player_head()
 
 
+## Lâmpadas boas à vista, sem parede no caminho.
 func _visible_bulbs() -> Array[Bulb]:
 	var in_sight: Array[Bulb] = []
 	for bulb: Bulb in _bulbs:
@@ -189,15 +201,18 @@ func _visible_bulbs() -> Array[Bulb]:
 	return in_sight
 
 
+## Não há parede entre o voador e o ponto.
 func _can_see(point: Vector3) -> bool:
 	var query := PhysicsRayQueryParameters3D.create(global_position, point, PhysicsLayers.WORLD)
 	return get_world_3d().direct_space_state.intersect_ray(query).is_empty()
 
 
+## Sorteia quanto tempo circula antes do próximo mergulho.
 func _circle_seconds() -> float:
 	return _rng.randf_range(circle_seconds_min, circle_seconds_max)
 
 
+## Vira de frente para o ponto, ignorando direções quase verticais.
 func _face(point: Vector3) -> void:
 	var direction: Vector3 = point - global_position
 	# look_at falha com a direção paralela ao "para cima", como num mergulho reto.
@@ -206,11 +221,14 @@ func _face(point: Vector3) -> void:
 	look_at(point, Vector3.UP)
 
 
+## Avisa pelo sinal removed e libera o nó.
 func _remove() -> void:
 	removed.emit()
 	queue_free()
 
 
+## Ajusta os olhos ao novo estado e, no aviso, no mergulho e na morte, fixa o alvo, o ponto mirado e
+## a colisão.
 func _on_brain_state_changed(state: FlyerBrain.State) -> void:
 	var eye_scale: float = warning_eye_scale if state == FlyerBrain.State.WARNING else 1.0
 	_eyes.scale = Vector3.ONE * eye_scale

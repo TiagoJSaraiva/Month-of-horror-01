@@ -45,6 +45,8 @@ var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var _agent: NavigationAgent3D = $NavigationAgent3D
 
 
+## Passa os tempos do inspetor ao FishmanBrain e liga os sinais: morte, luz no rosto e mudança de
+## estado.
 func _ready() -> void:
 	brain.climb_seconds = climb_seconds
 	brain.attack_range = attack_range
@@ -58,6 +60,7 @@ func _ready() -> void:
 	_light_sensor.lit.connect(stun)
 
 
+## Segue o estado do cérebro: sobe, persegue, foge ou fica parado de frente para o alvo.
 func _physics_process(delta: float) -> void:
 	if _target == null or brain.state == FishmanBrain.State.DEAD:
 		return
@@ -112,6 +115,7 @@ func flee() -> void:
 	brain.flee()
 
 
+## Anda pela malha de navegação até o destino, recalculando o caminho a cada repath_seconds.
 func _walk_toward(destination: Vector3, speed: float, delta: float) -> void:
 	_repath_left -= delta
 	if _repath_left <= 0.0:
@@ -125,6 +129,7 @@ func _walk_toward(destination: Vector3, speed: float, delta: float) -> void:
 	velocity.z = direction.normalized().z * speed
 
 
+## Anda até a amurada mais próxima e passa por cima dela. Sem pontos de subida, some.
 func _flee(delta: float) -> void:
 	if _tween != null and _tween.is_running():
 		return
@@ -140,7 +145,7 @@ func _flee(delta: float) -> void:
 	_leave_over_side(exit_point)
 
 
-# Passa por cima da amurada no ponto dado e cai de volta no mar.
+## Passa por cima da amurada no ponto dado e cai de volta no mar.
 func _leave_over_side(point: Marker3D) -> void:
 	if _tween != null:
 		_tween.kill()
@@ -151,12 +156,14 @@ func _leave_over_side(point: Marker3D) -> void:
 	_tween.tween_callback(_remove)
 
 
+## Aplica a gravidade fora do chão e move o corpo.
 func _apply_gravity_and_move(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y -= _gravity * delta
 	move_and_slide()
 
 
+## Para o movimento, tira a colisão do corpo e o faz tombar antes de sumir.
 func _die() -> void:
 	if _tween != null:
 		_tween.kill()
@@ -170,21 +177,25 @@ func _die() -> void:
 	_tween.chain().tween_callback(_remove)
 
 
+## Avisa pelo sinal removed e libera o nó.
 func _remove() -> void:
 	removed.emit()
 	queue_free()
 
 
+## Gira na horizontal para o ponto.
 func _face(point: Vector3) -> void:
 	var flat_target := Vector3(point.x, global_position.y, point.z)
 	if flat_target.distance_to(global_position) > 0.01:
 		look_at(flat_target, Vector3.UP)
 
 
+## Distância horizontal até o ponto, ignorando a altura.
 func _flat_distance_to(point: Vector3) -> float:
 	return Vector2(point.x, point.z).distance_to(Vector2(global_position.x, global_position.z))
 
 
+## Ponto de subida mais próximo na horizontal, ou null se não há nenhum.
 func _nearest_climb_point() -> Marker3D:
 	var nearest: Marker3D = null
 	for point: Marker3D in _climb_points:
@@ -196,17 +207,19 @@ func _nearest_climb_point() -> Marker3D:
 	return nearest
 
 
-# O eixo +Z de cada ponto de subida aponta para o mar.
+## Ponto no mar, na altura da água, ao lado de um ponto de subida (o +Z dele aponta para o mar).
 func _water_point(point: Marker3D) -> Vector3:
 	var outward: Vector3 = point.global_basis.z
 	return point.global_position + outward * 1.4 + Vector3.DOWN * point.global_position.y
 
 
+## Ponto no alto da amurada, sobre um ponto de subida, por onde ele passa ao subir e ao sair.
 func _crest_point(point: Marker3D) -> Vector3:
 	var outward: Vector3 = point.global_basis.z
 	return point.global_position + outward * 0.45 + Vector3.UP * 1.3
 
 
+## Ajusta olhos, inclinação e colisão ao novo estado: fim da subida, fuga durante a subida e morte.
 func _on_brain_state_changed(state: FishmanBrain.State) -> void:
 	_eyes.visible = state != FishmanBrain.State.STUNNED
 	var lean: float = (
@@ -229,6 +242,7 @@ func _on_brain_state_changed(state: FishmanBrain.State) -> void:
 			_die()
 
 
+## Causa o dano do golpe na vida do alvo.
 func _on_brain_attack_landed() -> void:
 	if _target_health != null:
 		_target_health.damage(attack_damage)
