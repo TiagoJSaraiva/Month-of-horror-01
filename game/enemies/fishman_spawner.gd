@@ -40,8 +40,9 @@ func _ready() -> void:
 			_climb_points.append(point)
 
 
-## Com o barco abaixo do limiar de luz, conta o intervalo e faz um peixe-homem subir num ponto
-## sorteado.
+## Com a luz abaixo do limiar, acumula tempo; ao atingir o intervalo (menor quanto mais escuro) e
+## com menos de max_alive peixes vivos, faz um peixe-homem subir num ponto sorteado longe do
+## jogador. Com a luz no limiar ou acima, zera o tempo.
 func _process(delta: float) -> void:
 	if _lighting == null:
 		return
@@ -91,7 +92,7 @@ func spawn(point: Marker3D) -> Fishman:
 	return fishman
 
 
-## Pontos de subida do barco.
+## Devolve os pontos de subida reunidos em _ready.
 func climb_points() -> Array[Marker3D]:
 	return _climb_points
 
@@ -107,14 +108,16 @@ func _pick_climb_point() -> Marker3D:
 	return candidates[_rng.randi_range(0, candidates.size() - 1)]
 
 
-## O ponto está a pelo menos min_distance_to_player do jogador.
+## Verdadeiro se o ponto está a pelo menos min_distance_to_player do jogador; sem alvo, sempre
+## verdadeiro.
 func _is_far_from_target(point: Marker3D) -> bool:
 	if _target == null:
 		return true
 	return point.global_position.distance_to(_target.global_position) >= min_distance_to_player
 
 
-## Manda todos os peixes-homens fugirem quando a luz volta ao limiar.
+## Manda todos os peixes-homens fugirem enquanto a luz estiver no limiar ou acima, a cada mudança de
+## nível.
 func _on_lighting_light_level_changed(level: float) -> void:
 	if level < light_threshold:
 		return

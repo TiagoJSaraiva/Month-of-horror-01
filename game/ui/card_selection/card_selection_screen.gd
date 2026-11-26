@@ -96,7 +96,7 @@ func _on_card_pressed(card: CardData) -> void:
 	_replace_row.show()
 
 
-## Nomes das cartas, separados por vírgula.
+## Devolve os nomes das cartas, separados por vírgula.
 func _names(cards: Array[CardData]) -> String:
 	var names: PackedStringArray = []
 	for card: CardData in cards:

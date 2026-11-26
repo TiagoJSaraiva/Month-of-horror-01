@@ -45,8 +45,8 @@ var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var _agent: NavigationAgent3D = $NavigationAgent3D
 
 
-## Passa os tempos do inspetor ao FishmanBrain e liga os sinais: morte, luz no rosto e mudança de
-## estado.
+## Passa os parâmetros do inspetor ao FishmanBrain e liga os sinais: golpe, morte, luz no rosto e
+## mudança de estado.
 func _ready() -> void:
 	brain.climb_seconds = climb_seconds
 	brain.attack_range = attack_range
@@ -60,7 +60,9 @@ func _ready() -> void:
 	_light_sensor.lit.connect(stun)
 
 
-## Segue o estado do cérebro: sobe, persegue, foge ou fica parado de frente para o alvo.
+## Move o corpo conforme o estado do cérebro: persegue ou foge; fica parado e de frente para o alvo
+## ao preparar, recuperar ou atordoar. Subindo, quem move é o tween de climb_aboard; sem alvo ou
+## morto, não faz nada.
 func _physics_process(delta: float) -> void:
 	if _target == null or brain.state == FishmanBrain.State.DEAD:
 		return
@@ -115,7 +117,8 @@ func flee() -> void:
 	brain.flee()
 
 
-## Anda pela malha de navegação até o destino, recalculando o caminho a cada repath_seconds.
+## Define a velocidade horizontal para seguir a malha de navegação até o destino, recalculando o
+## caminho a cada repath_seconds.
 func _walk_toward(destination: Vector3, speed: float, delta: float) -> void:
 	_repath_left -= delta
 	if _repath_left <= 0.0:
@@ -145,7 +148,7 @@ func _flee(delta: float) -> void:
 	_leave_over_side(exit_point)
 
 
-## Passa por cima da amurada no ponto dado e cai de volta no mar.
+## Passa por cima da amurada no ponto dado, cai de volta no mar e então é removido.
 func _leave_over_side(point: Marker3D) -> void:
 	if _tween != null:
 		_tween.kill()
@@ -163,7 +166,8 @@ func _apply_gravity_and_move(delta: float) -> void:
 	move_and_slide()
 
 
-## Para o movimento, tira a colisão do corpo e o faz tombar antes de sumir.
+## Para o movimento, tira a colisão e desliga hurtbox e sensor de luz (o corpo deixa de receber tiro
+## e luz), tomba o modelo e então remove o nó.
 func _die() -> void:
 	if _tween != null:
 		_tween.kill()

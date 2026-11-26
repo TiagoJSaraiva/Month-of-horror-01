@@ -22,7 +22,8 @@ const INTERACT_KEY_LABEL := "[E]"
 @onready var _note_text: Label = $NotePanel/NoteText
 
 
-## Zera o HUD e liga os sinais do HudEvents. Sem ele, avisa e nada aparece.
+## Zera o HUD e liga o timer da dica. Liga os sinais do HudEvents; se ele não estiver definido,
+## avisa e não liga nenhum, e nada do mundo aparece na tela.
 func _ready() -> void:
 	_bait.text = ""
 	reset()
@@ -57,7 +58,7 @@ func reset() -> void:
 	show()
 
 
-## Mostra a dica da ação disponível com a tecla de interação, ou a apaga se o texto é vazio.
+## Mostra o aviso da ação disponível com a tecla de interação, ou o apaga se o texto é vazio.
 func _on_hud_events_prompt_changed(text: String) -> void:
 	_prompt.text = "" if text.is_empty() else "%s %s" % [INTERACT_KEY_LABEL, text]
 

@@ -10,7 +10,8 @@ extends Node3D
 @onready var _camera: Camera3D = $Camera3D
 
 
-## Gira o corpo na horizontal e a câmera na vertical, limitada a max_pitch_degrees.
+## Gira este nó (o Head) na horizontal e a câmera filha na vertical, com a inclinação limitada a
+## ±max_pitch_degrees; só age com o mouse capturado.
 func _unhandled_input(event: InputEvent) -> void:
 	if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
 		return

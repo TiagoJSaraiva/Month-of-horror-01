@@ -91,7 +91,8 @@ func _can_replace(hands: Hands) -> bool:
 	return _broken and hands.state.is_carrying_item(spare_bulb)
 
 
-## Atualiza a luz e a cor do vidro conforme a lâmpada esteja queimada ou acesa.
+## Atualiza a luz (visível só se acesa), a cor do vidro (conforme queimada) e o brilho dele (só se
+## acesa).
 func _refresh() -> void:
 	_light.visible = is_lit()
 	_glass_material.albedo_color = burnt_glass_color if _broken else glass_color

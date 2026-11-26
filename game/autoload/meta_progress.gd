@@ -38,8 +38,8 @@ func add_points(amount: int) -> void:
 	state.add_points(amount)
 
 
-## Compra um nível do upgrade. Devolve false se não houver pontos ou se o upgrade já estiver no
-## máximo.
+## Compra o próximo nível do upgrade e salva. Devolve false se os pontos não cobrirem o custo ou se
+## o upgrade já estiver no máximo.
 func buy(upgrade: UpgradeData) -> bool:
 	return state.buy(upgrade)
 
@@ -49,7 +49,7 @@ func upgrade_percents() -> Dictionary[StatModifier.Stat, float]:
 	return state.percents(UPGRADES)
 
 
-## Salva a cada mudança do estado e avisa quem escuta.
+## Salva a cada mudança do estado (se a gravação falhar, só avisa no console) e emite changed.
 func _on_state_changed() -> void:
 	var error: Error = state.save(_save_path)
 	if error != OK:

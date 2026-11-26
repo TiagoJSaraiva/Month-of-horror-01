@@ -64,8 +64,8 @@ func _ready() -> void:
 	_health.died.connect(brain.kill)
 
 
-## Bate as asas e, conforme o estado do cérebro, chega, circula, avisa, mergulha, volta, vai embora
-## ou cai.
+## Sem jogador (antes de start), não faz nada. Senão, bate as asas, avança o cérebro e age conforme
+## o estado: chega, circula, avisa, mergulha, volta, vai embora ou cai.
 func _physics_process(delta: float) -> void:
 	if _player == null:
 		return
@@ -130,8 +130,9 @@ func _fly_toward(point: Vector3, speed: float) -> bool:
 	return false
 
 
-## Voa até o ponto mirado e, ao chegar ou estourar max_dive_seconds, acerta o jogador ou queima a
-## lâmpada.
+## Voa até o ponto mirado e, ao chegar ou estourar max_dive_seconds, acerta o jogador só se a cabeça
+## dele ainda estiver a até hit_radius do ponto (quem se mexe escapa); se o alvo é uma lâmpada, a
+## queima. Depois avisa o cérebro.
 func _dive(delta: float) -> void:
 	_dive_seconds += delta
 	var arrived: bool = _fly_toward(_dive_point, dive_speed)
@@ -173,26 +174,27 @@ func _flap(delta: float) -> void:
 	_right_wing.rotation.z = -angle
 
 
-## Ponto do círculo sobre o barco no ângulo atual.
+## Devolve o ponto do círculo sobre o barco no ângulo atual.
 func _orbit_point() -> Vector3:
 	return Vector3(
 		cos(_orbit_angle) * circle_radius, circle_height, sin(_orbit_angle) * circle_radius
 	)
 
 
-## Posição da cabeça do jogador, o ponto mirado no mergulho.
+## Devolve a posição da cabeça do jogador, PLAYER_HEAD_HEIGHT acima dos pés.
 func _player_head() -> Vector3:
 	return _player.global_position + Vector3.UP * PLAYER_HEAD_HEIGHT
 
 
-## Ponto do alvo do mergulho: a lâmpada sorteada ou a cabeça do jogador.
+## Devolve onde o mergulho mira: a lâmpada sorteada, se ainda existir; senão, a cabeça do jogador (e
+## o mergulho não causa dano, pois o alvo continua sendo a lâmpada).
 func _target_point() -> Vector3:
 	if brain.target == FlyerBrain.Target.BULB and is_instance_valid(_dive_bulb):
 		return _dive_bulb.global_position
 	return _player_head()
 
 
-## Lâmpadas boas à vista, sem parede no caminho.
+## Devolve as lâmpadas boas à vista, sem parede no caminho.
 func _visible_bulbs() -> Array[Bulb]:
 	var in_sight: Array[Bulb] = []
 	for bulb: Bulb in _bulbs:
@@ -201,13 +203,13 @@ func _visible_bulbs() -> Array[Bulb]:
 	return in_sight
 
 
-## Não há parede entre o voador e o ponto.
+## Devolve true se não há parede entre o voador e o ponto.
 func _can_see(point: Vector3) -> bool:
 	var query := PhysicsRayQueryParameters3D.create(global_position, point, PhysicsLayers.WORLD)
 	return get_world_3d().direct_space_state.intersect_ray(query).is_empty()
 
 
-## Sorteia quanto tempo circula antes do próximo mergulho.
+## Sorteia quanto tempo circula antes de escolher o alvo do mergulho.
 func _circle_seconds() -> float:
 	return _rng.randf_range(circle_seconds_min, circle_seconds_max)
 
@@ -227,8 +229,9 @@ func _remove() -> void:
 	queue_free()
 
 
-## Ajusta os olhos ao novo estado e, no aviso, no mergulho e na morte, fixa o alvo, o ponto mirado e
-## a colisão.
+## Reage a cada mudança de estado: ajusta os olhos; no aviso sorteia a lâmpada-alvo entre as à
+## vista; no mergulho fixa o ponto mirado; na morte desliga a colisão e o hurtbox e agenda a remoção
+## após death_seconds.
 func _on_brain_state_changed(state: FlyerBrain.State) -> void:
 	var eye_scale: float = warning_eye_scale if state == FlyerBrain.State.WARNING else 1.0
 	_eyes.scale = Vector3.ONE * eye_scale

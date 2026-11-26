@@ -17,7 +17,8 @@ var _bulbs: Array[Bulb] = []
 @onready var _failures: MaintenanceFailures = $MaintenanceFailures
 
 
-## Reúne as lâmpadas da cena, liga os sinais e aplica o estado atual do gerador.
+## Reúne as lâmpadas da cena, liga os sinais, entrega gerador e lâmpadas ao MaintenanceFailures (que
+## passa a sortear falhas) e aplica o estado atual do gerador.
 func _ready() -> void:
 	for child: Node in _bulbs_root.get_children():
 		var bulb := child as Bulb

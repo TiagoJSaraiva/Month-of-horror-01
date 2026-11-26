@@ -43,8 +43,8 @@ var _ended: bool = false
 @onready var _table_note: TableNote = $TableNote
 
 
-## Gera o pedido e o entrega ao diário e à mesa, liga os sinais, aplica os bônus e a dificuldade e
-## sorteia a tempestade.
+## Gera o pedido e o mostra no diário, põe o bilhete na mesa, liga os sinais, inicia os spawners,
+## aplica os bônus e a dificuldade e sorteia a tempestade.
 func _ready() -> void:
 	_rng.randomize()
 	order = NightOrder.new(OrderRules.generate(night_number, fish_species, _rng))
@@ -69,7 +69,7 @@ func is_ended() -> bool:
 	return _ended
 
 
-## Encerra a noite no amanhecer e avisa pelo sinal night_finished.
+## Encerra a noite no amanhecer, se ela ainda não acabou, e avisa pelo sinal night_finished.
 func _on_night_clock_dawn_reached() -> void:
 	if _ended:
 		return
@@ -77,7 +77,8 @@ func _on_night_clock_dawn_reached() -> void:
 	night_finished.emit(order)
 
 
-## Encerra a noite com a morte do jogador, para o relógio e avisa pelo sinal player_died.
+## Encerra a noite com a morte do jogador, se ela ainda não acabou; para o relógio e avisa pelo
+## sinal player_died.
 func _on_player_health_died() -> void:
 	if _ended:
 		return
@@ -87,8 +88,8 @@ func _on_player_health_died() -> void:
 	player_died.emit()
 
 
-## Só os personagens, a manutenção e a tempestade param: mar, céu e balanço continuam como
-## estão. Sem isso, o gerador ainda poderia quebrar na tela do amanhecer.
+## Marca a noite como encerrada e para só os personagens, a manutenção e a tempestade: mar, céu e
+## balanço continuam como estão. Sem isso, o gerador ainda poderia quebrar na tela do amanhecer.
 func _end() -> void:
 	_ended = true
 	_actors.process_mode = Node.PROCESS_MODE_DISABLED

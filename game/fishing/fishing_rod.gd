@@ -22,7 +22,8 @@ var _rng := RandomNumberGenerator.new()
 @onready var _bobber: Bobber = $Bobber
 
 
-## Esconde a boia e liga os sinais. Sem Hands, HudEvents ou iscas, avisa e a vara não funciona.
+## Esconde a boia, conecta hands.changed e mostra a isca inicial no HUD. Sem Hands, HudEvents ou
+## iscas, registra um aviso no console e a vara não funciona.
 func _ready() -> void:
 	_rng.randomize()
 	_bobber.hide()
@@ -34,8 +35,8 @@ func _ready() -> void:
 	hud_events.bait_changed.emit(_current_bait().display_name)
 
 
-## Com a vara na mão, o botão primário lança ou fisga, o secundário desiste e a tecla de isca troca
-## de isca.
+## Com a vara na mão: o primário lança (sem tentativa) ou fisga (com tentativa); o secundário
+## desiste, se há tentativa; a tecla de isca troca a isca, só sem tentativa.
 func _unhandled_input(event: InputEvent) -> void:
 	if hands == null or baits.is_empty() or not hands.state.is_tool_ready(HandsState.Tool.ROD):
 		return
@@ -54,13 +55,13 @@ func _unhandled_input(event: InputEvent) -> void:
 	get_viewport().set_input_as_handled()
 
 
-## Avança a tentativa em andamento, com o botão primário como o de puxar no minijogo.
+## Avança a tentativa em andamento a cada quadro; segurar o botão primário puxa a linha no minijogo.
 func _process(delta: float) -> void:
 	if _attempt != null:
 		_attempt.update(delta, Input.is_action_pressed(&"primary_action"))
 
 
-## Lança a linha se a mira está na água. Senão, mostra um aviso.
+## Se a mira está na água, lança a linha: cria a tentativa e ocupa as mãos. Senão, mostra um aviso.
 func _try_cast() -> void:
 	_aim.force_raycast_update()
 	if not _aim.get_collider() is WaterSurface:
@@ -73,12 +74,13 @@ func _try_cast() -> void:
 	hud_events.hint_requested.emit("Waiting for a bite...", 0.0)
 
 
-## Isca selecionada.
+## Devolve a isca selecionada no momento.
 func _current_bait() -> BaitData:
 	return baits[_bait_index]
 
 
-## Mostra no HUD e na boia o que cada estado da tentativa pede do jogador.
+## Reage a cada estado da tentativa: na mordida, afunda a boia e pede a fisgada; no minijogo, pede
+## para puxar e abre o HUD dele; nos estados finais, encerra via _finish.
 func _on_attempt_state_changed(state: FishingAttempt.State) -> void:
 	match state:
 		FishingAttempt.State.BITING:
@@ -95,8 +97,8 @@ func _on_attempt_state_changed(state: FishingAttempt.State) -> void:
 			_finish("")
 
 
-## Encerra a tentativa: recolhe a boia, libera as mãos, mostra a mensagem e entrega o peixe pescado,
-## às vezes em dobro.
+## Encerra a tentativa: recolhe a boia, fecha o HUD do minijogo (se houve), libera as mãos, mostra a
+## mensagem e, se pescado, entrega o peixe, às vezes em dobro.
 func _finish(message: String) -> void:
 	var caught_fish: FishData = (
 		_attempt.fish if _attempt.state == FishingAttempt.State.CAUGHT else null

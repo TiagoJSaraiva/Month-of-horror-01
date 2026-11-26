@@ -13,7 +13,7 @@ static func roll_rarity(roll: float, common_chance: float, rare_chance: float) -
 	return CardData.Rarity.LEGENDARY
 
 
-## Raridades a tentar quando a sorteada não tem cartas: primeiro as de baixo, depois as de cima.
+## Raridades a tentar, em ordem, a começar pela sorteada: depois as de baixo e, por fim, as de cima.
 static func fallback_order(rarity: CardData.Rarity) -> Array[CardData.Rarity]:
 	match rarity:
 		CardData.Rarity.LEGENDARY:
@@ -58,7 +58,7 @@ static func total_percent(cards: Array[CardData], stat: StatModifier.Stat) -> fl
 	return total
 
 
-## Cartas da lista que têm a raridade pedida.
+## Devolve as cartas de [param cards] com a raridade [param rarity].
 static func _of_rarity(cards: Array[CardData], rarity: CardData.Rarity) -> Array[CardData]:
 	var matching: Array[CardData] = []
 	for card: CardData in cards:

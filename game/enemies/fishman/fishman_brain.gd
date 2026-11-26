@@ -69,18 +69,18 @@ func flee() -> void:
 		_enter(State.FLEEING)
 
 
-## Morre, de qualquer estado.
+## Vai para DEAD a partir de qualquer estado; sem efeito se já estiver morto.
 func kill() -> void:
 	if state != State.DEAD:
 		_enter(State.DEAD)
 
 
-## O estado é de deslocamento: perseguindo ou fugindo.
+## Verdadeiro se está se deslocando: perseguindo ou fugindo.
 func is_moving() -> bool:
 	return state == State.CHASING or state == State.FLEEING
 
 
-## Entra no estado, zera o tempo nele e avisa pelo sinal state_changed.
+## Muda para new_state, zera o tempo no estado e emite state_changed.
 func _enter(new_state: State) -> void:
 	state = new_state
 	_state_seconds = 0.0

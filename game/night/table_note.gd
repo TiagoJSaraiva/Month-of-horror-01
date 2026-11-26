@@ -43,7 +43,7 @@ func show_note(text: String, pin: RunRules.Pin) -> void:
 	_mark.modulate = PIN_COLORS[pin]
 
 
-## Dica de interação: ler ou largar o bilhete. Vazia sem bilhete.
+## Devolve a dica de interação (ler ou largar o bilhete); vazia se não há bilhete ou HudEvents.
 func get_prompt(_hands: Hands) -> String:
 	if _text.is_empty() or hud_events == null:
 		return ""

@@ -11,7 +11,8 @@ extends Node3D
 var _biting: bool = false
 
 
-## Acompanha a superfície da água sob a boia, afundada em bite_depth durante a mordida.
+## Acompanha a superfície da água sob a boia, afundada em bite_depth durante a mordida; sem água na
+## faixa probe_range, mantém a altura.
 func _physics_process(_delta: float) -> void:
 	var query := PhysicsRayQueryParameters3D.create(
 		global_position + Vector3.UP * probe_range,

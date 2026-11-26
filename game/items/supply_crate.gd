@@ -11,7 +11,8 @@ extends Interactable
 @onready var _label: Label3D = $Label
 
 
-## Mostra o nome e um exemplar do item em cima da caixa.
+## Mostra o nome e um exemplar do item em cima da caixa. Sem item, avisa no console e deixa a caixa
+## vazia.
 func _ready() -> void:
 	if item == null:
 		push_warning("SupplyCrate sem item: a caixa fica vazia.")

@@ -27,7 +27,8 @@ func _ready() -> void:
 		set_process_unhandled_input(false)
 
 
-## Acha o Interactable na mira, avisa o que perdeu o foco e atualiza a dica no HUD.
+## Acha o Interactable na mira, avisa o alvo anterior que perdeu o foco, atualiza a dica no HUD e
+## avança a ação segurada.
 func _physics_process(delta: float) -> void:
 	var target := get_collider() as Interactable
 	if target != _target:
@@ -43,7 +44,7 @@ func _physics_process(delta: float) -> void:
 	_update_hold(delta)
 
 
-## E executa a ação do alvo na hora ou, se ela exige segurar, começa a contar.
+## A tecla E executa a ação do alvo na hora ou, se ela exige segurar, começa a contar o tempo.
 func _unhandled_input(event: InputEvent) -> void:
 	if not event.is_action_pressed(&"interact") or _focused == null:
 		return
@@ -56,7 +57,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	get_viewport().set_input_as_handled()
 
 
-## Texto da dica no HUD, com "(hold)" quando a ação exige segurar.
+## Devolve a dica do HUD, com "(hold)" se a ação exige segurar; vazia sem alvo.
 func _prompt_text() -> String:
 	if _focused == null:
 		return ""
@@ -65,7 +66,8 @@ func _prompt_text() -> String:
 	return _prompt
 
 
-## Avança a ação segurada, cancelando se E foi solto ou o alvo mudou, e executa ao completar.
+## Avança a ação segurada e atualiza o progresso no HUD; cancela se E foi solto ou o alvo mudou, e
+## executa ao completar.
 func _update_hold(delta: float) -> void:
 	if not _hold.is_active():
 		return

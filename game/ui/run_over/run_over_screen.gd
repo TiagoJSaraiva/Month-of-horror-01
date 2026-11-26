@@ -32,7 +32,7 @@ func show_summary(title: String, message: String, nights_survived: int, points: 
 	_new_run_button.grab_focus()
 
 
-## Frase com quantas noites o jogador sobreviveu.
+## Devolve a frase com as noites sobrevividas, no singular para uma noite.
 func _nights_text(nights_survived: int) -> String:
 	if nights_survived <= 0:
 		return "You didn't survive a single night."

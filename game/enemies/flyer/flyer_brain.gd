@@ -83,14 +83,14 @@ func kill() -> void:
 		_enter(State.DEAD)
 
 
-## Passa a circular por circle_seconds, sem alvo escolhido.
+## Passa a circular por [param circle_seconds], sem alvo escolhido.
 func _start_circling(circle_seconds: float) -> void:
 	_circle_seconds = circle_seconds
 	target = Target.NONE
 	_enter(State.CIRCLING)
 
 
-## Entra no estado, zera o tempo nele e avisa pelo sinal state_changed.
+## Muda para new_state, zera o tempo no estado e emite state_changed.
 func _enter(new_state: State) -> void:
 	state = new_state
 	_state_seconds = 0.0

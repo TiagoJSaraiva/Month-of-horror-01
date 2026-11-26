@@ -40,7 +40,7 @@ func _init(hooked_fish: FishData, fishing_power: float, rng: RandomNumberGenerat
 	_fish_target = fish_position
 
 
-## O peixe está dentro da barra.
+## Diz se o peixe está dentro da barra, com as bordas incluídas.
 func is_fish_inside_bar() -> bool:
 	return fish_position >= bar_position and fish_position <= bar_position + BAR_SIZE
 

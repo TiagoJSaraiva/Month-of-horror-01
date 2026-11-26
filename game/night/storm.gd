@@ -33,8 +33,8 @@ func _ready() -> void:
 		set_process(false)
 
 
-## Acompanha o relógio da noite, avisa quando a tempestade começa e termina e anuncia a intensidade
-## quando ela muda o bastante.
+## Acompanha o relógio da noite e avisa o começo e o fim da tempestade. Emite strength_changed
+## quando a intensidade muda pelo menos STRENGTH_STEP, e também ao chegar em 0 ou 1.
 func _process(_delta: float) -> void:
 	if not plan.has_storm:
 		return
@@ -61,7 +61,8 @@ func is_active() -> bool:
 	return _active
 
 
-## Detecta o começo e o fim da tempestade, emitindo os sinais e as dicas.
+## Atualiza _active (lido por is_active) e, só na virada para ativa ou inativa, emite started/ended
+## e a dica.
 func _update_active(elapsed: float) -> void:
 	var active: bool = elapsed >= plan.start_seconds and elapsed < plan.end_seconds()
 	if active == _active:
@@ -75,7 +76,7 @@ func _update_active(elapsed: float) -> void:
 		_hint(END_HINT)
 
 
-## Mostra uma dica na tela, se houver HUD.
+## Pede ao HUD, pelo HudEvents, que mostre a dica por hint_seconds; sem HudEvents, não faz nada.
 func _hint(text: String) -> void:
 	if hud_events != null:
 		hud_events.hint_requested.emit(text, hint_seconds)

@@ -26,7 +26,8 @@ var _recoil_tween: Tween
 @onready var _muzzle_flash: OmniLight3D = $Model/MuzzleFlash
 
 
-## Cria o RevolverState e liga os sinais. Sem Hands ou HudEvents, esconde o revólver e avisa.
+## Cria o RevolverState e liga os sinais. Sem Hands ou HudEvents, esconde o revólver, desliga a
+## entrada e avisa.
 func _ready() -> void:
 	state = RevolverState.new(capacity, fire_interval, reload_seconds)
 	_rest_rotation = _model.rotation
@@ -72,12 +73,13 @@ func _unhandled_input(event: InputEvent) -> void:
 	get_viewport().set_input_as_handled()
 
 
-## Passa o tempo para a cadência e a recarga.
+## Avança a cadência e a recarga com o tempo decorrido.
 func _process(delta: float) -> void:
 	state.update(delta)
 
 
-## Atira pela mira, causando dano no Hurtbox acertado. Com o tambor vazio, recarrega.
+## Atira pela mira, causando dano no Hurtbox acertado. Com o tambor vazio, recarrega. Com cadência
+## ou recarga em curso, não faz nada.
 func _try_fire() -> void:
 	if state.loaded == 0:
 		state.start_reload()

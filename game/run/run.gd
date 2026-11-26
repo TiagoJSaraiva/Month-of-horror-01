@@ -121,8 +121,8 @@ func _close_cards() -> void:
 	_start_night()
 
 
-## Cria a noite com o bilhete, os bônus e o número da run e a coloca na árvore, com a transição de
-## entrada.
+## Cria a noite com o bilhete, os bônus e o número da noite, a coloca na árvore e mostra a transição
+## de entrada.
 func _start_night() -> void:
 	var kind: RunRules.NoteKind = RunRules.note_kind(state.last_outcome, state.failures)
 	_night = night_scene.instantiate() as Night
@@ -157,8 +157,8 @@ func _on_card_screen_reroll_requested() -> void:
 	_offer_cards()
 
 
-## No amanhecer, avalia o pedido: encerra a run na terceira falha; senão, cobre a tela e oferece as
-## cartas da próxima noite.
+## No amanhecer, registra os peixes entregues e avalia o pedido: encerra a run na terceira falha;
+## senão, cobre a tela e oferece as cartas da próxima noite.
 func _on_night_night_finished(order: NightOrder) -> void:
 	_hud.hide()
 	await _transition.play_dawn()

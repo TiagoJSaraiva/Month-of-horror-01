@@ -35,7 +35,7 @@ func is_dead() -> bool:
 	return current <= 0.0
 
 
-## Vida atual como fração do máximo, de 0 a 1. Zero se o máximo for zero.
+## Devolve a vida atual como fração do máximo, de 0 a 1; zero se o máximo for zero.
 func ratio() -> float:
 	if max_health <= 0.0:
 		return 0.0

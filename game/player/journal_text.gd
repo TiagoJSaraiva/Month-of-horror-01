@@ -19,6 +19,6 @@ static func compose(night_number: int, order: NightOrder) -> String:
 	return "\n".join(lines)
 
 
-## Ordem alfabética pelo nome da espécie.
+## Compara duas espécies pelo nome: true quando first vem antes de second, em ordem alfabética.
 static func _by_display_name(first: FishData, second: FishData) -> bool:
 	return first.display_name < second.display_name

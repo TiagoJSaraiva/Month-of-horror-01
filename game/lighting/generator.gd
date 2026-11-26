@@ -53,7 +53,7 @@ func is_running() -> bool:
 	return state.is_running()
 
 
-## Quebra o gerador e atualiza a luz de status.
+## Quebra o gerador e atualiza a luz de status; se ele deixa de funcionar, emite running_changed.
 func break_down() -> void:
 	state.break_down()
 	_refresh_status()
@@ -77,7 +77,9 @@ func get_hold_seconds(hands: Hands) -> float:
 	return seconds * hold_multiplier
 
 
-## Reabastece (o galão volta vazio e as mãos ficam livres) ou conserta o gerador.
+## Com o galão nas mãos, reabastece se o tanque não estiver cheio (o galão volta vazio e as mãos
+## ficam livres); sem galão, conserta se estiver quebrado e com as mãos livres. Nos outros casos não
+## faz nada.
 func interact(hands: Hands) -> void:
 	if hands.state.is_carrying_item(fuel_can):
 		if not state.needs_fuel():
@@ -90,7 +92,8 @@ func interact(hands: Hands) -> void:
 	_refresh_status()
 
 
-## Pinta a luz de status: verde funcionando, vermelha quebrado, apagada sem combustível.
+## Pinta a luz de status: verde se o gerador funciona, vermelha se ele está quebrado, apagada se ele
+## está sem combustível.
 func _refresh_status() -> void:
 	if state.is_running():
 		_status_material.albedo_color = running_color

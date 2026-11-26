@@ -19,7 +19,9 @@ func _ready() -> void:
 	_quit_button.pressed.connect(quit_requested.emit)
 
 
-## Usa _input porque o SubViewportContainer da Run consome os eventos antes da fase "unhandled".
+## Emite toggle_requested ao apertar a ação pause e marca o evento como tratado. Usa _input, e não
+## _unhandled_input, porque o SubViewportContainer da Run consome os eventos antes da fase
+## "unhandled".
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed(&"pause"):
 		toggle_requested.emit()

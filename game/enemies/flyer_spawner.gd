@@ -73,7 +73,7 @@ func spawn() -> Flyer:
 	return flyer
 
 
-## Ativa o surgimento, com a espera do primeiro voador.
+## Ativa o surgimento e começa a contagem até o primeiro voador (first_spawn_seconds).
 func _on_storm_started() -> void:
 	_active = true
 	_until_spawn = first_spawn_seconds

@@ -24,7 +24,8 @@ func _ready() -> void:
 	_rng.randomize()
 
 
-## A cada passo sorteia a quebra do gerador, se ele funciona, e a queima de cada lâmpada acesa.
+## A cada passo sorteia a quebra do gerador, se ele funciona, e a queima de cada lâmpada acesa. Não
+## faz nada antes de watch().
 func _process(delta: float) -> void:
 	if _generator == null:
 		return

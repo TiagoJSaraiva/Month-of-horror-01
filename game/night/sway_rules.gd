@@ -19,7 +19,7 @@ static func angles(
 	return Vector3(pitch, 0.0, roll)
 
 
-## Senoide do balanço no instante dado. Período zero ou negativo deixa parado.
+## Devolve a senoide do balanço no instante dado; período zero ou negativo devolve zero.
 static func _wave(time: float, amplitude: float, period: float) -> float:
 	if period <= 0.0:
 		return 0.0

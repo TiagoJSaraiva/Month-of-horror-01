@@ -18,7 +18,7 @@ var _tween: Tween
 @onready var _text: Label3D = $Page/Text
 
 
-## Guarda a posição de uso e começa com o diário guardado e escondido.
+## Guarda a posição de leitura e começa com o diário guardado e escondido.
 func _ready() -> void:
 	_held_position = position
 	position = _stowed_position()
@@ -35,7 +35,7 @@ func display(night_number: int, order: NightOrder) -> void:
 	_refresh()
 
 
-## Sobe o diário até a posição de leitura.
+## Mostra o diário e o sobe até a posição de leitura; não faz nada se já estiver aberto.
 func open() -> void:
 	if is_open:
 		return
@@ -67,6 +67,6 @@ func _refresh() -> void:
 	_text.text = JournalText.compose(_night_number, _order)
 
 
-## Posição do diário guardado: a de leitura abaixada em stow_drop.
+## Devolve a posição do diário guardado: a de leitura abaixada em stow_drop.
 func _stowed_position() -> Vector3:
 	return _held_position + Vector3.DOWN * stow_drop

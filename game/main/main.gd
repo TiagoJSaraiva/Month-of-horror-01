@@ -22,9 +22,10 @@ func _ready() -> void:
 	_show_main_menu()
 
 
-## Recaptura o mouse com um clique fora dos menus (depois de trocar de janela, por exemplo). O
-## Esc fica com o menu de pausa da Run. Usa _input, e não _unhandled_input, porque o
-## SubViewportContainer consome os cliques antes que eles cheguem à fase "unhandled".
+## Se o mouse estiver solto e nenhum menu aberto, um clique fora dos menus o recaptura (depois de
+## trocar de janela, por exemplo) e não chega ao jogo. O Esc fica com o menu de pausa da Run. Usa
+## _input, e não _unhandled_input, porque o SubViewportContainer consome os cliques antes da fase
+## "unhandled".
 func _input(event: InputEvent) -> void:
 	var click := event as InputEventMouseButton
 	if _menu_open or click == null or not click.pressed:

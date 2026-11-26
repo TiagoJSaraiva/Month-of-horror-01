@@ -29,7 +29,8 @@ func _ready() -> void:
 	_on_state_changed()
 
 
-## Tab abre ou fecha o diário, 1 e 2 trocam a ferramenta e a tecla de largar solta o item carregado.
+## Tab abre ou fecha o diário (abrir só sem item e sem linha na água); 1 e 2 trocam a ferramenta; a
+## tecla de largar solta o item carregado.
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(&"toggle_journal"):
 		state.toggle_journal()
@@ -58,7 +59,7 @@ func _drop_carried_item() -> void:
 	item_dropped.emit(item, amount, _drop_point())
 
 
-## Ponto onde o item cai: o convés à frente ou, além da amurada, aos pés.
+## Devolve onde o item cai: o convés à frente ou, além da amurada, aos pés.
 func _drop_point() -> Vector3:
 	var forward: Vector3 = -global_basis.z
 	forward.y = 0.0
@@ -71,7 +72,8 @@ func _drop_point() -> Vector3:
 	return deck_below if deck_below != null else global_position
 
 
-## Ponto do convés logo abaixo de from, ou null se não houver convés dentro de drop_probe_depth.
+## Devolve o ponto do convés logo abaixo de from, ou null se não houver convés dentro de
+## drop_probe_depth.
 func _deck_below(from: Vector3) -> Variant:
 	var query := PhysicsRayQueryParameters3D.create(
 		from, from + Vector3.DOWN * drop_probe_depth, PhysicsLayers.WORLD
@@ -82,7 +84,7 @@ func _deck_below(from: Vector3) -> Variant:
 	return hit["position"]
 
 
-## Abre ou fecha o diário, mostra o item carregado e repassa o aviso de mudança.
+## Abre ou fecha o diário, mostra ou esconde o item carregado e repassa o aviso changed.
 func _on_state_changed() -> void:
 	if journal != null:
 		if state.mode == HandsState.Mode.JOURNAL:

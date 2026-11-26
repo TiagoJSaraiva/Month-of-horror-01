@@ -38,7 +38,7 @@ func select_tool(which: Tool) -> bool:
 	return true
 
 
-## Pegar algo com as duas mãos exige a ferramenta parada.
+## Pegar algo com as duas mãos exige as mãos no modo TOOL e a ferramenta parada.
 func can_take_item() -> bool:
 	return mode == Mode.TOOL and not tool_busy
 

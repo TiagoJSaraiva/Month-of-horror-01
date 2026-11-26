@@ -44,6 +44,7 @@ func set_storm_strength(strength: float) -> void:
 	_storm_strength = clampf(strength, 0.0, 1.0)
 
 
-## Intensidade do balanço agora: a normal, subindo até a da tempestade conforme ela cresce.
+## Devolve a intensidade do balanço agora: [member intensity] sem tempestade, subindo até [member
+## storm_intensity] conforme ela cresce.
 func effective_intensity() -> float:
 	return lerpf(intensity, storm_intensity, _storm_strength)

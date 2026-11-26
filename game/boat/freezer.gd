@@ -13,7 +13,7 @@ func get_prompt(hands: Hands) -> String:
 	return "Store %s" % fish.display_name
 
 
-## Guarda tudo que as mãos carregam de um peixe e avisa pelo sinal fish_stored.
+## Guarda o peixe carregado, com a quantidade, e emite fish_stored.
 func interact(hands: Hands) -> void:
 	var fish := hands.state.carried_item as FishData
 	if not hands.state.is_carrying() or fish == null:

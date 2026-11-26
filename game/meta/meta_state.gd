@@ -14,7 +14,7 @@ var points: int = 0
 var _levels: Dictionary[StringName, int] = {}
 
 
-## Lê o save do caminho. Arquivo ausente, de outra versão ou inválido devolve um estado zerado.
+## Lê o save no caminho dado. Arquivo ausente, de outra versão ou inválido devolve um estado zerado.
 static func load_from(path: String) -> MetaState:
 	var meta := MetaState.new()
 	var config := ConfigFile.new()

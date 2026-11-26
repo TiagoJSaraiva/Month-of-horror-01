@@ -13,7 +13,7 @@ func _init(capacity: float) -> void:
 	charge_seconds = capacity_seconds
 
 
-## A carga acabou.
+## A carga está zerada.
 func is_empty() -> bool:
 	return charge_seconds <= 0.0
 

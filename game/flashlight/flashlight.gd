@@ -21,7 +21,8 @@ var _shown_percent: int = -1
 @onready var _light_stun: LightStun = $LightStun
 
 
-## Cria a bateria com a capacidade do inspetor, apaga o facho e avisa o HUD.
+## Cria a bateria com a capacidade do inspetor e apaga o facho e o atordoamento. Avisa o HUD da
+## carga; sem HudEvents, só emite um aviso no console.
 func _ready() -> void:
 	if hud_events == null:
 		push_warning("Flashlight sem HudEvents: a bateria não aparece na tela.")
@@ -43,7 +44,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	get_viewport().set_input_as_handled()
 
 
-## Gasta a bateria com o facho aceso e apaga a lanterna quando a carga acaba.
+## Gasta a bateria com o facho aceso. Quando a carga acaba, apaga a lanterna e mostra o aviso na
+## tela.
 func _process(delta: float) -> void:
 	if is_on() and battery.drain(delta):
 		_set_on(false)

@@ -17,7 +17,8 @@ signal died
 var state: HealthState
 
 
-## Cria o HealthState com os valores do inspetor e repassa os sinais dele.
+## Cria o HealthState com os valores do inspetor, repassa os sinais dele e anuncia a vida inicial em
+## changed e, se houver, no HUD.
 func _ready() -> void:
 	state = HealthState.new(max_health, regen_per_second, regen_delay_seconds)
 	state.changed.connect(_on_state_changed)
@@ -30,7 +31,8 @@ func _process(delta: float) -> void:
 	state.update(delta)
 
 
-## Troca a vida máxima e enche a vida. Usado para os bônus da run, depois do _ready.
+## Troca a vida máxima e enche a vida. Usado para os bônus da run e a dificuldade da noite, depois
+## do _ready.
 func set_max_health(value: float) -> void:
 	max_health = value
 	state.reset_max(value)
@@ -41,7 +43,8 @@ func is_dead() -> bool:
 	return state.is_dead()
 
 
-## Tira vida e anuncia o dano. Ignorado depois da morte ou com dano zero ou negativo.
+## Tira vida e anuncia o dano; se a vida zerar, emite died. Ignorado depois da morte ou com dano
+## zero ou negativo.
 func damage(amount: float) -> void:
 	if state.is_dead() or amount <= 0.0:
 		return

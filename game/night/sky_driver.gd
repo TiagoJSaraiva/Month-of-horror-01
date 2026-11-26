@@ -27,7 +27,8 @@ var _clear_moon_energy: float = 0.0
 var _clear_skydome_energy: float = 0.0
 
 
-## Desliga o relógio próprio do Sky3D, fixa data e lugar e aplica o céu limpo e a hora atual.
+## Sem Sky3D ou NightClock, avisa e desliga o processamento. Senão, desliga o relógio próprio do
+## Sky3D, fixa data e lugar e aplica o céu limpo e a hora atual.
 func _ready() -> void:
 	if sky_3d == null or night_clock == null:
 		push_warning("SkyDriver sem Sky3D ou NightClock: o céu não acompanha a noite.")
