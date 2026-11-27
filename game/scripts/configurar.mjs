@@ -71,7 +71,7 @@ const pinned = readFileSync(join(root, "requirements.txt"), "utf8").match(/gdtoo
 const gdformat = run("gdformat", ["--version"]);
 const installed = gdformat.output.match(/(\d+\.\d+\.\d+)/)?.[1];
 if (gdformat.status !== 0 || !installed) {
-    const command = isWindows ? "pip install -r requirements.txt" : "pip3 install --user --break-system-packages -r requirements.txt";
+    const command = isWindows ? "pip install -r requirements.txt" : `pipx install "$(grep '^gdtoolkit==' requirements.txt)" (ou: pip3 install --user --break-system-packages -r requirements.txt)`;
     report("FALTA", "gdtoolkit", `instale com: ${command}`);
 } else {
     report(installed === pinned ? "OK" : "AVISO", "gdtoolkit", installed === pinned ? installed : `${installed} instalado; o projeto fixa ${pinned}`);

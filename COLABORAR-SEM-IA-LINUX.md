@@ -1,8 +1,8 @@
-# Colaborar sem agente de IA
+# Colaborar sem agente de IA (Linux)
 
-Guia para quem contribui com este projeto **sem Claude, Codex ou outro agente**. O fluxo é o mesmo dos agentes (fork, uma branch por contribuição, pull request); a diferença é que você roda os scripts direto no terminal.
+Guia para quem contribui com este projeto **sem Claude, Codex ou outro agente**, no **Linux**. Usa Windows? Veja o [COLABORAR-SEM-IA-WINDOWS.md](COLABORAR-SEM-IA-WINDOWS.md).
 
-Resumo: **uma vez por máquina** você configura; **a cada contribuição** roda dois comandos, um no começo e um no fim:
+O fluxo é o mesmo dos agentes (fork, uma branch por contribuição, pull request); a diferença é que você roda os scripts direto no terminal. **Uma vez por máquina** você configura; **a cada contribuição** roda dois comandos, um no começo e um no fim:
 
 ```sh
 node scripts/colaborar.mjs        # começa: pergunta a missão e cria a branch
@@ -10,28 +10,53 @@ node scripts/colaborar.mjs        # começa: pergunta a missão e cria a branch
 node scripts/fim-colaborador.mjs  # termina: check, missão, envio e texto do pull request
 ```
 
-Todos os comandos deste guia rodam **dentro da pasta `game/`** do projeto (no VS Code: *Terminal > New Terminal*, e `cd game`).
+Todos os comandos deste guia rodam no terminal (ou no terminal do VS Code: *Terminal > New Terminal*), **dentro da pasta `game/`** do projeto.
 
 ## 1. Uma vez por máquina
 
 ### Programas
 
+Comandos para Ubuntu (22.04 ou mais novo) e derivados (Mint, Pop!_OS). Em outras distribuições, use o gerenciador de pacotes equivalente.
+
+```sh
+sudo apt update
+sudo apt install git python3 pipx curl unzip
+```
+
+**Node.js 18+**: confira com `node --version`. O `nodejs` do apt do Ubuntu 22.04 é antigo demais (12); no 24.04 ele serve (18). Se faltar ou for menor que 18, instale o LTS pelo repositório oficial do Node (NodeSource):
+
+```sh
+curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+sudo apt install nodejs
+```
+
+**Godot 4.7.x**: baixe o **Linux x86_64** no [site oficial](https://godotengine.org/download) (não use o Flatpak nem a loja de apps: o projeto precisa chamar o executável pelo terminal). Depois:
+
+```sh
+mkdir -p ~/godot
+unzip ~/Downloads/Godot_v4.7*_linux.x86_64.zip -d ~/godot
+chmod +x ~/godot/Godot_v4.7*
+ls ~/godot                     # o nome completo do executável, para o configurar
+```
+
+(A versão da Steam para Linux também funciona.)
+
 | Programa | Para quê | Como conferir |
 |---|---|---|
-| Godot **4.7.x** (Steam ou site oficial; no Linux, o executável do site, não o Flatpak) | o jogo | abrir o Godot e ver a versão |
+| Godot **4.7.x** | o jogo | `~/godot/Godot_v4.7...` abre o editor |
 | Node.js 18+ | os scripts do projeto | `node --version` |
-| Python 3 | formatador e lint do GDScript | `python --version` |
+| Python 3 | formatador e lint do GDScript | `python3 --version` |
 | Git | versionamento | `git --version` |
 | Conta no GitHub | fork e pull request | — |
 | VS Code + extensão godot-tools (opcional) | editar GDScript e resolver conflitos | — |
 
-No Windows: `winget install OpenJS.NodeJS.LTS`, `winget install Python.Python.3.12`, `winget install Git.Git`.
+No Linux o Python é `python3` (não `python`) e o `pip` do sistema é bloqueado para instalar pacotes; por isso o gdtoolkit vai pelo `pipx`, abaixo.
 
 ### Fork e clone
 
 1. No GitHub, abra o repositório original e clique em **Fork**. Isso cria uma cópia na sua conta.
 2. Clone **o seu fork** (não o original): `git clone <url-do-seu-fork>`.
-3. Entre na pasta `game/` do clone.
+3. Entre na pasta `game/` do clone: `cd <pasta-do-clone>/game`.
 
 ### Configurar
 
@@ -39,13 +64,21 @@ No Windows: `winget install OpenJS.NodeJS.LTS`, `winget install Python.Python.3.
 node scripts/configurar.mjs                              # diagnóstico: mostra o que falta
 node scripts/configurar.mjs --papel colaborador
 node scripts/configurar.mjs --upstream <url-do-repositorio-original>
-node scripts/configurar.mjs --godot "<caminho-do-executavel-do-godot>"
-pip install -r requirements.txt                          # formatador e lint (gdtoolkit)
+node scripts/configurar.mjs --godot "/home/<seu-usuario>/godot/Godot_v4.7.2-stable_linux.x86_64"
 git fetch upstream
 ```
 
 - O caminho do Godot é o do **arquivo** executável, não da pasta. O diagnóstico sugere os que encontrar.
+- Formatador e lint do GDScript (gdtoolkit, na versão fixada em `requirements.txt`):
+
+  ```sh
+  pipx install "$(grep '^gdtoolkit==' requirements.txt)"
+  pipx ensurepath
+  ```
+
+  Feche e abra o terminal; depois, `gdformat --version` deve mostrar a versão. Se o projeto mudar a versão em `requirements.txt`, troque com `pipx install --force "$(grep '^gdtoolkit==' requirements.txt)"`.
 - Se o diagnóstico disser que falta a identidade do git: `git config --global user.name "Seu Nome"` e `git config --global user.email "seu@email"`.
+- Os testes do check abrem uma janela do Godot: rode o check numa sessão com interface gráfica (o normal no desktop). Sem tela (SSH, servidor), instale o Xvfb: `sudo apt install xvfb`; o check usa a tela virtual sozinho.
 - Repita `node scripts/configurar.mjs` até aparecer **"Máquina pronta"**. Depois rode o check completo uma vez: `node scripts/check.mjs` (a primeira vez demora: o Godot importa o projeto).
 
 ## 2. Começar uma contribuição
@@ -134,7 +167,10 @@ Pode rodar quantas vezes precisar: o que já foi feito é mantido (Enter mantém
 | `falta o remoto upstream` | `node scripts/configurar.mjs --upstream <url-do-original>` |
 | `há mudanças sem commit` | faça o commit (seção 3) ou descarte com `git restore <arquivo>` |
 | `GODOT_PATH não definido` | `node scripts/configurar.mjs --godot "<caminho>"` |
-| `gdformat não encontrado` | `pip install -r requirements.txt` e reabra o terminal |
+| `gdformat não encontrado` | `pipx install "$(grep '^gdtoolkit==' requirements.txt)"`, `pipx ensurepath` e reabra o terminal |
+| `externally-managed-environment` ao usar pip | é o bloqueio do pip do sistema: use o `pipx`, como na seção 1 |
+| `Permission denied` ao rodar o Godot | `chmod +x <caminho-do-executavel>` |
+| `Sem tela gráfica para os testes` | rode numa sessão gráfica ou instale o Xvfb (`sudo apt install xvfb`) |
 | check acusa formatação | `node scripts/check.mjs --fix --fast` e faça o commit do resultado |
 | check acusa função sem `##` ou com `##` não revisado | escreva ou atualize o `##`, ou confirme com o comando que o check mostra |
 | check acusa tipo de commit que a branch não aceita | o commit é de outro propósito: ele deveria estar em outra branch. Peça ajuda ao dono antes de mexer em commits já feitos |

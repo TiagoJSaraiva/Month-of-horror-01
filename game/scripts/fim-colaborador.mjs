@@ -79,7 +79,7 @@ const hasDiff = run("git", ["diff", "--quiet", "HEAD"], { cwd: top }).status !==
 const untracked = git(["ls-files", "--others", "--exclude-standard"], top) !== "";
 if (hasDiff || untracked) {
     console.log(pending);
-    fail("há mudanças sem commit (lista acima). Faça o commit delas (veja 'Commits' no COLABORAR-SEM-IA.md) ou descarte-as, e rode este script de novo.");
+    fail("há mudanças sem commit (lista acima). Faça o commit delas (veja 'Commits' no guia COLABORAR-SEM-IA-WINDOWS.md ou COLABORAR-SEM-IA-LINUX.md) ou descarte-as, e rode este script de novo.");
 }
 console.log("Sem mudanças pendentes.");
 
@@ -89,12 +89,17 @@ const fetched = run("git", ["fetch", "upstream"], { cwd: root });
 if (fetched.status !== 0) {
     fail(`não consegui buscar o repositório original (git fetch upstream):\n${fetched.output.trim()}`);
 }
+// merge-tree --write-tree simula o merge sem tocar nos arquivos: 0 = integra limpo, 1 = conflito.
+// Outro código = git anterior à 2.38 (ex.: Ubuntu 22.04), sem essa opção: faz o merge direto.
+const simulated = run("git", ["merge-tree", "--write-tree", "upstream/main", "HEAD"], { cwd: root }).status;
 if (run("git", ["merge-base", "--is-ancestor", "upstream/main", "HEAD"], { cwd: root }).status === 0) {
     console.log("A branch já contém a main original.");
-} else if (run("git", ["merge-tree", "--write-tree", "upstream/main", "HEAD"], { cwd: root }).status === 0) {
+} else if (simulated === 0) {
     console.log("A main original avançou, mas integra sem conflito com a branch: nada a fazer.");
 } else {
-    console.log("A main original avançou e conflita com a branch. Trazendo as mudanças dela para cá...");
+    console.log(simulated === 1
+        ? "A main original avançou e conflita com a branch. Trazendo as mudanças dela para cá..."
+        : "A main original avançou (este git é anterior à 2.38 e não simula o merge). Trazendo as mudanças dela para cá...");
     const merged = run("git", ["merge", "upstream/main", "-m", "merge: atualiza a branch com a main original"], { cwd: root });
     if (merged.status !== 0) {
         console.log(merged.output.trim());
