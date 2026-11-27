@@ -31,6 +31,7 @@ export function checkDocs(root = projectRoot) {
 }
 
 const indentOf = (line) => line.length - line.trimStart().length;
+const countOf = (line, char) => line.split(char).length - 1;
 
 /**
  * Linhas do arquivo atual (1 = primeira) tocadas pelo diff com o HEAD. Uma remoção marca a
@@ -74,9 +75,20 @@ function pendingFunctions(root, path) {
             continue;
         }
         const indent = indentOf(lines[i]);
+        // A assinatura pode ocupar várias linhas: o `) -> T:` final tem a indentação do `func`
+        // e, sem pular até ele, o corpo seria lido como vazio.
+        let signatureEnd = i;
+        let depth = 0;
+        for (let j = i; j < lines.length; j++) {
+            depth += countOf(lines[j], "(") - countOf(lines[j], ")");
+            signatureEnd = j;
+            if (depth <= 0) {
+                break;
+            }
+        }
         // O corpo vai até a próxima linha não vazia com indentação igual ou menor.
-        let bodyEnd = i;
-        for (let j = i + 1; j < lines.length; j++) {
+        let bodyEnd = signatureEnd;
+        for (let j = signatureEnd + 1; j < lines.length; j++) {
             if (lines[j].trim() === "") {
                 continue;
             }
