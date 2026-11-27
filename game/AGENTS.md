@@ -86,6 +86,7 @@ Decisão `0021`. O projeto aceita colaboradores por fork e pull request. O papel
   - Estado e decisões ficam na pasta da branch: o estado em `missao.md`; cada decisão proposta em `decisoes/<titulo>.md`, sem número (o número é dado no `/integrar`). `docs/arquitetura.md` e `docs/sistemas/` são atualizados junto com o código, como sempre.
   - Push só da própria branch para o fork, no `/fim`; nunca para `upstream`. `main` original avançou: `git merge upstream/main` na branch, nunca rebase de commit já enviado.
   - O check reprova: branch na `main`, nome fora do padrão, missão ausente, arquivo protegido alterado sem autorização e commit de tipo que a branch não aceita. Arquivo fora das pastas da missão gera aviso.
+- **Colaborador sem agente** (decisão `0025`): segue `../COLABORAR-SEM-IA.md`, com `node scripts/colaborar.mjs` sem argumentos (modo guiado) e `node scripts/fim-colaborador.mjs`, que fazem o mesmo que o `/colaborar` e o `/fim`. Uma branch começada por um caminho pode ser terminada pelo outro. Mudou uma regra de colaboração? Mantenha o guia e os dois scripts coerentes com ela.
 
 ## Git
 
